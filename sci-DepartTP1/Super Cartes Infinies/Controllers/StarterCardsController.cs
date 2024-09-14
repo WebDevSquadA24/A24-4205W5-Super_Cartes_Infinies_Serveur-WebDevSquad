@@ -20,6 +20,7 @@ namespace Super_Cartes_Infinies.Controllers
         }
 
         // GET: StarterCards
+        // Tri par le nom de la carte
         public async Task<IActionResult> Index()
         {
             var startingCards = await _context.StarterCards.OrderBy(sc => sc.Card.Name).ToListAsync();

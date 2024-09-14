@@ -11,6 +11,7 @@ namespace Models.Models
     public class StarterCard:IModel
     {
         public int Id { get; set; }
+        public int CardId { get; set; }
         public virtual Card Card { get; set; }
     }
 }

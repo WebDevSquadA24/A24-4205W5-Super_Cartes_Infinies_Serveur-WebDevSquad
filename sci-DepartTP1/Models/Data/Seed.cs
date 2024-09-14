@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Microsoft.AspNetCore.Identity;
+using Models.Models;
 using Super_Cartes_Infinies.Models;
 
 namespace Super_Cartes_Infinies.Data
@@ -167,6 +168,62 @@ namespace Super_Cartes_Infinies.Data
                     Id = 2,
                     Name = "Test player 2",
                     UserId = "User2Id"
+                }
+            };
+        }
+
+        
+        //Ajout d'un seed des cartes de départ
+        //(3 cartes différentes avec une seul copie et
+        //3 autres cartes avec deux copies chaque)
+        public static StarterCard[] SeedStarterCards()
+        {
+            return new StarterCard[]
+            {
+                new StarterCard
+                {
+                    Id = 1,
+                    CardId = 1,
+                },
+                new StarterCard
+                {
+                    Id = 2,
+                    CardId = 2,
+                },
+                new StarterCard
+                {
+                    Id = 3,
+                    CardId = 3,
+                },
+                new StarterCard
+                {
+                    Id = 4,
+                    CardId = 4,
+                },
+                new StarterCard
+                {
+                    Id= 5,
+                    CardId= 4,
+                },
+                new StarterCard
+                {
+                    Id = 6,
+                    CardId= 5,
+                },
+                new StarterCard
+                {
+                    Id = 7,
+                    CardId= 5,
+                },
+                new StarterCard
+                {
+                    Id = 8,
+                    CardId= 6,
+                },
+                new StarterCard
+                {
+                    Id = 9,
+                    CardId= 6,
                 }
             };
         }
