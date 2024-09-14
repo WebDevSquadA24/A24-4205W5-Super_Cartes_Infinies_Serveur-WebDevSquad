@@ -154,15 +154,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c3166ee8-bd73-418c-811b-e554e37a8079",
+                            ConcurrencyStamp = "5edbad3c-698d-4c4d-b3c5-228d3cafd509",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEM6lGKZlJg36nlO8hGsw7V9HrtyKGfbu3f3ajQhsKDIfnskGDBOls/QjGL9KfP78jg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGbT3nC1TdR8Z0WnDrBYIxiXu6HdOOVou0M2vvgKO1FSioBkTgTUEbye2AT8bp57+A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "80709887-bb99-4d89-9b45-f9e6d08b6bf4",
+                            SecurityStamp = "4c1022a4-4129-4234-bde9-a2a3a3af9884",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -170,22 +170,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a67ad746-a99b-4360-b5b9-6308eb13e297",
+                            ConcurrencyStamp = "92b81387-4b8e-49e2-9502-acc788575667",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "74d6b510-b143-4148-bde6-d23b43b172a5",
+                            SecurityStamp = "f4d536ae-17b1-4315-9f97-808ccf8267a9",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8beaeed6-4601-43b1-9f01-3defaee88009",
+                            ConcurrencyStamp = "853d4d28-8373-4760-8a79-9048c47efccc",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b5ef1e36-9141-4177-a6f2-6c311a6fc30e",
+                            SecurityStamp = "ef80cb5a-935a-4b80-a6ca-5e25c8f0f787",
                             TwoFactorEnabled = false
                         });
                 });
@@ -280,6 +280,43 @@ namespace Models.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Models.Models.GameConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("NbCardsToDraw")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NbManaToReceive")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GameConfigs");
+                });
+
+            modelBuilder.Entity("Models.Models.StarterCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CardId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardId");
+
+                    b.ToTable("StarterCards");
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.Card", b =>
@@ -598,6 +635,17 @@ namespace Models.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Models.Models.StarterCard", b =>
+                {
+                    b.HasOne("Super_Cartes_Infinies.Models.Card", "Card")
+                        .WithMany()
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Card");
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.Match", b =>

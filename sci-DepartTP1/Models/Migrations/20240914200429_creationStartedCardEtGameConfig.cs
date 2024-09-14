@@ -10,31 +10,75 @@ namespace Models.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "GameConfigs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NbCardsToDraw = table.Column<int>(type: "int", nullable: false),
+                    NbManaToReceive = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GameConfigs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StarterCards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CardId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StarterCards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StarterCards_Cards_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "11111111-1111-1111-1111-111111111111",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "c3166ee8-bd73-418c-811b-e554e37a8079", "AQAAAAIAAYagAAAAEM6lGKZlJg36nlO8hGsw7V9HrtyKGfbu3f3ajQhsKDIfnskGDBOls/QjGL9KfP78jg==", "80709887-bb99-4d89-9b45-f9e6d08b6bf4" });
+                values: new object[] { "5edbad3c-698d-4c4d-b3c5-228d3cafd509", "AQAAAAIAAYagAAAAEGbT3nC1TdR8Z0WnDrBYIxiXu6HdOOVou0M2vvgKO1FSioBkTgTUEbye2AT8bp57+A==", "4c1022a4-4129-4234-bde9-a2a3a3af9884" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "User1Id",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "a67ad746-a99b-4360-b5b9-6308eb13e297", "74d6b510-b143-4148-bde6-d23b43b172a5" });
+                values: new object[] { "92b81387-4b8e-49e2-9502-acc788575667", "f4d536ae-17b1-4315-9f97-808ccf8267a9" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "User2Id",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "8beaeed6-4601-43b1-9f01-3defaee88009", "b5ef1e36-9141-4177-a6f2-6c311a6fc30e" });
+                values: new object[] { "853d4d28-8373-4760-8a79-9048c47efccc", "ef80cb5a-935a-4b80-a6ca-5e25c8f0f787" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StarterCards_CardId",
+                table: "StarterCards",
+                column: "CardId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "GameConfigs");
+
+            migrationBuilder.DropTable(
+                name: "StarterCards");
+
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
