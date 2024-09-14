@@ -28,6 +28,9 @@ public class ApplicationDbContext : IdentityDbContext
         builder.Entity<IdentityUser>().HasData(Seed.SeedTestUsers());
         builder.Entity<Player>().HasData(Seed.SeedTestPlayers());
 
+        builder.Entity<StarterCard>().HasData(Seed.SeedStarterCards());
+        builder.Entity<GameConfig>().HasData(Seed.SeedGameConfig());
+
         // Lorsque le modèle de données se complexifient, il faut éventuellement utiliser Fluent API
         // https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/fluent/types-and-properties
         // pour préciser certaines relations.

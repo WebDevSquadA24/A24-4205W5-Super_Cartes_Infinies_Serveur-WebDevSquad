@@ -12,8 +12,8 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240914205812_creationStartedCardEtGameConfig")]
-    partial class creationStartedCardEtGameConfig
+    [Migration("20240914221237_ajoutSeedGameConfig")]
+    partial class ajoutSeedGameConfig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -157,15 +157,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f649e25e-978a-4860-bc2d-33fe0afa585d",
+                            ConcurrencyStamp = "345e7250-30b9-4c84-899d-2deeec053aa0",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFcy1xvPtR1YgUCL0sUCy8QVY6DnW2AdUlbdRkb9yFlEmnmm+TTyqWXYFiO/bc1/ng==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE+ms8YXOhY34vpoeAsMZMqdujJyi6d92uJ5lCQAESX0qXmb1HvE1uezCbbrQfHIRQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "06956089-b45a-44f5-8fa4-1d1abcc57125",
+                            SecurityStamp = "85a3c604-bc43-4c23-b18a-ecac66bd5b08",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -173,22 +173,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7988fa1f-c88e-4aea-8925-8602907cd638",
+                            ConcurrencyStamp = "9728e41d-ac2b-43fd-ba14-7bfa092eac0e",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b8a0cc46-a268-4b50-b2c8-0014c64abd16",
+                            SecurityStamp = "18844e09-2b3c-46f3-949e-fc3a6a954f37",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "22dc6939-d77b-44ca-aecd-70d3e006b5c2",
+                            ConcurrencyStamp = "6c04cb3e-e2df-4580-bb3d-6a049138d19b",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8d276324-8cf6-4695-8123-51dc73794513",
+                            SecurityStamp = "d7d373c9-fba4-41a5-90da-70236320654a",
                             TwoFactorEnabled = false
                         });
                 });
@@ -302,6 +302,14 @@ namespace Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GameConfigs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NbCardsToDraw = 4,
+                            NbManaToReceive = 3
+                        });
                 });
 
             modelBuilder.Entity("Models.Models.StarterCard", b =>
@@ -320,6 +328,53 @@ namespace Models.Migrations
                     b.HasIndex("CardId");
 
                     b.ToTable("StarterCards");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CardId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CardId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CardId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CardId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CardId = 4
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CardId = 5
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CardId = 5
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CardId = 6
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CardId = 6
+                        });
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.Card", b =>

@@ -48,21 +48,21 @@ namespace Models.Migrations
                 keyColumn: "Id",
                 keyValue: "11111111-1111-1111-1111-111111111111",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "f649e25e-978a-4860-bc2d-33fe0afa585d", "AQAAAAIAAYagAAAAEFcy1xvPtR1YgUCL0sUCy8QVY6DnW2AdUlbdRkb9yFlEmnmm+TTyqWXYFiO/bc1/ng==", "06956089-b45a-44f5-8fa4-1d1abcc57125" });
+                values: new object[] { "fbc7122a-ae48-477b-b716-66c801b99bf6", "AQAAAAIAAYagAAAAEGhBHQwPwV5VK/4gWHu7b/Fj3s0ZuHHhc5DZCMsPvw91Ya2VK6tM9Vn1B2ZRrLWVIQ==", "df0bd143-a3e6-4519-89b3-801401dd8cbe" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "User1Id",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "7988fa1f-c88e-4aea-8925-8602907cd638", "b8a0cc46-a268-4b50-b2c8-0014c64abd16" });
+                values: new object[] { "f795f30c-3bf7-492d-9be3-ae1d279a3b85", "aa5c7578-cf9b-4131-aec0-d63924604ee3" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "User2Id",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "22dc6939-d77b-44ca-aecd-70d3e006b5c2", "8d276324-8cf6-4695-8123-51dc73794513" });
+                values: new object[] { "997647ff-f91d-426a-bba1-71ff1e9547bd", "56982eb5-9fb1-4b35-9954-9b578b67096a" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_StarterCards_CardId",

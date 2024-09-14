@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Models.Models;
 using Super_Cartes_Infinies.Models;
 
@@ -172,7 +170,6 @@ namespace Super_Cartes_Infinies.Data
             };
         }
 
-        
         //Ajout d'un seed des cartes de départ
         //(3 cartes différentes avec une seul copie et
         //3 autres cartes avec deux copies chaque)
@@ -227,6 +224,22 @@ namespace Super_Cartes_Infinies.Data
                 }
             };
         }
+
+        //Ajout d'un seed de la configuration du jeu
+        //Une quantité de 4 cartes à piger et 3 manas par tour.
+        public static GameConfig[] SeedGameConfig()
+        {
+            return new GameConfig[]
+            {
+                new GameConfig
+                {
+                    Id = 1,
+                    NbCardsToDraw = 4,
+                    NbManaToReceive = 3,
+                }
+            };
+        }
+
     }
 }
 

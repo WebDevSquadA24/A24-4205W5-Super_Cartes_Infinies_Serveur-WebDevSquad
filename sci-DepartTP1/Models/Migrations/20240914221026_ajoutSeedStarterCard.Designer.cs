@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,9 +12,11 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240914221026_ajoutSeedStarterCard")]
+    partial class ajoutSeedStarterCard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,15 +157,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "345e7250-30b9-4c84-899d-2deeec053aa0",
+                            ConcurrencyStamp = "004a5a7c-4681-4102-a8e0-b70126852862",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE+ms8YXOhY34vpoeAsMZMqdujJyi6d92uJ5lCQAESX0qXmb1HvE1uezCbbrQfHIRQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM7T2kEmBACg47SOAIbU55JFO/Vbkn0sAgHzS0k2dooDsVHLt7SJBzQbilENOJXKsw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "85a3c604-bc43-4c23-b18a-ecac66bd5b08",
+                            SecurityStamp = "9f503233-5147-4378-a7bf-03ff120bd1c7",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -170,22 +173,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9728e41d-ac2b-43fd-ba14-7bfa092eac0e",
+                            ConcurrencyStamp = "5c8cd486-75e7-48eb-95bb-63e815310afd",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "18844e09-2b3c-46f3-949e-fc3a6a954f37",
+                            SecurityStamp = "23a6ba56-605c-4fca-97f3-11b237e093be",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6c04cb3e-e2df-4580-bb3d-6a049138d19b",
+                            ConcurrencyStamp = "c4677b3e-9340-4f72-9b11-620299b10ff2",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d7d373c9-fba4-41a5-90da-70236320654a",
+                            SecurityStamp = "714a1267-39bb-4ad7-b88f-58e64a773da1",
                             TwoFactorEnabled = false
                         });
                 });
@@ -299,14 +302,6 @@ namespace Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GameConfigs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            NbCardsToDraw = 4,
-                            NbManaToReceive = 3
-                        });
                 });
 
             modelBuilder.Entity("Models.Models.StarterCard", b =>
