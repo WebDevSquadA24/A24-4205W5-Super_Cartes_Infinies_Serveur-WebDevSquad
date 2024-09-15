@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Super_Cartes_Infinies.Models;
 
 namespace Super_Cartes_Infinies.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class CardsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,24 +25,6 @@ namespace Super_Cartes_Infinies.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Cards.ToListAsync());
-        }
-
-        // GET: Cards/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var card = await _context.Cards
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (card == null)
-            {
-                return NotFound();
-            }
-
-            return View(card);
         }
 
         // GET: Cards/Create

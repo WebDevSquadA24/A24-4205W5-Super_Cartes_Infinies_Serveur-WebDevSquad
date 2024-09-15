@@ -14,6 +14,31 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
+                <label asp-for="Card.Name" class="control-label"></label>
+                <input asp-for="Card.Name" class="form-control" />
+                <span asp-validation-for="Card.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Card.Attack" class="control-label"></label>
+                <input asp-for="Card.Attack" class="form-control" />
+                <span asp-validation-for="Card.Attack" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Card.Health" class="control-label"></label>
+                <input asp-for="Card.Health" class="form-control" />
+                <span asp-validation-for="Card.Health" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Card.Cost" class="control-label"></label>
+                <input asp-for="Card.Cost" class="form-control" />
+                <span asp-validation-for="Card.Cost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Card.ImageUrl" class="control-label"></label>
+                <input asp-for="Card.ImageUrl" class="form-control" />
+                <span asp-validation-for="Card.ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

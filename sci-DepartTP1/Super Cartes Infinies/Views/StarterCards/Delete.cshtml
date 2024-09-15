@@ -11,6 +11,36 @@
     <h4>StarterCard</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Card.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Card.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Card.Attack)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Card.Attack)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Card.Health)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Card.Health)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Card.Cost)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Card.Cost)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Card.ImageUrl)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.Card.ImageUrl" alt="@Model.Card.ImageUrl" style="width: 300px; height: 200px" />
+        </dd>
     </dl>
     
     <form asp-action="Delete">
