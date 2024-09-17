@@ -72,12 +72,19 @@ namespace Super_Cartes_Infinies.Controllers
                 return NotFound();
             }
 
+            var listeCards = await _context.Cards.ToListAsync();
             var starterCard = await _context.StarterCards.FindAsync(id);
             if (starterCard == null)
             {
                 return NotFound();
             }
-            return View(starterCard);
+            var viewModel = new StarterCardViewModel
+            {
+                Cards = listeCards,
+                StarterCard = starterCard,
+                SelectedCardId = starterCard.CardId
+            };
+            return View(viewModel);
         }
 
         // POST: StarterCards/Edit/5
