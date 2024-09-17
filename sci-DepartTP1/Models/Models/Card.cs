@@ -18,7 +18,7 @@ namespace Super_Cartes_Infinies.Models
         public int Health { get; set; }
         [Display(Name = "Coût")]
         public int Cost { get; set; }
-        [Display(Name = "URL de l'image")]
+        [Display(Name = "Image")]
         public string ImageUrl { get; set; } = "";
     }
 }

@@ -92,9 +92,9 @@ namespace Super_Cartes_Infinies.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] StarterCard starterCard)
+        public async Task<IActionResult> Edit(int id, StarterCardViewModel viewModel)
         {
-            if (id != starterCard.Id)
+            if (id != viewModel.StarterCard.Id)
             {
                 return NotFound();
             }
@@ -103,12 +103,20 @@ namespace Super_Cartes_Infinies.Controllers
             {
                 try
                 {
+                    var starterCard = await _context.StarterCards.FindAsync(id);
+                    if (starterCard == null)
+                    {
+                        return NotFound();
+                    }
+
+                    starterCard.CardId = viewModel.SelectedCardId;
+
                     _context.Update(starterCard);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StarterCardExists(starterCard.Id))
+                    if (!StarterCardExists(id))
                     {
                         return NotFound();
                     }
@@ -119,7 +127,8 @@ namespace Super_Cartes_Infinies.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(starterCard);
+            viewModel.Cards = await _context.Cards.ToListAsync();
+            return View(viewModel);
         }
 
         // GET: StarterCards/Delete/5

@@ -12,7 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="StarterCard.Card.Id" />
+            <input type="hidden" asp-for="StarterCard.Id" />
 
              <div class="form-group">
                 <label for="SelectedCardId" class="control-label">Sélectionner une carte</label>
@@ -20,7 +20,7 @@
                     <option value="">-- Sélectionner une carte --</option>
                     @foreach (var card in Model.Cards)
                     {
-                        <option value="@card.Id">@card.Name</option>
+                        <option value="@card.Id" selected="@(card.Id == Model.SelectedCardId)">@card.Name</option>
                     }
                 </select>
             </div> 
@@ -68,7 +68,8 @@
             var selectedCardId = $('#SelectedCardId').val();
             if (selectedCardId) {
                 $.ajax({
-                    url: '@Url.Action("GetCardDetails", "StarterCards")', // Action pour obtenir les détails de la carte
+                    // Action pour obtenir les détails de la carte
+                    url: '@Url.Action("GetCardDetails", "StarterCards")', 
                     data: { id: selectedCardId },
                     success: function (data) {
                         $('#cardDetails').show();
@@ -83,6 +84,10 @@
                 $('#cardDetails').hide();
             }
         }
+
+        $(document).ready(function () {
+            loadCardDetails();
+        });
 
     </script>
 
