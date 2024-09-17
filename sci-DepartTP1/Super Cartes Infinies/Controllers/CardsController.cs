@@ -24,7 +24,7 @@ namespace Super_Cartes_Infinies.Controllers
         // GET: Cards
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cards.ToListAsync());
+            return View(await _context.Cards.OrderBy(c => c.Name).ToListAsync());
         }
 
         // GET: Cards/Create
