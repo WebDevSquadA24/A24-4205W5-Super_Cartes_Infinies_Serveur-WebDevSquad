@@ -7,6 +7,7 @@ namespace Super_Cartes_Infinies.Models.Dtos
         public Match Match { get; set; }
         public Player PlayerA { get; set; }
         public Player PlayerB { get; set; }
+        [JsonIgnore]
         public bool IsStarted { get; set; }
         [JsonIgnore]
         public string OtherPlayerConnectionId { get; set; }
