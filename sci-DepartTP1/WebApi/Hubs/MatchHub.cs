@@ -37,7 +37,7 @@ public class MatchHub : Hub
     }
 
     
-        public async Task Connection(string userId)
+    public async Task Connection(string userId)
     {
         base.OnConnectedAsync();
         UserHandler.ConnectedIds.Add(Context.ConnectionId);
@@ -58,12 +58,7 @@ public class MatchHub : Hub
             {
                 // Il faut tout de même envoyer le joiningMatchData au 2 joueurs
 
-                StartMatchEvent startMatchEvent =  await _service.StartMatch(connectedIdPlayerA, joiningMatchData.Match);
-                //Envoyer à Player A
-                await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("StartMatchEvent", startMatchEvent);
-
-                //Envoyer à Player B
-                await Clients.Caller.SendAsync("StartMatchEvent", startMatchEvent);
+                this.StartMatch(connectedIdPlayerA, joiningMatchData);
                     
             }
         }
@@ -75,17 +70,23 @@ public class MatchHub : Hub
         // Note: Si le match est déjà démarré, il faut seulement envoyer le match à celui qui a fait la requête
         // Si le match n'est pas déjà démarré, il faut faire un StartMatch et envoyer l'event aux clients
     }
-    public async Task StartMatch()
+    public async Task StartMatch(string userId, JoiningMatchData joiningMatchData)
     {
+        StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
+        //Envoyer à Player A
+        await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("StartMatchEvent", startMatchEvent);
+
+        //Envoyer à Player B
+        await Clients.Caller.SendAsync("SendEvents", startMatchEvent);
+    }
+    public async Task EndTurn(string userId)
+    {
+        PlayerEndTurnEvent endTurn = await _service.EndTurn(userId, 1);
+        await Clients.Caller.SendAsync("EndTurn", endTurn);
 
     }
-    public async Task EndTurn()
+    public async Task Surrender(string userId)
     {
-
-
-    }
-    public async Task Surrender()
-    {
-
+        await _service.Surrender(userId, 1);
     }
 }
