@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Data;
@@ -23,13 +24,20 @@ public class MatchHub : Hub
         public static HashSet<string> ConnectedIds = new HashSet<string>();
     }
 
+    public override async Task OnConnectedAsync()
+    {
+        base.OnConnectedAsync();
+        // TODO: Ajouter votre logique
+        await Clients.Caller.SendAsync("UserId", Context.ConnectionId);
+    }
+
     public override async Task OnDisconnectedAsync(Exception exception)
     {
         base.OnDisconnectedAsync(exception);
     }
 
-
-    public async Task Connection(string userId)
+    
+        public async Task Connection(string userId)
     {
         base.OnConnectedAsync();
         UserHandler.ConnectedIds.Add(Context.ConnectionId);
@@ -51,7 +59,10 @@ public class MatchHub : Hub
                 // Il faut tout de même envoyer le joiningMatchData au 2 joueurs
 
                 StartMatchEvent startMatchEvent =  await _service.StartMatch(connectedIdPlayerA, joiningMatchData.Match);
+                //Envoyer à Player A
+                await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("StartMatchEvent", startMatchEvent);
 
+                //Envoyer à Player B
                 await Clients.Caller.SendAsync("StartMatchEvent", startMatchEvent);
                     
             }
@@ -63,14 +74,6 @@ public class MatchHub : Hub
         // Si ce n'est pas null, on envoit le matchData aux joueurs
         // Note: Si le match est déjà démarré, il faut seulement envoyer le match à celui qui a fait la requête
         // Si le match n'est pas déjà démarré, il faut faire un StartMatch et envoyer l'event aux clients
-
-
-        // 
-
-
-
-
-
     }
     public async Task StartMatch()
     {
