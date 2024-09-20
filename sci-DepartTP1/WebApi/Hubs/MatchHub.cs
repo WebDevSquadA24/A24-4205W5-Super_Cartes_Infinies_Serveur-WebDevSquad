@@ -52,14 +52,16 @@ public class MatchHub : Hub
             if (joiningMatchData.IsStarted)
             {
                 await Clients.Caller.SendAsync("JoiningMatchData", joiningMatchData);
+                await Clients.Caller.SendAsync("Id", userId);
+                this.StartMatch(userId, joiningMatchData);
+
 
             }
             else
             {
                 // Il faut tout de même envoyer le joiningMatchData au 2 joueurs
 
-                this.StartMatch(connectedIdPlayerA, joiningMatchData);
-                    
+
             }
         }
 
@@ -77,7 +79,7 @@ public class MatchHub : Hub
         await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("StartMatchEvent", startMatchEvent);
 
         //Envoyer à Player B
-        await Clients.Caller.SendAsync("SendEvents", startMatchEvent);
+        await Clients.Caller.SendAsync("StartMatchEvent", startMatchEvent);
     }
     public async Task EndTurn(string userId)
     {
