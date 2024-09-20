@@ -19,48 +19,47 @@ public class MatchHub : Hub
         _service = service;
     }
 
-    public static class UserHandler
+    /*public static class UserHandler
     {
         public static HashSet<string> ConnectedIds = new HashSet<string>();
     }
 
     public override async Task OnConnectedAsync()
     {
-        base.OnConnectedAsync();
+        await base.OnConnectedAsync();
         // TODO: Ajouter votre logique
         await Clients.Caller.SendAsync("UserId", Context.ConnectionId);
     }
 
     public override async Task OnDisconnectedAsync(Exception exception)
     {
-        base.OnDisconnectedAsync(exception);
-    }
+        await base.OnDisconnectedAsync(exception);
+    }*/
 
     
     public async Task Connection(string userId)
     {
-        base.OnConnectedAsync();
-        UserHandler.ConnectedIds.Add(Context.ConnectionId);
+        //UserHandler.ConnectedIds.Add(Context.ConnectionId);
         var connectedIdPlayerA = Context.ConnectionId;
         //await Clients.All.SendAsync("UserCount", UserHandler.ConnectedIds.Count);
 
-        JoiningMatchData joiningMatchData = await _service.JoinMatch(userId, Context.ConnectionId, null);
+        JoiningMatchData? joiningMatchData = await _service.JoinMatch(userId, Context.ConnectionId, null);
         if(joiningMatchData != null)
         {
             var connectedIdPlayerB = joiningMatchData.OtherPlayerConnectionId;
-            UserHandler.ConnectedIds.Add(connectedIdPlayerB);
+            //UserHandler.ConnectedIds.Add(connectedIdPlayerB);
             if (joiningMatchData.IsStarted)
             {
                 await Clients.Caller.SendAsync("JoiningMatchData", joiningMatchData);
                 await Clients.Caller.SendAsync("Id", userId);
-                this.StartMatch(userId, joiningMatchData);
+                
 
 
             }
             else
             {
                 // Il faut tout de même envoyer le joiningMatchData au 2 joueurs
-
+                await this.StartMatch(userId, joiningMatchData);
 
             }
         }
@@ -75,20 +74,22 @@ public class MatchHub : Hub
     public async Task StartMatch(string userId, JoiningMatchData joiningMatchData)
     {
         StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
-        //Envoyer à Player A
-        await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("StartMatchEvent", startMatchEvent);
+        //Envoyer à Player A et B
+        await Clients.User(joiningMatchData.PlayerA.UserId).SendAsync("JoiningMatchData", joiningMatchData);
+        await Clients.Caller.SendAsync("JoiningMatchData", joiningMatchData);
 
-        //Envoyer à Player B
+        await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("StartMatchEvent", startMatchEvent);
         await Clients.Caller.SendAsync("StartMatchEvent", startMatchEvent);
     }
-    public async Task EndTurn(string userId)
+    public async Task EndTurn(string userId, int matchId)
     {
-        PlayerEndTurnEvent endTurn = await _service.EndTurn(userId, 1);
+        PlayerEndTurnEvent endTurn = await _service.EndTurn(userId, matchId);
         await Clients.Caller.SendAsync("EndTurn", endTurn);
 
     }
-    public async Task Surrender(string userId)
+    public async Task Surrender(string userId, int matchId)
     {
-        await _service.Surrender(userId, 1);
+        SurrenderEvent surrenderEvent = await _service.Surrender(userId, matchId);
+        await Clients.Caller.SendAsync("Surrender", surrenderEvent);
     }
 }
