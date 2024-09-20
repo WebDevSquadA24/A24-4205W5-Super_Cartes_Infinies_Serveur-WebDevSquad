@@ -10,6 +10,8 @@ using WebAPI.DTOs;
 
 namespace WebApi.Controllers
 {
+    [ApiController]
+    [Route("[controller]/[action]")]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -83,19 +85,6 @@ namespace WebApi.Controllers
             }
 
             return NotFound(new { Error = "L'utilisateur est introuvable ou le mot de passe ne concorde pas" });
-        }
-
-        [HttpGet]
-        public ActionResult PublicTest()
-        {
-            return Ok(new string[] { "Pomme", "Poire", "Banane" });
-        }
-
-        [HttpGet]
-        [Authorize]
-        public ActionResult PrivateTest()
-        {
-            return Ok(new string[] { "PrivatePomme", "PrivatePoire", "PrivateBanane" });
         }
     }
 }
