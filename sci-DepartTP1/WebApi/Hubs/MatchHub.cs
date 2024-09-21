@@ -75,7 +75,7 @@ public class MatchHub : Hub
     {
         StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
         //Envoyer à Player A et B
-        await Clients.User(joiningMatchData.PlayerA.UserId).SendAsync("JoiningMatchData", joiningMatchData);
+        await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("JoiningMatchData", joiningMatchData);
         await Clients.Caller.SendAsync("JoiningMatchData", joiningMatchData);
 
         await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("StartMatchEvent", startMatchEvent);
