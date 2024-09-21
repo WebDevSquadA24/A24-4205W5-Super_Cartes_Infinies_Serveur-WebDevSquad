@@ -75,12 +75,14 @@ public class MatchHub : Hub
     {
         StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
         //Envoyer à Player A et B
-        await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("JoiningMatchData", joiningMatchData);
-        await Clients.Caller.SendAsync("JoiningMatchData", joiningMatchData);
+        await Clients.User(joiningMatchData.Match.UserBId).SendAsync("JoiningMatchData", joiningMatchData);
+        await Clients.User(joiningMatchData.Match.UserAId).SendAsync("JoiningMatchData", joiningMatchData);
+        
+        await Clients.User(joiningMatchData.Match.UserBId).SendAsync("StartMatchEvent", startMatchEvent);
+        await Clients.User(joiningMatchData.Match.UserAId).SendAsync("StartMatchEvent", startMatchEvent);
 
-        await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("StartMatchEvent", startMatchEvent);
-        await Clients.Caller.SendAsync("StartMatchEvent", startMatchEvent);
     }
+
     public async Task EndTurn(string userId, int matchId)
     {
         PlayerEndTurnEvent endTurn = await _service.EndTurn(userId, matchId);
