@@ -13,7 +13,7 @@ namespace Super_Cartes_Infinies.Combat
         {
             this.PlayerId = currentPlayerData.PlayerId;
             this.Events = new List<MatchEvent>();
-            this.PlayerStartTurnEvent = new PlayerStartTurnEvent(opposingPlayerData, nbManaPerTurn);
+            this.PlayerStartTurnEvent = new PlayerStartTurnEvent(currentPlayerData, nbManaPerTurn);
 
             match.IsPlayerATurn = !match.IsPlayerATurn;
 

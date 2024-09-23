@@ -24,11 +24,16 @@ public class MatchHub : Hub
 
     public static class UserHandler
     {
-        public static HashSet<string> ConnectedIds = new HashSet<string>();
+        public static Dictionary<string, string> ConnectedIds = new Dictionary<string, string>();
     }
 
 
+    public override async Task OnConnectedAsync()
+    {
+        await base.OnConnectedAsync();
 
+
+    }
 
     public async Task Connection(string userId)
     {
@@ -43,6 +48,8 @@ public class MatchHub : Hub
             //UserHandler.ConnectedIds.Add(connectedIdPlayerB);
             if (joiningMatchData.IsStarted)
             {
+
+                //Celui qui appelle la métohde
                 await Clients.Caller.SendAsync("JoiningMatchData", joiningMatchData);
                 
 
@@ -76,6 +83,8 @@ public class MatchHub : Hub
         await Clients.Client(joiningMatchData.OtherPlayerConnectionId).SendAsync("StartMatchEvent", startMatchEvent);
         await Clients.Caller.SendAsync("StartMatchEvent", startMatchEvent);
 
+        UserHandler.ConnectedIds.Add(userId, Context.ConnectionId);
+        UserHandler.ConnectedIds.Add(joiningMatchData.PlayerA.UserId, Context.ConnectionId);
 
     }
 
@@ -96,8 +105,9 @@ public class MatchHub : Hub
         {
             opposingUserId = joiningMatchData.PlayerA.UserId;
         }
+
         Player playerOpponent = _playerService.GetPlayerFromUserId(opposingUserId);
-        await Clients.Users(playerOpponent.User.Id).SendAsync("StartTurnEvent", endTurn.PlayerStartTurnEvent);
+        await Clients.Client(UserHandler.ConnectedIds[opposingUserId]).SendAsync("PlayerStartTurn", endTurn.PlayerStartTurnEvent);
         await Clients.Caller.SendAsync("EndTurn", endTurn);
 
     }
