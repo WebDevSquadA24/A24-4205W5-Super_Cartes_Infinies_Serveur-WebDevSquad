@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Data;
+using Super_Cartes_Infinies.Models;
 using Super_Cartes_Infinies.Models.Dtos;
 using Super_Cartes_Infinies.Services;
 
@@ -13,30 +14,22 @@ public class MatchHub : Hub
 {
     ApplicationDbContext _context;
     MatchesService _service;
-    public MatchHub(ApplicationDbContext context, MatchesService service)
+    PlayersService _playerService;
+    public MatchHub(ApplicationDbContext context, MatchesService service, PlayersService playersService)
     {
         _context = context;
         _service = service;
+        _playerService = playersService;
     }
 
-    /*public static class UserHandler
+    public static class UserHandler
     {
         public static HashSet<string> ConnectedIds = new HashSet<string>();
     }
 
-    public override async Task OnConnectedAsync()
-    {
-        await base.OnConnectedAsync();
-        // TODO: Ajouter votre logique
-        await Clients.Caller.SendAsync("UserId", Context.ConnectionId);
-    }
 
-    public override async Task OnDisconnectedAsync(Exception exception)
-    {
-        await base.OnDisconnectedAsync(exception);
-    }*/
 
-    
+
     public async Task Connection(string userId)
     {
         //UserHandler.ConnectedIds.Add(Context.ConnectionId);
@@ -90,12 +83,30 @@ public class MatchHub : Hub
     {
         PlayerEndTurnEvent endTurn = await _service.EndTurn(userId, joiningMatchData.Match.Id);
 
+        //current player
+        Player player = _playerService.GetPlayerFromUserId(userId);
+
+        string opposingUserId = "";
+        if(joiningMatchData.PlayerA.UserId != userId)
+        {
+            opposingUserId = joiningMatchData.PlayerB.UserId;
+        }
+
+        else
+        {
+            opposingUserId = joiningMatchData.PlayerA.UserId;
+        }
+        Player playerOpponent = _playerService.GetPlayerFromUserId(opposingUserId);
+        await Clients.Users(playerOpponent.User.Id).SendAsync("StartTurnEvent", endTurn.PlayerStartTurnEvent);
         await Clients.Caller.SendAsync("EndTurn", endTurn);
 
     }
     public async Task Surrender(string userId, JoiningMatchData joiningMatchData)
     {
         SurrenderEvent surrenderEvent = await _service.Surrender(userId, joiningMatchData.Match.Id);
+
+        Player player = _playerService.GetPlayerFromUserId(userId);
+
 
         await Clients.Caller.SendAsync("Surrender", surrenderEvent);
     }
