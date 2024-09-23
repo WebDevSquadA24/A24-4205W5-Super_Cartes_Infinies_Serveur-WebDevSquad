@@ -48,7 +48,7 @@ namespace WebApi.Controllers
 
             _playersService.CreatePlayer(user);
 
-            return Ok();
+            return await Login(new LoginDTO() { Username = registerDTO.Username, Password = registerDTO.Password });
         }
 
         [HttpPost]
@@ -85,6 +85,12 @@ namespace WebApi.Controllers
             }
 
             return NotFound(new { Error = "L'utilisateur est introuvable ou le mot de passe ne concorde pas" });
+        }
+
+        [Authorize]
+        public ActionResult Test()
+        {
+            return Ok(new { message = "Success" });
         }
     }
 }
