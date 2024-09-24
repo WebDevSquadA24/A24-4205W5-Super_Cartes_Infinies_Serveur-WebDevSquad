@@ -86,20 +86,14 @@ public class MatchHub : Hub
             }
         }
 
-        // Appel JoinMatch
-        // Décider quoi faire selon le JoinMatchData reçu
-        // Si c'est null, on ne fait RIEN
-        // Si ce n'est pas null, on envoit le matchData aux joueurs
-        // Note: Si le match est déjà démarré, il faut seulement envoyer le match à celui qui a fait la requête
-        // Si le match n'est pas déjà démarré, il faut faire un StartMatch et envoyer l'event aux clients
     }
     public async Task StartMatch(string userId, JoiningMatchData joiningMatchData, string groupName)
     {
        
 
-        StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
         //Envoyer à Player A et B
         await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+        StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
 
 
         await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
