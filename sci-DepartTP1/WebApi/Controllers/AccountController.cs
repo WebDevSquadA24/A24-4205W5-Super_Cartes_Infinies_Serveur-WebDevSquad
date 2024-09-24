@@ -81,12 +81,13 @@ namespace WebApi.Controllers
 
                 // On ne veut JAMAIS retouner une string directement lorsque l'on utilise Angular.
                 // Angular assume que l'on retourne un objet et donne une erreur lorsque le résultat obtenu est une simple string!
-                return Ok(new LoginSuccessDTO() { Token = tokenString });
+                return Ok(new LoginSuccessDTO() { Token = tokenString, Username = loginDTO.Username, PlayerId = _playersService.GetPlayerFromUserName(loginDTO.Username).Id });
             }
 
             return NotFound(new { Error = "L'utilisateur est introuvable ou le mot de passe ne concorde pas" });
         }
 
+        [HttpGet]
         [Authorize]
         public ActionResult Test()
         {

@@ -6,5 +6,9 @@ namespace WebAPI.DTOs
     {
         [Required]
         public string Token { get; set; } = "";
+        [Required]
+        public string Username { get; set; } = "";
+        [Required]
+        public int PlayerId { get; set; }
     }
 }
