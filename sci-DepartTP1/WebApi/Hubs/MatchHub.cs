@@ -62,6 +62,7 @@ public class MatchHub : Hub
         if(joiningMatchData != null)
         {
             string groupName = "Match" + joiningMatchData.Match.Id;
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             //UserHandler.ConnectedIds.Add(connectedIdPlayerB);
             if (joiningMatchData.IsStarted)
             {
@@ -74,8 +75,6 @@ public class MatchHub : Hub
             }
             else
             {
-                //UserB
-                await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
                 //UserA
                 await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
 
