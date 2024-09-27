@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using Super_Cartes_Infinies.Models;
 
 namespace Super_Cartes_Infinies.Data;
@@ -27,6 +28,9 @@ public class ApplicationDbContext : IdentityDbContext
         builder.Entity<IdentityUser>().HasData(Seed.SeedTestUsers());
         builder.Entity<Player>().HasData(Seed.SeedTestPlayers());
 
+        builder.Entity<StarterCard>().HasData(Seed.SeedStarterCards());
+        builder.Entity<GameConfig>().HasData(Seed.SeedGameConfig());
+
         // Lorsque le modèle de données se complexifient, il faut éventuellement utiliser Fluent API
         // https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/fluent/types-and-properties
         // pour préciser certaines relations.
@@ -50,5 +54,9 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Match> Matches { get; set; } = default!;
 
     public DbSet<MatchPlayerData> MatchPlayersData { get; set; } = default!;
+
+    public DbSet<StarterCard> StarterCards { get; set; } = default!;
+
+    public DbSet<GameConfig> GameConfigs { get; set; } = default!;
 }
 
