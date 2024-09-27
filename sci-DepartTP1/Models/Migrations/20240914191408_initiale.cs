@@ -300,9 +300,15 @@ namespace Models.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
+<<<<<<<< HEAD:sci-DepartTP1/Models/Migrations/20240917161323_initiale.cs
                     { "11111111-1111-1111-1111-111111111111", 0, "a69b3f0d-e5d4-4d74-9395-c077ac38332c", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEMzi9Y3Z9VQFtv/YcPfjW2s5giDC2+CSq1jCOjFFS7epr2d/7zFqik5tTS+ZJcTXBg==", null, false, "c48fbe70-54c2-4fee-a831-cf5a8fcc4c43", false, "admin@admin.com" },
                     { "User1Id", 0, "026cdab6-b452-424f-9637-2851346305de", null, false, false, null, null, null, null, null, false, "f964c7f1-2b94-4450-a6e2-51a7b402aefc", false, null },
                     { "User2Id", 0, "685dc6d8-412c-45bc-a4e7-aebf19792dca", null, false, false, null, null, null, null, null, false, "a2e6104d-dfcf-45be-a807-f50b435d3290", false, null }
+========
+                    { "11111111-1111-1111-1111-111111111111", 0, "5a8cb505-c286-49ea-b2c1-d3970a791fcf", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAECi3WHFUt7MBCqKF3CnjMNyywKHZcr/TpXd32saRCqx8xcaDpoE6xjOZHY0a0CCtlw==", null, false, "00529dbf-5231-4890-a50d-21125e3ecf4e", false, "admin@admin.com" },
+                    { "User1Id", 0, "7e01982d-3940-4c37-9133-645693588575", null, false, false, null, null, null, null, null, false, "19060b2d-35b6-4792-9db6-3a4cb5c6955f", false, null },
+                    { "User2Id", 0, "06afa481-b777-40dd-bbf1-bf43a2f7ee5a", null, false, false, null, null, null, null, null, false, "ce1857e9-604e-4adc-93cc-02b7eb2ee061", false, null }
+>>>>>>>> main:sci-DepartTP1/Models/Migrations/20240914191408_initiale.cs
                 });
 
             migrationBuilder.InsertData(

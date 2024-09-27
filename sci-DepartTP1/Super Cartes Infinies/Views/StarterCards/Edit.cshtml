@@ -1,0 +1,94 @@
+﻿@model Models.Models.ViewModels.StarterCardViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Modifier</h1>
+
+<h4>Cartes de départ</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StarterCard.Id" />
+
+             <div class="form-group">
+                <label for="SelectedCardId" class="control-label">Sélectionner une carte</label>
+                <select id="SelectedCardId" name="SelectedCardId" class="form-control" onchange="loadCardDetails()">
+                    <option value="">-- Sélectionner une carte --</option>
+                    @foreach (var card in Model.Cards)
+                    {
+                        <option value="@card.Id" selected="@(card.Id == Model.SelectedCardId)">@card.Name</option>
+                    }
+                </select>
+            </div> 
+            
+            <div id="cardDetails" style="display:none;">
+                <div class="form-group">
+                    <label asp-for="StarterCard.Card.Name"></label>
+                    <input id="CardName" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="StarterCard.Card.Attack"></label>
+                    <input id="CardAttack" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="StarterCard.Card.Health"></label>
+                    <input id="CardHealth" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="StarterCard.Card.Cost"></label>
+                    <input id="CardCost" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="StarterCard.Card.ImageUrl"></label>
+                    <img id="CardImageUrl" class="form-control" style="width: 416px; height: 300px" readonly />
+             </div>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Enregistrer" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retourner à la liste</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @* Charge les détails de la carte sélectionnée et met à jour le formulaire avec ces informations. *@
+    <script>
+        function loadCardDetails() {
+            var selectedCardId = $('#SelectedCardId').val();
+            if (selectedCardId) {
+                $.ajax({
+                    // Action pour obtenir les détails de la carte
+                    url: '@Url.Action("GetCardDetails", "StarterCards")', 
+                    data: { id: selectedCardId },
+                    success: function (data) {
+                        $('#cardDetails').show();
+                        $('#CardName').val(data.name);
+                        $('#CardAttack').val(data.attack);
+                        $('#CardHealth').val(data.health);
+                        $('#CardCost').val(data.cost);
+                        $('#CardImageUrl').attr('src', data.imageUrl);
+                    }
+                });
+            } else {
+                $('#cardDetails').hide();
+            }
+        }
+
+        $(document).ready(function () {
+            loadCardDetails();
+        });
+
+    </script>
+
+}

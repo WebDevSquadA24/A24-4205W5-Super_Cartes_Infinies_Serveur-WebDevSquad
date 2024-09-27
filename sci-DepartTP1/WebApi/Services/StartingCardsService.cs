@@ -16,7 +16,29 @@ namespace Super_Cartes_Infinies.Services
             // Stub: Pour l'intant, le stub retourne simplement les 7 premières cartes
             // L'implémentation réelle devra retourner les cartes référées par les starting cards configuré par l'administarteur
             // L'implémentation est la responsabilité de la personne en charge de la partie [Administration MVC]
-            return _dbContext.Cards.Take(7).ToList();
+
+            // Récupérer toutes les StarterCards configurées depuis la base de données
+            var starterCards = _dbContext.StarterCards.ToList();
+
+            // Initialiser une liste vide pour stocker les cartes sélectionnées
+            var startingCards = new List<Card>();
+
+            // Boucle à travers chaque StarterCard et récupérer la carte correspondante
+            foreach (var starterCard in starterCards) 
+            {
+                // Rechercher la carte associée à la StarterCard
+                var card = _dbContext.Cards.FirstOrDefault(c => c.Id == starterCard.CardId);
+                // Si la carte existe, l'ajouter à la liste de départ
+                if (card != null)
+                {
+                    startingCards.Add(card);
+                }
+            }
+
+            // Retourner la liste des cartes de départ configurées
+            return startingCards;
+            
+            //return _dbContext.Cards.Take(7).ToList();
         }
     }
 }

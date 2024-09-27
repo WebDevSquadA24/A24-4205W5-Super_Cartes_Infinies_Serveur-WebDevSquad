@@ -1,0 +1,38 @@
+﻿@model Models.Models.GameConfig
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Créer</h1>
+
+<h4>Configuration</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NbCardsToDraw" class="control-label"></label>
+                <input asp-for="NbCardsToDraw" class="form-control" />
+                <span asp-validation-for="NbCardsToDraw" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NbManaToReceive" class="control-label"></label>
+                <input asp-for="NbManaToReceive" class="form-control" />
+                <span asp-validation-for="NbManaToReceive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Créer" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retourner à la liste</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
