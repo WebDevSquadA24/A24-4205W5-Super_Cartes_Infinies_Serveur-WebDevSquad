@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Models.Models;
@@ -58,5 +58,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<StarterCard> StarterCards { get; set; } = default!;
 
     public DbSet<GameConfig> GameConfigs { get; set; } = default!;
+
+    public DbSet<OwnedCard> OwnedCards { get; set; } = default!;
 }
 
