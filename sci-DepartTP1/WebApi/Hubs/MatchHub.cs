@@ -9,7 +9,7 @@ using Super_Cartes_Infinies.Services;
 
 namespace Super_Cartes_Infinies.Hubs;
 
-//[Authorize]
+[Authorize]
 public class MatchHub : Hub
 {
     ApplicationDbContext _context;
@@ -48,8 +48,9 @@ public class MatchHub : Hub
     }
 
 
-    public async Task Connection(string userId)
+    public async Task Connection()
     {
+        string userId = Context.UserIdentifier;
         //UserHandler.ConnectedIds.Add(Context.ConnectionId);
         var connectedIdPlayerA = Context.ConnectionId;
         //await Clients.All.SendAsync("UserCount", UserHandler.ConnectedIds.Count);
