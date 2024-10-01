@@ -47,10 +47,6 @@ public class MatchHub : Hub
 
     }
 
-    public async Task Connecter()
-    {
-        
-    }
 
     public async Task Connection(string userId)
     {
