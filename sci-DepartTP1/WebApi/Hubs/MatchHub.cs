@@ -47,7 +47,6 @@ public class MatchHub : Hub
 
     }
 
-
     public async Task Connection()
     {
         string contextUser = Context.UserIdentifier;
