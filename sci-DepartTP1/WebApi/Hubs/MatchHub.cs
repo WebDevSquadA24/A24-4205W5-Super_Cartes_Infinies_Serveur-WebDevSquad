@@ -50,7 +50,10 @@ public class MatchHub : Hub
 
     public async Task Connection()
     {
-        string userId = Context.UserIdentifier;
+        string contextUser = Context.UserIdentifier;
+        var user = _context.Users.Single(u => u.Id == contextUser);
+
+        string userId = user.Id;
         //UserHandler.ConnectedIds.Add(Context.ConnectionId);
         var connectedIdPlayerA = Context.ConnectionId;
         //await Clients.All.SendAsync("UserCount", UserHandler.ConnectedIds.Count);
@@ -80,6 +83,10 @@ public class MatchHub : Hub
                
 
             }
+        }
+        else
+        {
+            await Clients.Caller.SendAsync("JoiningMatchData", null);
         }
 
     }
