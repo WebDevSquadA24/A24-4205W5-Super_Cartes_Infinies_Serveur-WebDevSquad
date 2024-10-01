@@ -47,13 +47,11 @@ public class MatchHub : Hub
 
     }
 
-
     public async Task Connection()
     {
-        string contextUser = Context.UserIdentifier;
-        var user = _context.Users.Single(u => u.Id == contextUser);
+        
 
-        string userId = user.Id;
+        string userId = CurentUser.Id;
         //UserHandler.ConnectedIds.Add(Context.ConnectionId);
         var connectedIdPlayerA = Context.ConnectionId;
         //await Clients.All.SendAsync("UserCount", UserHandler.ConnectedIds.Count);
@@ -104,8 +102,10 @@ public class MatchHub : Hub
 
     }
 
-    public async Task EndTurn(string userId, JoiningMatchData joiningMatchData)
+    public async Task EndTurn(JoiningMatchData joiningMatchData)
     {
+        string userId = CurentUser.Id;
+
         PlayerEndTurnEvent endTurn = await _service.EndTurn(userId, joiningMatchData.Match.Id);
 
         //current player
@@ -116,8 +116,11 @@ public class MatchHub : Hub
         await Clients.Group(groupName).SendAsync("EndTurn", endTurn);
 
     }
-    public async Task Surrender(string userId, JoiningMatchData joiningMatchData)
+    public async Task Surrender( JoiningMatchData joiningMatchData)
     {
+
+        string userId = CurentUser.Id;
+
         SurrenderEvent surrenderEvent = await _service.Surrender(userId, joiningMatchData.Match.Id);
 
         Player player = _playerService.GetPlayerFromUserId(userId);
