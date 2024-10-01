@@ -31,9 +31,9 @@
         {
             await _semaphore.WaitAsync();
             bool stoppedWaiting = false;
-            if (_userAConnectionId == userId)
+            if (_userAId == userId)
             {
-                _userAConnectionId = null;
+                _userAId = null;
                 _userAConnectionId = null;
                 stoppedWaiting = true;
             }

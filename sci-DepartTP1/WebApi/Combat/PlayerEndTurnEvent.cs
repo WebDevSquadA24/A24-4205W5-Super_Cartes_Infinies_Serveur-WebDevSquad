@@ -6,6 +6,7 @@ namespace Super_Cartes_Infinies.Combat
     {
         public override string EventType { get { return "PlayerEndTurn"; } }
         public int PlayerId { get; set; }
+
         // L'évènement lorsqu'un joueur termine son tour
         public PlayerEndTurnEvent(Match match, MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData, int nbManaPerTurn)
         {
