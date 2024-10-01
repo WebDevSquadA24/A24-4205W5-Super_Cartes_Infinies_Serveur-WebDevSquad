@@ -1,4 +1,4 @@
-﻿using Models.Interfaces;
+using Models.Interfaces;
 using Super_Cartes_Infinies.Models;
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,7 @@ namespace Super_Cartes_Infinies.Models
     {
         public int Id { get; set; }
 
+        [JsonIgnore]
         public virtual Player Player { get; set; }
         public virtual Card Card { get; set; }
     }
