@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Models.Models.GameConfig>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Créer un nouveau</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NbCardsToDraw)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NbManaToReceive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NbCardsToDraw)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NbManaToReceive)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
