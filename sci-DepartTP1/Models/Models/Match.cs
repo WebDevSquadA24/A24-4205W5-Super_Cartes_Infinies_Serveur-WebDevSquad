@@ -14,9 +14,9 @@ namespace Super_Cartes_Infinies.Models
             Id = 0;
             IsMatchCompleted = false;
             UserAId = playerA.UserId;
-            PlayerDataA = new MatchPlayerData(playerA, cards);
+            PlayerDataA = new MatchPlayerData(playerA);
             UserBId = playerB.UserId;
-            PlayerDataB = new MatchPlayerData(playerB, cards);
+            PlayerDataB = new MatchPlayerData(playerB);
         }
 
         public int Id { get; set; }

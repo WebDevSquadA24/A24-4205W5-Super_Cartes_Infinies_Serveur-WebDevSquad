@@ -15,11 +15,13 @@ public class MatchHub : Hub
     ApplicationDbContext _context;
     MatchesService _service;
     PlayersService _playerService;
-    public MatchHub(ApplicationDbContext context, MatchesService service, PlayersService playersService)
+    WaitingUserService _waitingUserService;
+    public MatchHub(ApplicationDbContext context, MatchesService service, PlayersService playersService, WaitingUserService waitingUserService)
     {
         _context = context;
         _service = service;
         _playerService = playersService;
+        _waitingUserService = waitingUserService;
     }
     public IdentityUser CurentUser
     {
@@ -46,6 +48,16 @@ public class MatchHub : Hub
 
 
     }
+
+    
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        base.OnDisconnectedAsync(exception);
+        // TODO: Ajouter votre logique
+        await _service.StopJoiningMatch(CurentUser.Id);
+        
+    }
+
 
     public async Task Connection()
     {
@@ -128,4 +140,7 @@ public class MatchHub : Hub
 
         await Clients.Group(groupName).SendAsync("Surrender", surrenderEvent);
     }
+
+    
+
 }
