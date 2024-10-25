@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,9 +12,11 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241025141108_ModificationTP2Debut")]
+    partial class ModificationTP2Debut
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,7 +308,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PowerId");
 
-                    b.ToTable("CardPower", (string)null);
+                    b.ToTable("CardPower");
                 });
 
             modelBuilder.Entity("Models.Models.Deck", b =>
@@ -325,7 +328,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Deck", (string)null);
+                    b.ToTable("Deck");
                 });
 
             modelBuilder.Entity("Models.Models.GameConfig", b =>
@@ -350,7 +353,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameConfigs", (string)null);
+                    b.ToTable("GameConfigs");
 
                     b.HasData(
                         new
@@ -383,7 +386,7 @@ namespace Models.Migrations
 
                     b.HasIndex("OwnedCardId");
 
-                    b.ToTable("OwnedCardDeck", (string)null);
+                    b.ToTable("OwnedCardDeck");
                 });
 
             modelBuilder.Entity("Models.Models.Power", b =>
@@ -396,7 +399,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Power", (string)null);
+                    b.ToTable("Power");
                 });
 
             modelBuilder.Entity("Models.Models.StarterCard", b =>
@@ -414,7 +417,7 @@ namespace Models.Migrations
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("StarterCards", (string)null);
+                    b.ToTable("StarterCards");
 
                     b.HasData(
                         new
@@ -494,7 +497,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cards", (string)null);
+                    b.ToTable("Cards");
 
                     b.HasData(
                         new
@@ -636,7 +639,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PlayerDataBId");
 
-                    b.ToTable("Matches", (string)null);
+                    b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.MatchPlayerData", b =>
@@ -660,7 +663,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("MatchPlayersData", (string)null);
+                    b.ToTable("MatchPlayersData");
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.OwnedCard", b =>
@@ -683,7 +686,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("OwnedCards", (string)null);
+                    b.ToTable("OwnedCards");
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.PlayableCard", b =>
@@ -727,7 +730,7 @@ namespace Models.Migrations
 
                     b.HasIndex("MatchPlayerDataId3");
 
-                    b.ToTable("PlayableCard", (string)null);
+                    b.ToTable("PlayableCard");
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.Player", b =>
@@ -750,7 +753,7 @@ namespace Models.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Players", (string)null);
+                    b.ToTable("Players");
 
                     b.HasData(
                         new

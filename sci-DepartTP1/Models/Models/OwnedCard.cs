@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Models.Interfaces;
+using Models.Models;
 using Super_Cartes_Infinies.Models;
 using System;
 using System.Collections.Generic;
@@ -16,5 +18,8 @@ namespace Super_Cartes_Infinies.Models
         [JsonIgnore]
         public virtual Player Player { get; set; }
         public virtual Card Card { get; set; }
+
+        [ValidateNever]
+        public virtual List<OwnedCardDeck> OwnedCardDecks { get; set; }
     }
 }

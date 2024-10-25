@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Models.Interfaces;
+using Models.Models;
 
 namespace Super_Cartes_Infinies.Models
 {
+    public enum Rarity { Commune, Rare, Épique, Légendaire}
     public class Card:IModel
 	{
 		public Card() { }
@@ -20,6 +23,11 @@ namespace Super_Cartes_Infinies.Models
         public int Cost { get; set; }
         [Display(Name = "Image")]
         public string ImageUrl { get; set; } = "";
+
+        public Rarity Rarity { get; set; }
+
+        [ValidateNever]
+        public virtual List<CardPower>? CardPowers { get; set; }
     }
 }
 

@@ -15,5 +15,9 @@ namespace Models.Models
         public int NbCardsToDraw { get; set; }
         [Display(Name = "Quantité de mana à recevoir")]
         public int NbManaToReceive { get; set; }
+
+        public int NbMaxDeck { get; set; }
+
+        public int NbMaxCard { get; set; }
     }
 }
