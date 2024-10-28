@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Models.Models;
 using Super_Cartes_Infinies.Models;
 
 namespace Tests.Services
@@ -12,6 +13,7 @@ namespace Tests.Services
         protected Match _match;
         protected Card _cardA, _cardB;
         protected PlayableCard _playableCardA, _playableCardB;
+        protected Power _powerHeal, _powerThorn, _powerFStrike;
 
         public BaseTests()
         {
@@ -19,6 +21,8 @@ namespace Tests.Services
 
         protected void Init()
         {
+            List<CardPower> cardP = new List<CardPower>();
+
             Player currentPlayer = new Player()
             {
                 UserId = "1"
@@ -40,6 +44,30 @@ namespace Tests.Services
                 Player = opposingPlayer,
                 Mana = 0
             };
+
+            _powerFStrike = new Power()
+            {
+                Id = 1,
+            };
+
+            _powerHeal = new Power()
+            {
+                Id = 2,
+            };
+
+            _powerThorn = new Power()
+            {
+                Id = 3,
+            };
+
+            CardPower cardPower = new CardPower()
+            {
+                Id = 1,
+                Card = _cardB,
+                PowerId = _powerHeal.Id,
+                Value = 3
+            };
+            cardP.Add(cardPower);
 
             // Le match n'est pas utilisé par ce test, on peut simplement en créer un sans initializer les données
             _match = new Match
@@ -63,7 +91,8 @@ namespace Tests.Services
                 Id = 43,
                 Attack = 1,
                 Health = 5,
-                Cost = 1
+                Cost = 1,
+                CardPowers = cardP
             };
 
             _playableCardA = new PlayableCard(_cardA)
@@ -74,6 +103,11 @@ namespace Tests.Services
             {
                 Id = 2
             };
+
+           
+
+            
+
         }
 
         protected void AssertBothCardsStillOnBattlefield()
@@ -108,6 +142,8 @@ namespace Tests.Services
             Assert.AreEqual(STARTING_PLAYER_HEALTH, _opposingPlayerData.Health);
             Assert.AreEqual(STARTING_PLAYER_HEALTH, _currentPlayerData.Health);
         }
+
+        
     }
 }
 

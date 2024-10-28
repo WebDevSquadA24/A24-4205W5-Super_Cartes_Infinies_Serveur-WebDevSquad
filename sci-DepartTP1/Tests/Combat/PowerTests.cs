@@ -254,6 +254,33 @@ namespace Tests.Services
             Assert.AreEqual(1, _opposingPlayerData.BattleField.Count);
             Assert.AreEqual(0, _opposingPlayerData.Graveyard.Count);
         }
+        [TestMethod]
+        public void HasPowerFalse()
+        {
+
+            Assert.AreEqual(false, _playableCardB.HasPower(1));
+        }
+
+        [TestMethod]
+        public void HasPowerTrue()
+        {
+
+            Assert.AreEqual(true, _playableCardB.HasPower(2));
+        }
+
+        [TestMethod]
+        public void GetPowerValueOtherPower()
+        {
+
+            Assert.AreEqual(0, _playableCardB.GetPowerValue(1));
+        }
+
+        [TestMethod]
+        public void GetPowerValueGoodPower()
+        {
+
+            Assert.AreEqual(3, _playableCardB.GetPowerValue(2));
+        }
     }
 }
 
