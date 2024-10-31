@@ -10,6 +10,9 @@ namespace Super_Cartes_Infinies.Combat
         {
             Events = new List<MatchEvent>();
 
+            currentPlayerData.CardsPile = currentPlayerData.CardsPile.OrderBy(x => Random.Shared.Next()).ToList();
+
+
             // TODO: Faire piger le nombre de cartes de la configuration (nbCardsToDraw) au DEUX joueurs
             for (int i = 0; i < nbCardsToDraw; i++)
             {

@@ -9,6 +9,7 @@ namespace WebApi.Combat
         public PlayableCard deadCard {  get; set; }
          public CardDeathEvent(MatchPlayerData deadCardPlayerData, int battleFieldId)
         {
+            this.Events = new List<MatchEvent>();
             if (deadCardPlayerData.BattleField.Count >0) 
             {
                 deadCard = deadCardPlayerData.BattleField[battleFieldId];
