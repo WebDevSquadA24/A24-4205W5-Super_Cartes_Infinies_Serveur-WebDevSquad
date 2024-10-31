@@ -14,19 +14,19 @@ namespace WebApi.Combat
             this.Events = new List<MatchEvent>();
 
             myCard = currentPlayerData.BattleField[index - match.nbDead];
-            // Thorns
-            if (myCard.HasPower(2))
-            {
-                int thornValue = myCard.GetPowerValue(2);
-                this.Events.Add(new ThornsEvent(currentPlayerData, opposingPlayerData,match, index, thornValue));
-            }
-
+            
             // Heal
             if (myCard.HasPower(3))
             {
                 int healValue = myCard.GetPowerValue(3);
                 this.Events.Add(new HealEvent(currentPlayerData, healValue));
             }
+
+            // Thorns
+            // Opponent has Thorns
+            
+            
+
 
 
 

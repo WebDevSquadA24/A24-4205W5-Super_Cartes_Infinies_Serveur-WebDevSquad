@@ -11,6 +11,7 @@ namespace Super_Cartes_Infinies.Combat
         // L'évènement lorsqu'un joueur termine son tour
         public PlayerEndTurnEvent(Match match, MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData, int nbManaPerTurn)
         {
+            match.nbDead = 0;
             this.PlayerId = currentPlayerData.PlayerId;
             this.Events = new List<MatchEvent>();
 

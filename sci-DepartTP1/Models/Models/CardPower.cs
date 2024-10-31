@@ -14,5 +14,7 @@ namespace Models.Models
         public int PowerId { get; set; } = 0;
         public virtual Power Power { get; set; }
         public int Value { get; set; }
+
+        
     }
 }

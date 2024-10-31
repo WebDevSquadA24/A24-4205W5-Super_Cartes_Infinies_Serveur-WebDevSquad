@@ -17,7 +17,7 @@ namespace WebApi.Combat
 
             if (opposingPlayerData.BattleField.Count > index)
             {
-                myCard = currentPlayerData.BattleField[index];
+                myCard = currentPlayerData.BattleField[index- match.nbDead];
                 opponentCard = opposingPlayerData.BattleField[index];
                 this.Events.Add(new CardDamageEvent(currentPlayerData, opposingPlayerData, match, index ));
             }

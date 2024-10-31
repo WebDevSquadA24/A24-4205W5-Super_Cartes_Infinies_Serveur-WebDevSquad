@@ -121,6 +121,7 @@ namespace Tests.Services
             CardPower cardPower = new CardPower
             {
                 Power = thornsPower,
+                PowerId = Power.THORNS_ID,
                 Card = _cardB,
                 Value = 1
             };
@@ -152,6 +153,7 @@ namespace Tests.Services
             {
                 Power = thornsPower,
                 Card = _cardB,
+                PowerId = Power.THORNS_ID,
                 // On veut être certain que l'attaquant meurt par Thorns pendant le test
                 Value = _cardA.Health
             };

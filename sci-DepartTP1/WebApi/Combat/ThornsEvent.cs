@@ -11,7 +11,7 @@ namespace WebApi.Combat
             this.Events = new List<MatchEvent>();
             if (currentPlayerData.BattleField.Count > 0 && opposingPlayerData.BattleField.Count > 0)
             {
-                opposingPlayerData.BattleField[index - match.nbDead].Health -= thornValue;
+                currentPlayerData.BattleField[index].Health -= thornValue;
             }
 
 
