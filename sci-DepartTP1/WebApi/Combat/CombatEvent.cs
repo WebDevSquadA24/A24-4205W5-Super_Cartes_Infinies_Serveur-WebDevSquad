@@ -7,11 +7,12 @@ namespace WebApi.Combat
     {
         public override string EventType { get { return "Combat"; } }
 
-
-        public CombatEvent(Match match, MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData, int nbManaPerTurn) 
+        // C'est ici qu'on check si il y a Power
+        public CombatEvent(MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData, Match match) 
         {
-            // C'est ici qu'on verifie si il y a des pouvoirs ou non
-            this.Events.Add(new CardActivationEvent(match, currentPlayerData, opposingPlayerData, nbManaPerTurn));
+            this.Events = new List<MatchEvent>();
+            // Par carte on ajoute cet event
+            this.Events.Add(new CardActivationEvent(currentPlayerData, opposingPlayerData, match));
         }
 
     }

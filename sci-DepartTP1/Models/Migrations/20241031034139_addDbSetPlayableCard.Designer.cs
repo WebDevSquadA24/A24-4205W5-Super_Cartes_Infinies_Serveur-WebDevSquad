@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,9 +12,11 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241031034139_addDbSetPlayableCard")]
+    partial class addDbSetPlayableCard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,15 +157,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "03ee9665-b72c-4d4d-8c08-aa8f32a97a79",
+                            ConcurrencyStamp = "f7ef059e-2d27-4b0f-903f-954f3bd5a3f4",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOgQFFVdbUo2LsG2tdSN7W14pihoepJkEBXNbbb68sJKEWWkA/NUsCK3Ho7GXDsIhA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOqlS+dPJOa9KsxVDGUOQJZpy3KEozegLOQivPlBfje2r9yC9H0otwl9E9KlzME/4A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6a6f64c6-76e6-4e02-905a-e13ff99d6426",
+                            SecurityStamp = "4b64a045-8e13-40b2-b9cb-1f511099cc50",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -170,22 +173,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f3521f51-26cd-4f38-8638-9c960eb63ec8",
+                            ConcurrencyStamp = "1be25e47-4335-4e54-a358-1fd20f2049bb",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0cd4cdf1-663c-47a3-8901-aa01f8b52e8c",
+                            SecurityStamp = "e16f8b16-d7db-4c8e-a432-4622070fbbcc",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "56c84304-f08d-40dd-8349-253b76a06e80",
+                            ConcurrencyStamp = "811a40bd-7de0-4c81-89a1-48b7f4b3d349",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3b40423b-5862-4e9a-bdd8-fc365cd83e52",
+                            SecurityStamp = "aba2d0dc-ece6-4462-be7c-72105665a9b3",
                             TwoFactorEnabled = false
                         });
                 });
@@ -305,7 +308,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PowerId");
 
-                    b.ToTable("CardPowers");
+                    b.ToTable("CardPower");
                 });
 
             modelBuilder.Entity("Models.Models.Deck", b =>
@@ -396,7 +399,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Powers");
+                    b.ToTable("Power");
                 });
 
             modelBuilder.Entity("Models.Models.StarterCard", b =>
