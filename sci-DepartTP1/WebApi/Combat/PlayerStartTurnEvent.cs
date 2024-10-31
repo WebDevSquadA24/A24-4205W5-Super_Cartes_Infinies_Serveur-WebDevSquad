@@ -1,4 +1,5 @@
 ﻿using Super_Cartes_Infinies.Models;
+using System;
 
 namespace Super_Cartes_Infinies.Combat
 {
@@ -11,6 +12,8 @@ namespace Super_Cartes_Infinies.Combat
         {
             this.PlayerId = playerData.PlayerId;
             this.Events = new List<MatchEvent>();
+
+            playerData.CardsPile = playerData.CardsPile.OrderBy(x => Random.Shared.Next()).ToList();
 
             // TODO: Faire piger UNE carte (celle qui est pigé à chaque début de tour)
             // TODO: Faire gagner le Mana selon la configuration
