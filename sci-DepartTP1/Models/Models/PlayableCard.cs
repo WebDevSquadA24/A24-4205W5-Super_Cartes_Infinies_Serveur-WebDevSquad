@@ -25,6 +25,11 @@ namespace Super_Cartes_Infinies.Models
         {
 			// Return true if the Card has that power
 			bool hasPower = false;
+			if(Card.CardPowers == null)
+			{
+				return false;
+			}
+
 			if (Card.CardPowers!.Select(cp => cp.PowerId).Contains(powerId)) 
 				hasPower = true;
 

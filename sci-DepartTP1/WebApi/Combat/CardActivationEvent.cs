@@ -14,21 +14,21 @@ namespace WebApi.Combat
             this.Events = new List<MatchEvent>();
 
             myCard = currentPlayerData.BattleField[index - match.nbDead];
-            //// Thorns
-            //if (myCard.HasPower(2))
-            //{
-            //    this.Events.Add(new ThornsEvent());
-            //}
+            // Thorns
+            if (myCard.HasPower(2))
+            {
+                this.Events.Add(new ThornsEvent());
+            }
 
-            //// Heal
-            //if (myCard.HasPower(3))
-            //{
-            //    this.Events.Add(new HealEvent());
-            //}
+            // Heal
+            if (myCard.HasPower(3))
+            {
+                this.Events.Add(new HealEvent());
+            }
 
 
-            
-             this.Events.Add(new AttackEvent(currentPlayerData, opposingPlayerData, match, index));
+
+            this.Events.Add(new AttackEvent(currentPlayerData, opposingPlayerData, match, index));
 
             
 

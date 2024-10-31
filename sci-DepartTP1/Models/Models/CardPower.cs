@@ -11,7 +11,7 @@ namespace Models.Models
     {
         public int Id { get; set; }
         public virtual Card Card { get; set; }
-        public int PowerId { get; set; }
+        public int PowerId { get; set; } = 0;
         public virtual Power Power { get; set; }
         public int Value { get; set; }
     }
