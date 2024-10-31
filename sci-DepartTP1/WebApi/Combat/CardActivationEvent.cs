@@ -17,13 +17,15 @@ namespace WebApi.Combat
             // Thorns
             if (myCard.HasPower(2))
             {
-                this.Events.Add(new ThornsEvent());
+                int thornValue = myCard.GetPowerValue(2);
+                this.Events.Add(new ThornsEvent(currentPlayerData, opposingPlayerData,match, index, thornValue));
             }
 
             // Heal
             if (myCard.HasPower(3))
             {
-                this.Events.Add(new HealEvent());
+                int healValue = myCard.GetPowerValue(3);
+                this.Events.Add(new HealEvent(currentPlayerData, healValue));
             }
 
 

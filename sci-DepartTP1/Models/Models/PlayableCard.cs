@@ -14,11 +14,13 @@ namespace Super_Cartes_Infinies.Models
 			Card = c;
 			Health = c.Health;
 			Attack = c.Attack;
+			MaxHealth = c.Health;
 		}
 
 		public int Id { get; set; }
 		public virtual Card Card { get; set; }
 		public int Health { get; set; }
+		public int MaxHealth { get; set; }
 		public int Attack { get; set; }
 
         public bool HasPower(int powerId)
