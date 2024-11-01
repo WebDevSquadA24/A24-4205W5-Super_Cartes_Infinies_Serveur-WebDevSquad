@@ -25,9 +25,6 @@ namespace Super_Cartes_Infinies.Models
 
         public bool IsMatchCompleted { get; set; } = false;
 
-        public int nbDead { get; set; } = 0;
-
-
         // Ici on garde simplement un copie des UserIds et non une véritable référence vers les IdentityUser
         // C'est simplement pour réduire la complexité du modèle de données EntitfyFramework
         // Lorsque les relations deviennent plus complexes, on doit éventuellement utilisé Fluent API.

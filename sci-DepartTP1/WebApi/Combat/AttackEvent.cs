@@ -47,7 +47,7 @@ namespace WebApi.Combat
             }
             else
             {
-                this.Events.Add(new PlayerDamageEvent(opposingPlayerData, currentPlayerData, currentPlayerData.BattleField[index - match.nbDead], match));
+                this.Events.Add(new PlayerDamageEvent(opposingPlayerData, currentPlayerData, currentPlayerData.BattleField[index], match));
             }
 
                 
