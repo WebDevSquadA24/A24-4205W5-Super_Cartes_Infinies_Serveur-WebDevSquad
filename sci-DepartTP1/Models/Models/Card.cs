@@ -8,13 +8,15 @@ namespace Super_Cartes_Infinies.Models
 {
     public enum Rarity { Commune, Rare, Épique, Légendaire}
     public class Card:IModel
-	{
-		public Card() { }
+    {
+        public Card() {
+            Rarity = Rarity.Commune;
+        }
 
-		public int Id { get; set; }
+        public int Id { get; set; }
 
-		[Display(Name = "Nom")]
-		public string Name { get; set; } = "";
+        [Display(Name = "Nom")]
+        public string Name { get; set; } = "";
         [Display(Name = "Attaque")]
         public int Attack { get; set; }
         [Display(Name = "Santé")]

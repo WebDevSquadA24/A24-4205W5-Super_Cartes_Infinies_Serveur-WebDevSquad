@@ -27,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Card.ImageUrl)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Card.Rarity)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -47,6 +50,9 @@
             </td>
             <td>
                 <img src="@item.Card.ImageUrl" alt="@item.Card.ImageUrl" style="width: 300px; height: 200px" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Card.Rarity)
             </td>
             <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
