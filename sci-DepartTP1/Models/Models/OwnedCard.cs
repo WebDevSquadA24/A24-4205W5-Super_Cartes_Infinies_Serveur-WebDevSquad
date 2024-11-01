@@ -20,6 +20,6 @@ namespace Super_Cartes_Infinies.Models
         public virtual Card Card { get; set; }
 
         [ValidateNever]
-        public virtual List<OwnedCardDeck> OwnedCardDecks { get; set; }
+        public virtual List<Deck> Decks { get; set; } = [];
     }
 }
