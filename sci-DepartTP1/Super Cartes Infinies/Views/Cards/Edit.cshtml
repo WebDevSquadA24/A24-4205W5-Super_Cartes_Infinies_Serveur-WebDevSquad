@@ -38,6 +38,14 @@
                 <input asp-for="ImageUrl" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
+            @* SelectList *@
+            <div class="form-group">
+                <label for="powers">Select Powers</label>
+                <select asp-for="CardPowers" asp-items="ViewBag.Powers"  class="form-control"> @* multiple="multiple" *@
+                </select>
+                <span asp-validation-for="CardPowers" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Enregistrer" class="btn btn-primary" />
             </div>

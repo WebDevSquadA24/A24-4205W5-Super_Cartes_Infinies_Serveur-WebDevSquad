@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
+
 
 namespace Super_Cartes_Infinies.Controllers
 {
@@ -57,11 +59,16 @@ namespace Super_Cartes_Infinies.Controllers
                 return NotFound();
             }
 
-            var card = await _context.Cards.FindAsync(id);
+            var card = await _context.Cards.Include(c => c.CardPowers).ThenInclude(cp => cp.Power).FirstAsync(c => c.Id == id);
             if (card == null)
             {
                 return NotFound();
             }
+
+            List<Power> powers = await _context.Powers.ToListAsync();
+            ViewBag.Powers = new SelectList(powers, "Id", "Name");
+
+            //List<CardPower>  
             return View(card);
         }
 
@@ -97,6 +104,9 @@ namespace Super_Cartes_Infinies.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            var cardPowers = await _context.Powers.ToListAsync();
+            ViewBag.CardPowers = new SelectList(cardPowers, "Id", "Name", card.CardPowers);
             return View(card);
         }
 

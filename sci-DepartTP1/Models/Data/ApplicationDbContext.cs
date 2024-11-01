@@ -23,6 +23,7 @@ public class ApplicationDbContext : IdentityDbContext
 
         builder.Entity<IdentityUser>().HasData(Seed.SeedUsers());
         builder.Entity<IdentityRole>().HasData(Seed.SeedRoles());
+
         builder.Entity<IdentityUserRole<string>>().HasData(Seed.SeedUserRoles());
 
         builder.Entity<IdentityUser>().HasData(Seed.SeedTestUsers());
@@ -30,6 +31,9 @@ public class ApplicationDbContext : IdentityDbContext
 
         builder.Entity<StarterCard>().HasData(Seed.SeedStarterCards());
         builder.Entity<GameConfig>().HasData(Seed.SeedGameConfig());
+
+        builder.Entity<Power>().HasData(Seed.SeedPowers());
+        //builder.Entity<CardPower>().HasData(Seed.SeedCardPowers());
 
         // Lorsque le modèle de données se complexifient, il faut éventuellement utiliser Fluent API
         // https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/fluent/types-and-properties
@@ -61,6 +65,6 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<OwnedCard> OwnedCards { get; set; } = default!;
 
-    public DbSet<Card> Powers { get; set; } = default!;
+    public DbSet<Power> Powers { get; set; } = default!;
 }
 
