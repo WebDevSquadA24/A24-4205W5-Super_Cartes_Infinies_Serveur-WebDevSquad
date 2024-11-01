@@ -21,14 +21,14 @@ namespace WebApi.Combat
             // Heal
             if (myCard.HasPower(Power.HEAL_ID))
             {
-                int healValue = myCard.GetPowerValue(3);
+                int healValue = myCard.GetPowerValue(Power.HEAL_ID);
                 this.Events.Add(new HealEvent(currentPlayerData, healValue));
             }
 
             // Thorns
             // Opponent has Thorns
-
             
+
 
 
 

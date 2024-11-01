@@ -14,6 +14,8 @@ namespace WebApi.Combat
         public AttackEvent(MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData, Match match, int index)
         {
             this.Events = new List<MatchEvent>();
+           
+
             
 
             if (opposingPlayerData.BattleField.Count > index)
@@ -21,16 +23,26 @@ namespace WebApi.Combat
                 myCard = currentPlayerData.BattleField[index];
                 opponentCard = opposingPlayerData.BattleField[index];
 
-                if (myCard.HasPower(Power.FIRST_STRIKE_ID))
+                if (opponentCard.HasPower(Power.THORNS_ID))
                 {
-                    this.Events.Add(new FirstStrikeEvent(currentPlayerData, opposingPlayerData, match, index));
-
+                    int thornValue = opponentCard.GetPowerValue(Power.THORNS_ID);
+                    this.Events.Add(new ThornsEvent(currentPlayerData, opposingPlayerData, match, index, thornValue));
                 }
 
-                if (!(opponentCard.Health <= 0))
+                if (myCard.Health > 0)
                 {
-                    this.Events.Add(new CardDamageEvent(currentPlayerData, opposingPlayerData, match, index));
 
+                    if (myCard.HasPower(Power.FIRST_STRIKE_ID))
+                    {
+                        this.Events.Add(new FirstStrikeEvent(currentPlayerData, opposingPlayerData, match, index));
+
+                    }
+
+                    if (!(opponentCard.Health <= 0))
+                    {
+                        this.Events.Add(new CardDamageEvent(currentPlayerData, opposingPlayerData, match, index));
+
+                    }
                 }
             }
             else
