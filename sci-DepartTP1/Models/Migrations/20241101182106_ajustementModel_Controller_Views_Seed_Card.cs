@@ -5,7 +5,7 @@
 namespace Models.Migrations
 {
     /// <inheritdoc />
-    public partial class ajustementModelEtSeedCard : Migration
+    public partial class ajustementModel_Controller_Views_Seed_Card : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,21 +15,21 @@ namespace Models.Migrations
                 keyColumn: "Id",
                 keyValue: "11111111-1111-1111-1111-111111111111",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "709036c0-d910-488c-9b53-aa61eb14f336", "AQAAAAIAAYagAAAAEPZUZilJI4OsIKFSJG6qaFumURLvcoJAF919xDAAerZ+n+Tl1lOCNV5u9yQ4ATKZbw==", "531f9815-6fe4-4f5f-91f2-a12e394f2439" });
+                values: new object[] { "e165fffd-a888-4802-9ff9-5a900ae5f717", "AQAAAAIAAYagAAAAEPfPGcDwZDZ56UO/oxNMvKnGWRF/68wksKdDO02LIXzeLlVlp8kDJ8vs0UyfmHaODA==", "77011a50-1e27-4090-94be-dbb2f0771feb" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "User1Id",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "096714fb-6d99-4668-9fc8-d5907cd2f56c", "24ebd8eb-ad33-419e-9dc3-5410074a1d96" });
+                values: new object[] { "6c8edf53-5366-4224-861d-eaca649da34d", "cd0b9bb4-8240-434a-b69f-6660d54d437a" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "User2Id",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "caa2caaa-6ff1-438b-96ed-ddf20365241d", "abd18082-01ba-42cb-bb69-74ec36c1c4a2" });
+                values: new object[] { "b6f38f16-d95d-4795-8cda-5478c8943fbd", "ede08510-5143-4236-a997-7bdea4fac7f8" });
 
             migrationBuilder.UpdateData(
                 table: "Cards",

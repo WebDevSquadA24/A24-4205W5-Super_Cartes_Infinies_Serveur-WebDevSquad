@@ -154,15 +154,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "709036c0-d910-488c-9b53-aa61eb14f336",
+                            ConcurrencyStamp = "e165fffd-a888-4802-9ff9-5a900ae5f717",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPZUZilJI4OsIKFSJG6qaFumURLvcoJAF919xDAAerZ+n+Tl1lOCNV5u9yQ4ATKZbw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPfPGcDwZDZ56UO/oxNMvKnGWRF/68wksKdDO02LIXzeLlVlp8kDJ8vs0UyfmHaODA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "531f9815-6fe4-4f5f-91f2-a12e394f2439",
+                            SecurityStamp = "77011a50-1e27-4090-94be-dbb2f0771feb",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -170,22 +170,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "096714fb-6d99-4668-9fc8-d5907cd2f56c",
+                            ConcurrencyStamp = "6c8edf53-5366-4224-861d-eaca649da34d",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "24ebd8eb-ad33-419e-9dc3-5410074a1d96",
+                            SecurityStamp = "cd0b9bb4-8240-434a-b69f-6660d54d437a",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "caa2caaa-6ff1-438b-96ed-ddf20365241d",
+                            ConcurrencyStamp = "b6f38f16-d95d-4795-8cda-5478c8943fbd",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "abd18082-01ba-42cb-bb69-74ec36c1c4a2",
+                            SecurityStamp = "ede08510-5143-4236-a997-7bdea4fac7f8",
                             TwoFactorEnabled = false
                         });
                 });

@@ -25,7 +25,7 @@ namespace Super_Cartes_Infinies.Models
         public int Cost { get; set; }
         [Display(Name = "Image")]
         public string ImageUrl { get; set; } = "";
-
+        [Display(Name = "Rareté de la carte")]
         public Rarity Rarity { get; set; }
 
         [ValidateNever]
