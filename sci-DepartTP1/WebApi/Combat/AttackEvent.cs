@@ -1,4 +1,5 @@
-﻿using Super_Cartes_Infinies.Combat;
+﻿using Models.Models;
+using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Models;
 namespace WebApi.Combat
 {
@@ -17,9 +18,20 @@ namespace WebApi.Combat
 
             if (opposingPlayerData.BattleField.Count > index)
             {
-                myCard = currentPlayerData.BattleField[index- match.nbDead];
+                myCard = currentPlayerData.BattleField[index];
                 opponentCard = opposingPlayerData.BattleField[index];
-                this.Events.Add(new CardDamageEvent(currentPlayerData, opposingPlayerData, match, index ));
+
+                if (myCard.HasPower(Power.FIRST_STRIKE_ID))
+                {
+                    this.Events.Add(new FirstStrikeEvent(currentPlayerData, opposingPlayerData, match, index));
+
+                }
+
+                if (!(opponentCard.Health <= 0))
+                {
+                    this.Events.Add(new CardDamageEvent(currentPlayerData, opposingPlayerData, match, index));
+
+                }
             }
             else
             {

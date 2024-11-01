@@ -44,7 +44,7 @@ namespace Tests.Services
                 Id = 3,
             };
 
-            CardPower cardPower = new CardPower()
+            CardPower cardPowerTest = new CardPower()
             {
                 Id = 1,
                 Card = _cardTest,
@@ -52,7 +52,7 @@ namespace Tests.Services
                 Value = 3
             };
 
-            cardP.Add(cardPower);
+            cardP.Add(cardPowerTest);
 
             _cardTest = new Card
             {

@@ -1,4 +1,5 @@
-﻿using Super_Cartes_Infinies.Combat;
+﻿using Models.Models;
+using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Models;
 
 namespace WebApi.Combat
@@ -13,10 +14,12 @@ namespace WebApi.Combat
         {
             this.Events = new List<MatchEvent>();
 
-            myCard = currentPlayerData.BattleField[index - match.nbDead];
+            myCard = currentPlayerData.BattleField[index];
+
+           
             
             // Heal
-            if (myCard.HasPower(3))
+            if (myCard.HasPower(Power.HEAL_ID))
             {
                 int healValue = myCard.GetPowerValue(3);
                 this.Events.Add(new HealEvent(currentPlayerData, healValue));
@@ -24,7 +27,7 @@ namespace WebApi.Combat
 
             // Thorns
             // Opponent has Thorns
-            
+
             
 
 

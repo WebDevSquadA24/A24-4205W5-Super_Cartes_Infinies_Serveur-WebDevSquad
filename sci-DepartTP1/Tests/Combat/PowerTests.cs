@@ -27,6 +27,7 @@ namespace Tests.Services
 
             CardPower cardPower = new CardPower
             {
+                PowerId = Power.FIRST_STRIKE_ID,
                 Power = firstStrikePower,
                 Card = _cardA
             };
