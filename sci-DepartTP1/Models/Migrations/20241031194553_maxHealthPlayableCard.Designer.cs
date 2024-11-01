@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,9 +12,11 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241031194553_maxHealthPlayableCard")]
+    partial class maxHealthPlayableCard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,15 +157,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0d61a38b-c643-4cfa-ac46-736cc4c08645",
+                            ConcurrencyStamp = "8e967845-c734-4a50-a226-962345b6ec3b",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECML41+vdSBCYM5vl4ErqfnceoAaw1iq66i5DjyudewMymrqPyu6aVSDfI59uNIMcg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEN9cgeE7W3nreWVDR/9iw0SojKfpgoUBuEb50vdfwIEXRvwbJkHHPD1TEnL5P1EvJg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f4e65b1a-ec9d-43b5-b734-de736262706e",
+                            SecurityStamp = "33930d50-cb20-440a-b49f-2131e10d5bf9",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -170,22 +173,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f697683a-d211-41ee-ac5b-1706c5a47ac6",
+                            ConcurrencyStamp = "57376087-1851-49bc-85d0-9042f523a4db",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c6e5f55d-9dbe-46ca-bb69-b1b8eb9373e3",
+                            SecurityStamp = "04d3fd3b-6b16-4d8c-9f20-2585909fd34a",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bf29491e-34bb-4cc6-939f-28ac7ef978b9",
+                            ConcurrencyStamp = "e560c002-750a-4095-8822-b0c96ca5dde0",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4157d056-d3fb-4922-a7a7-dbd2f2401268",
+                            SecurityStamp = "bde73245-dc9a-4774-93ff-4692f23aec77",
                             TwoFactorEnabled = false
                         });
                 });
@@ -629,6 +632,9 @@ namespace Models.Migrations
 
                     b.Property<string>("WinnerUserId")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("nbDead")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

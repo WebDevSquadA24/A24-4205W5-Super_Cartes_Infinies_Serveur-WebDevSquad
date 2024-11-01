@@ -27,6 +27,7 @@ namespace Tests.Services
 
             CardPower cardPower = new CardPower
             {
+                PowerId = Power.FIRST_STRIKE_ID,
                 Power = firstStrikePower,
                 Card = _cardA
             };
@@ -121,6 +122,7 @@ namespace Tests.Services
             CardPower cardPower = new CardPower
             {
                 Power = thornsPower,
+                PowerId = Power.THORNS_ID,
                 Card = _cardB,
                 Value = 1
             };
@@ -152,6 +154,7 @@ namespace Tests.Services
             {
                 Power = thornsPower,
                 Card = _cardB,
+                PowerId = Power.THORNS_ID,
                 // On veut être certain que l'attaquant meurt par Thorns pendant le test
                 Value = _cardA.Health
             };
@@ -213,6 +216,7 @@ namespace Tests.Services
             // On donne le pouvoir Heal à l'attaquant
             CardPower cardPower = new CardPower
             {
+                PowerId = Power.HEAL_ID,
                 Power = healPower,
                 Card = _cardB,
                 Value = 3
@@ -258,28 +262,28 @@ namespace Tests.Services
         public void HasPowerFalse()
         {
 
-            Assert.AreEqual(false, _playableCardB.HasPower(1));
+            Assert.AreEqual(false, _playableCardTest.HasPower(1));
         }
 
         [TestMethod]
         public void HasPowerTrue()
         {
 
-            Assert.AreEqual(true, _playableCardB.HasPower(2));
+            Assert.AreEqual(true, _playableCardTest.HasPower(2));
         }
 
         [TestMethod]
         public void GetPowerValueOtherPower()
         {
 
-            Assert.AreEqual(0, _playableCardB.GetPowerValue(1));
+            Assert.AreEqual(0, _playableCardTest.GetPowerValue(1));
         }
 
         [TestMethod]
         public void GetPowerValueGoodPower()
         {
 
-            Assert.AreEqual(3, _playableCardB.GetPowerValue(2));
+            Assert.AreEqual(3, _playableCardTest.GetPowerValue(2));
         }
     }
 }

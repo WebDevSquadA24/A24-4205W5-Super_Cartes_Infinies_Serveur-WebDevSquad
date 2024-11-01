@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,9 +12,11 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241031141920_nbDeadMatch")]
+    partial class nbDeadMatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,15 +157,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0d61a38b-c643-4cfa-ac46-736cc4c08645",
+                            ConcurrencyStamp = "3afdc419-a912-4413-8200-70df6d340852",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECML41+vdSBCYM5vl4ErqfnceoAaw1iq66i5DjyudewMymrqPyu6aVSDfI59uNIMcg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIMlJoNpk8YEer43D28uX/bzB1i1YA/t4KTpNTeqbJNcorBO6HFLYvS7EFcBhpbzoQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f4e65b1a-ec9d-43b5-b734-de736262706e",
+                            SecurityStamp = "9d197267-785e-43dc-abf2-e715aebca768",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -170,22 +173,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f697683a-d211-41ee-ac5b-1706c5a47ac6",
+                            ConcurrencyStamp = "7447d6a0-87c2-4762-8f6d-5a99364d7b20",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c6e5f55d-9dbe-46ca-bb69-b1b8eb9373e3",
+                            SecurityStamp = "dc335cce-b1b0-4012-bf9d-177d505b9f06",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bf29491e-34bb-4cc6-939f-28ac7ef978b9",
+                            ConcurrencyStamp = "54b5a125-73cd-4137-8153-fc603c8b3686",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4157d056-d3fb-4922-a7a7-dbd2f2401268",
+                            SecurityStamp = "81b54757-4084-4eab-9f5c-5e927ccad912",
                             TwoFactorEnabled = false
                         });
                 });
@@ -630,6 +633,9 @@ namespace Models.Migrations
                     b.Property<string>("WinnerUserId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("nbDead")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PlayerDataAId");
@@ -713,9 +719,6 @@ namespace Models.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("MatchPlayerDataId3")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaxHealth")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
