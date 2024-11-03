@@ -24,6 +24,21 @@
                 <span asp-validation-for="NbManaToReceive" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="BeginnerMoney" class="control-label"></label>
+                <input asp-for="BeginnerMoney" class="form-control" />
+                <span asp-validation-for="BeginnerMoney" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WinnerMoney" class="control-label"></label>
+                <input asp-for="WinnerMoney" class="form-control" />
+                <span asp-validation-for="WinnerMoney" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoserMoney" class="control-label"></label>
+                <input asp-for="LoserMoney" class="form-control" />
+                <span asp-validation-for="LoserMoney" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Enregistrer" class="btn btn-primary" />
             </div>
         </form>
