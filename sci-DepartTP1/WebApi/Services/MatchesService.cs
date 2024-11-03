@@ -5,7 +5,7 @@ using Super_Cartes_Infinies.Models.Dtos;
 
 namespace Super_Cartes_Infinies.Services
 {
-	public class MatchesService
+    public class MatchesService
     {
         private WaitingUserService _waitingUserService;
         private PlayersService _playersService;
@@ -13,7 +13,7 @@ namespace Super_Cartes_Infinies.Services
         private MatchConfigurationService _matchConfigurationService;
         private ApplicationDbContext _dbContext;
 
-        public MatchesService(ApplicationDbContext context, WaitingUserService waitingUserService, PlayersService playersService, CardsService cardsService, MatchConfigurationService matchConfigurationService)        {
+        public MatchesService(ApplicationDbContext context, WaitingUserService waitingUserService, PlayersService playersService, CardsService cardsService, MatchConfigurationService matchConfigurationService) {
             _dbContext = context;
             _waitingUserService = waitingUserService;
             _playersService = playersService;
@@ -29,7 +29,7 @@ namespace Super_Cartes_Infinies.Services
             // Vérifier si le match n'a pas déjà été démarré (de façon plus générale, retourner un match courrant si le joueur y participe)
             IEnumerable<Match> matches = _dbContext.Matches.Where(m => m.IsMatchCompleted == false && (m.UserAId == userId || m.UserBId == userId));
 
-            if(matches.Count() > 1)
+            if (matches.Count() > 1)
             {
                 throw new Exception("A player should never be playing 2 matches at the same time!");
             }
@@ -43,7 +43,7 @@ namespace Super_Cartes_Infinies.Services
             if (matches.Count() == 1)
             {
                 match = matches.First();
-                if(specificMatchId != null && specificMatchId != match.Id )
+                if (specificMatchId != null && specificMatchId != match.Id)
                 {
                     match = null;
                 }
@@ -54,7 +54,7 @@ namespace Super_Cartes_Infinies.Services
                 }
             }
             // Si on veut rejoindre un match en particulier, on ne se met pas en file
-            else if(specificMatchId == null)
+            else if (specificMatchId == null)
             {
                 UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
 
@@ -73,7 +73,7 @@ namespace Super_Cartes_Infinies.Services
                 }
             }
 
-            if(match != null) {
+            if (match != null) {
                 return new JoiningMatchData
                 {
                     Match = match,
@@ -117,7 +117,7 @@ namespace Super_Cartes_Infinies.Services
             int nbCardsToDraw = _matchConfigurationService.GetNbCardsToDraw();
             int nbManaPerTurn = _matchConfigurationService.GetNbManaPerTurn();
             var startMatchEvent = new StartMatchEvent(match, currentPlayerData, opposingPlayerData, nbCardsToDraw, nbManaPerTurn);
-            
+
             await _dbContext.SaveChangesAsync();
 
             return startMatchEvent;
@@ -193,6 +193,31 @@ namespace Super_Cartes_Infinies.Services
             await _dbContext.SaveChangesAsync();
 
             return surrenderEvent;
+        }
+
+        public async Task AwardMoneyAsync(Player player, bool isVictory)
+        {
+            player.Money += isVictory ? 50 : 10;
+
+            _dbContext.Update(player);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task EndMatchAsync(Match match, string winnerUserId)
+        {
+            match.IsMatchCompleted = true;
+            match.WinnerUserId = winnerUserId;
+
+            Player playerWinner = _playersService.GetPlayerFromUserId(winnerUserId);
+            Player playerLoser = winnerUserId == match.UserAId ? 
+                _playersService.GetPlayerFromUserId(match.UserBId) : 
+                _playersService.GetPlayerFromUserId(match.UserAId);
+
+            await AwardMoneyAsync(playerWinner, isVictory: true);
+            await AwardMoneyAsync(playerLoser, isVictory: false);
+
+            _dbContext.Update(match);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

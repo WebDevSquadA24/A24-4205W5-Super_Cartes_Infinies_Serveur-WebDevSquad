@@ -24,6 +24,7 @@ namespace Super_Cartes_Infinies.Services
                 UserId = user.Id,
                 Name = user.Email!,
                 User = user,
+                Money = 1500,
             };
 
             // TODO: Utilisez le service StartingCardsService pour obtenir les cartes de départ
