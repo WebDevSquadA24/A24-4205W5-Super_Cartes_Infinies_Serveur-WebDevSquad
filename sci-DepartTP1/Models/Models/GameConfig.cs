@@ -24,9 +24,9 @@ namespace Models.Models
         public double BeginnerMoney { get; set; } = 1000;
 
         [Display(Name = "Argent par victoire")]
-        public double WinnerMoney { get; set; } = 50;
+        public double WinnerMoney { get; set; } = 100;
 
         [Display(Name = "Argent par défaite")]
-        public double LoserMoney { get; set; } = 10;
+        public double LoserMoney { get; set; } = 50;
     }
 }

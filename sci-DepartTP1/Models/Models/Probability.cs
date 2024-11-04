@@ -13,5 +13,8 @@ namespace Models.Models
         public double Value { get; set; }
         public Rarity Rarity{ get; set; }
         public int BaseQty { get; set; }
+
+        public int PackId { get; set; }
+        public virtual Pack Pack { get; set; }
     }
 }
