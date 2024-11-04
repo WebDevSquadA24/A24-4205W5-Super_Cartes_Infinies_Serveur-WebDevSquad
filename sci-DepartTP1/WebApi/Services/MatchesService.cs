@@ -196,34 +196,6 @@ namespace Super_Cartes_Infinies.Services
             return surrenderEvent;
         }
 
-
-        public async Task AwardMoneyAsync(Player player, bool isVictory)
-        {
-            var configAwardMoney = await _dbContext.GameConfigs.FirstOrDefaultAsync();
-
-            if (configAwardMoney != null)
-                player.Money += isVictory ? configAwardMoney.WinnerMoney : configAwardMoney.LoserMoney;
-
-            _dbContext.Update(player);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task EndMatchAsync(Match match, string winnerUserId)
-        {
-            match.IsMatchCompleted = true;
-            match.WinnerUserId = winnerUserId;
-
-            Player playerWinner = _playersService.GetPlayerFromUserId(winnerUserId);
-            Player playerLoser = winnerUserId == match.UserAId ? 
-                _playersService.GetPlayerFromUserId(match.UserBId) : 
-                _playersService.GetPlayerFromUserId(match.UserAId);
-
-            await AwardMoneyAsync(playerWinner, isVictory: true);
-            await AwardMoneyAsync(playerLoser, isVictory: false);
-
-            _dbContext.Update(match);
-            await _dbContext.SaveChangesAsync();
-        }
     }
 }
 
