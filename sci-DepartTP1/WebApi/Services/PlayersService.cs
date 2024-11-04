@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
+using WebApi.Services;
 
 namespace Super_Cartes_Infinies.Services
 {
@@ -35,8 +38,17 @@ namespace Super_Cartes_Infinies.Services
                 Card = c,
             }).ToList();
 
+            Deck deck = new Deck()
+            {
+                Id = 0,
+                Name = "Depart",
+                IsCurrent = true,
+                OwnedCards = startingCards,
+            };
+
             _dbContext.Add(p);
             _dbContext.AddRange(startingCards);
+            _dbContext.Add(deck);
             _dbContext.SaveChanges();
 
             return p;

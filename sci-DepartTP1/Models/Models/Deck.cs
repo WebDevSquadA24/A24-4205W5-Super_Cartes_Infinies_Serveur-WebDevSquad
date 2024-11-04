@@ -2,12 +2,15 @@
 using Super_Cartes_Infinies.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Models.Models
 {
+    [Table("Deck")]
     public class Deck
     {
         public int Id { get; set; }
@@ -16,6 +19,7 @@ namespace Models.Models
         public bool IsCurrent { get; set; } = false;
 
         [ValidateNever]
+        [JsonIgnore]
         public virtual List<OwnedCard> OwnedCards { get; set; } = [];
     }
 }

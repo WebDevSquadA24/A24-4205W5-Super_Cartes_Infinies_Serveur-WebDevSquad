@@ -1,4 +1,5 @@
-﻿using Models.Models;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Models.Models;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 using Super_Cartes_Infinies.Services;
@@ -8,17 +9,22 @@ namespace WebApi.Services
     public class DecksService
     {
         private ApplicationDbContext _dbContext;
-        private PlayersService _playersService;
 
-        public DecksService(ApplicationDbContext dbContext, PlayersService playersService)
+        public DecksService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            _playersService = playersService;
         }
 
         public IEnumerable<Deck> GetPlayerDecks(string userId)
         {
-            throw new NotImplementedException();
+            return _dbContext.Decks.Where(d => d.OwnedCards.FirstOrDefault()!.Player.UserId == userId);
+        }
+
+        public IEnumerable<OwnedCard> GetDeckOwnedCards(int deckId)
+        {
+            var deck = _dbContext.Decks.Where(d => d.Id == deckId).Single();
+
+            return deck.OwnedCards;
         }
 
         public Deck GetCurrent(string userId)

@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.Models;
 using Super_Cartes_Infinies.Data;
+using Super_Cartes_Infinies.Models;
+using WebApi.Services;
 
 namespace WebApi.Controllers
 {
@@ -15,17 +19,32 @@ namespace WebApi.Controllers
     public class DecksController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private DecksService _decksService;
 
-        public DecksController(ApplicationDbContext context)
+        public DecksController(ApplicationDbContext context, DecksService decksService)
         {
             _context = context;
+            _decksService = decksService;
         }
 
         // GET: api/Decks
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Deck>>> GetDecks()
         {
-            return await _context.Decks.ToListAsync();
+            return Ok(_decksService.GetPlayerDecks(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
+        }
+
+        [Authorize]
+        [HttpGet("{deckId}")]
+        public async Task<ActionResult<IEnumerable<Card>>> GetDeckCards(int deckId)
+        {
+            var cards = _decksService.GetDeckOwnedCards(deckId);
+
+            if (cards.First().Player.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier)!)
+                return Unauthorized();
+
+            return Ok();
         }
 
         // GET: api/Decks/5
