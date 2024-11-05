@@ -21,5 +21,8 @@ namespace Models.Models
         [ValidateNever]
         [JsonIgnore]
         public virtual List<OwnedCard> OwnedCards { get; set; } = [];
+
+        [JsonIgnore]
+        public virtual Player Player { get; set; }
     }
 }

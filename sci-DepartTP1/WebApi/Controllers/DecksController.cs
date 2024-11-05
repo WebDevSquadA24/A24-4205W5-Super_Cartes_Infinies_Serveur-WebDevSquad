@@ -27,80 +27,28 @@ namespace WebApi.Controllers
             _decksService = decksService;
         }
 
-        // GET: api/Decks
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Deck>>> GetDecks()
+        public ActionResult<IEnumerable<Deck>> GetDecks()
         {
             return Ok(_decksService.GetPlayerDecks(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
         }
 
         [Authorize]
         [HttpGet("{deckId}")]
-        public async Task<ActionResult<IEnumerable<Card>>> GetDeckCards(int deckId)
+        public ActionResult<IEnumerable<Card>> GetDeckCards(int deckId)
         {
-            var cards = _decksService.GetDeckOwnedCards(deckId);
+            var ownedCards = _decksService.GetDeckOwnedCards(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-            if (cards.First().Player.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier)!)
-                return Unauthorized();
-
-            return Ok();
+            return Ok(ownedCards.Select(oc => oc.Card));
         }
 
-        // GET: api/Decks/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Deck>> GetDeck(int id)
+        [HttpPost("{name}")]
+        public ActionResult<Deck> CreateDeck(string name)
         {
-            var deck = await _context.Decks.FindAsync(id);
+            var deck = _decksService.Create(name, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-            if (deck == null)
-            {
-                return NotFound();
-            }
-
-            return deck;
-        }
-
-        // PUT: api/Decks/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDeck(int id, Deck deck)
-        {
-            if (id != deck.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(deck).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DeckExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Decks
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Deck>> PostDeck(Deck deck)
-        {
-            _context.Decks.Add(deck);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetDeck", new { id = deck.Id }, deck);
+            return Ok(deck);
         }
 
         // DELETE: api/Decks/5

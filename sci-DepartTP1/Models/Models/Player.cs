@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Models.Interfaces;
+using Models.Models;
 
 namespace Super_Cartes_Infinies.Models
 {
@@ -18,6 +19,9 @@ namespace Super_Cartes_Infinies.Models
 
         [JsonIgnore]
         public virtual List<OwnedCard> OwnedCards { get; set; }
+
+		[JsonIgnore]
+		public virtual List<Deck> Decks { get; set; }
     }
 }
 

@@ -44,6 +44,7 @@ namespace Super_Cartes_Infinies.Services
                 Name = "Depart",
                 IsCurrent = true,
                 OwnedCards = startingCards,
+                Player = p,
             };
 
             _dbContext.Add(p);
