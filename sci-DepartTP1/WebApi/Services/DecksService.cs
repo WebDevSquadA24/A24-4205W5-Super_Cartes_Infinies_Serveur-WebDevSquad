@@ -64,9 +64,22 @@ namespace WebApi.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public Deck MakeCurrent(int deckId)
+        public async Task<Deck> MakeCurrent(int deckId, string userId)
         {
-            throw new NotImplementedException();
+            var player = _playersService.GetPlayerFromUserId(userId);
+
+            var oldCurrentDeck = player.Decks.Find(d => d.IsCurrent);
+            var newCurrentDeck = player.Decks.Find(d => d.Id == deckId);
+
+            oldCurrentDeck!.IsCurrent = false;
+            newCurrentDeck!.IsCurrent = true;
+
+            _dbContext.Update(oldCurrentDeck);
+            _dbContext.Update(newCurrentDeck);
+
+            await _dbContext.SaveChangesAsync();
+
+            return newCurrentDeck;
         }
 
         public Deck AddCard(int deckId, int ownedCardId)

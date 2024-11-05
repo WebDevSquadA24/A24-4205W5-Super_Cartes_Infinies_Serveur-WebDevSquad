@@ -30,7 +30,8 @@ namespace WebApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Deck>> GetDecks()
         {
-            return Ok(_decksService.GetDecks(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
+            var decks = _decksService.GetDecks(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            return Ok(decks);
         }
 
         [HttpGet("{deckId}")]
@@ -45,18 +46,18 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("{name}")]
-        public async Task<ActionResult<Deck>> CreateDeck(string name)
+        public async Task<ActionResult<Deck>> Create(string name)
         {
-            Deck deck = await _decksService.Create(name, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
+            var deck = await _decksService.Create(name, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             return Ok(deck);
         }
 
         [Authorize]
         [HttpDelete("{deckId}")]
-        public async Task<IActionResult> DeleteDeck(int deckId)
+        public async Task<IActionResult> Delete(int deckId)
         {
             var deck = await _decksService.GetDeck(deckId);
+
             if (deck == null)
             {
                 return NotFound();
@@ -78,9 +79,12 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        private bool DeckExists(int id)
+        [Authorize]
+        [HttpPut("{deckId}")]
+        public async Task<ActionResult<Deck>> MakeCurrent(int deckId)
         {
-            return _context.Decks.Any(e => e.Id == id);
+            var deck = await _decksService.MakeCurrent(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            return Ok(deck);
         }
     }
 }
