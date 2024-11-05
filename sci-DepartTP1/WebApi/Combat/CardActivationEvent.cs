@@ -25,6 +25,12 @@ namespace WebApi.Combat
                 this.Events.Add(new HealEvent(currentPlayerData, healValue));
             }
 
+            // LoveOfJesusChrist
+            if (myCard.HasPower(Power.LoveOfJesusChrist_ID))
+            {
+                this.Events.Add(new LoveOfJesusChristEvent(currentPlayerData));
+            }
+
             // Thorns
             // Opponent has Thorns
             
