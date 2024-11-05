@@ -29,6 +29,7 @@ builder.Services.AddCors(options =>
 });
 
 // Injection de dépendance
+builder.Services.AddScoped<PackService>();
 builder.Services.AddScoped<PlayersService>();
 builder.Services.AddScoped<CardsService>();
 builder.Services.AddSingleton<WaitingUserService>();

@@ -29,6 +29,8 @@ namespace Super_Cartes_Infinies.Combat
             WinningPlayerId = winningPlayerData.PlayerId;
             LosingPlayerId = losingPlayerData.PlayerId;
 
+            AwardRewards();
+
             match.IsMatchCompleted = true;
 
             string userId;

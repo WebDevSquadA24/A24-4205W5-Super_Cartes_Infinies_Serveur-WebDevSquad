@@ -16,9 +16,9 @@ namespace Super_Cartes_Infinies.Services
             _random = new Random();
         }
 
-        public async Task<List<Pack>> GetAvailablePacks()
+        public IEnumerable<Pack> GetAllPacks()
         {
-            return await _dbContext.Packs.ToListAsync();
+            return _dbContext.Packs;
         }
 
         //public async Task<List<Card>> OpenPack (Pack pack)
