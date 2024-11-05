@@ -6,12 +6,8 @@ namespace Super_Cartes_Infinies.Combat
 {
     public class EndMatchEvent : MatchEvent
     {
-
-        private ApplicationDbContext _dbContext;
-
-        public EndMatchEvent(ApplicationDbContext context)
+        public EndMatchEvent()
         {
-            _dbContext = context;
         }
 
         public override string EventType { get { return "EndMatch"; } }
@@ -29,7 +25,11 @@ namespace Super_Cartes_Infinies.Combat
             WinningPlayerId = winningPlayerData.PlayerId;
             LosingPlayerId = losingPlayerData.PlayerId;
 
-            AwardRewards();
+            double winningReward = match.GameConfig.WinnerMoney;
+            double losingReward = match.GameConfig.LoserMoney;
+
+            winningPlayerData.Player.Money += winningReward;
+            losingPlayerData.Player.Money += losingReward;
 
             match.IsMatchCompleted = true;
 
@@ -42,27 +42,5 @@ namespace Super_Cartes_Infinies.Combat
             match.WinnerUserId = userId;
         }
 
-        public void AwardRewards()
-        {
-            var gameConfig = _dbContext.GameConfigs.FirstOrDefault();
-
-            double winningReward = gameConfig.WinnerMoney;
-            double losingReward = gameConfig.LoserMoney;
-
-            var winningPlayer = _dbContext.Players.Find(WinningPlayerId);
-            var losingPlayer = _dbContext.Players.Find(LosingPlayerId);
-
-            if (winningPlayer != null)
-            {
-                winningPlayer.Money += winningReward;
-            }
-
-            if (losingPlayer != null)
-            {
-                losingPlayer.Money += losingReward;
-            }
-
-            _dbContext.SaveChanges();
-        }
     }
 }

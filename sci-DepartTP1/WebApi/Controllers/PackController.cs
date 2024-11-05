@@ -25,5 +25,19 @@ namespace Super_Cartes_Infinies.Controllers
         {
             return Ok(_packService.GetAllPacks());
         }
+
+        [HttpGet("{packId}")]
+        public async Task<ActionResult<IEnumerable<Card>>> GetOpenPack(int packId)
+        {
+            var pack = await _dbContext.Packs.FindAsync(packId);
+
+            if (pack == null)
+            {
+                return NotFound("Pack non trouvé");
+            }
+
+            var cards = await _packService.OpenPack(pack);
+            return Ok(cards);
+        }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Models.Interfaces;
+using Models.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Super_Cartes_Infinies.Models
 {
@@ -36,6 +38,9 @@ namespace Super_Cartes_Infinies.Models
         public string UserBId { get; set; }
         public virtual MatchPlayerData PlayerDataA { get; set; }
         public virtual MatchPlayerData PlayerDataB { get; set; }
+
+        [NotMapped]
+        public GameConfig? GameConfig { get; set; }
     }
 }
 

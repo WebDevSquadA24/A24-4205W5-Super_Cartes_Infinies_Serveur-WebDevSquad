@@ -155,6 +155,7 @@ namespace Super_Cartes_Infinies.Services
             }
 
             int nbManaPerTurn = _matchConfigurationService.GetNbManaPerTurn();
+            match.GameConfig = _dbContext.GameConfigs.FirstOrDefault();
             var playerEndTurnEvent = new PlayerEndTurnEvent(match, currentPlayerData, opposingPlayerData, nbManaPerTurn);
 
             await _dbContext.SaveChangesAsync();
@@ -189,6 +190,7 @@ namespace Super_Cartes_Infinies.Services
                 opposingPlayerData = match.PlayerDataA;
             }
 
+            match.GameConfig = _dbContext.GameConfigs.FirstOrDefault();
             var surrenderEvent = new SurrenderEvent(match, currentPlayerData, opposingPlayerData);
 
             await _dbContext.SaveChangesAsync();
