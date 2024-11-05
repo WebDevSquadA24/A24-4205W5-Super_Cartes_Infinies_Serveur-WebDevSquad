@@ -27,42 +27,53 @@ namespace WebApi.Controllers
             _decksService = decksService;
         }
 
-        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Deck>> GetDecks()
         {
-            return Ok(_decksService.GetPlayerDecks(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
+            return Ok(_decksService.GetDecks(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
         }
 
-        [Authorize]
         [HttpGet("{deckId}")]
-        public ActionResult<IEnumerable<Card>> GetDeckCards(int deckId)
+        public async Task<ActionResult<IEnumerable<Card>>> GetDeckCards(int deckId)
         {
-            var ownedCards = _decksService.GetDeckOwnedCards(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            Deck? deck = await _decksService.GetDeck(deckId);
 
-            return Ok(ownedCards.Select(oc => oc.Card));
+            if (deck == null) 
+                return NotFound();
+
+            return Ok(deck.OwnedCards.Select(oc => oc.Card));
         }
 
         [HttpPost("{name}")]
-        public ActionResult<Deck> CreateDeck(string name)
+        public async Task<ActionResult<Deck>> CreateDeck(string name)
         {
-            var deck = _decksService.Create(name, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            Deck deck = await _decksService.Create(name, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
             return Ok(deck);
         }
 
-        // DELETE: api/Decks/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDeck(int id)
+        [Authorize]
+        [HttpDelete("{deckId}")]
+        public async Task<IActionResult> DeleteDeck(int deckId)
         {
-            var deck = await _context.Decks.FindAsync(id);
+            var deck = await _decksService.GetDeck(deckId);
             if (deck == null)
             {
                 return NotFound();
             }
 
-            _context.Decks.Remove(deck);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _decksService.Delete(deck, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            } 
+            catch (UnauthorizedAccessException e)
+            {
+                return Unauthorized(e.Message);
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
 
             return NoContent();
         }

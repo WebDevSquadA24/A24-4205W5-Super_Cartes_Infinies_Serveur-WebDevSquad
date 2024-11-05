@@ -17,30 +17,25 @@ namespace WebApi.Services
             _playersService = playersService;
         }
 
-        public IEnumerable<Deck> GetPlayerDecks(string userId)
+        public IEnumerable<Deck> GetDecks(string userId)
         {
             var player = _playersService.GetPlayerFromUserId(userId);
             return player.Decks;
-                //_dbContext.Decks.Where(d => d.OwnedCards.FirstOrDefault()!.Player.UserId == userId);
         }
 
-        public IEnumerable<OwnedCard> GetDeckOwnedCards(int deckId, string userId)
+        public async Task<Deck?> GetDeck(int deckId)
         {
-            var player = _playersService.GetPlayerFromUserId(userId);
 
-            var deck = player.Decks.Where(d => d.Id == deckId).Single();
-
-            return deck.OwnedCards;
+            return await _dbContext.Decks.FindAsync(deckId);
         }
 
         public Deck GetCurrent(string userId)
         {
             var player = _playersService.GetPlayerFromUserId(userId);
-
             return player.Decks.Find(d => d.IsCurrent)!;
         }
 
-        public Deck Create(string name, string userId)
+        public async Task<Deck> Create(string name, string userId)
         {
             var player = _playersService.GetPlayerFromUserId(userId);
 
@@ -52,20 +47,21 @@ namespace WebApi.Services
                 Player = player,
             };
 
-            _dbContext.Add(deck);
-            _dbContext.SaveChanges();
+            await _dbContext.AddAsync(deck);
+            await _dbContext.SaveChangesAsync();
 
             return deck;
         }
 
-        public void Delete(int deckId)
+        public async Task Delete(Deck deck, string userId)
         {
-            throw new NotImplementedException();
-        }
+            if (deck.Player.UserId != userId)
+                throw new UnauthorizedAccessException("The player doesn't own the deck");
 
-        public Deck Rename(int deckId, string name)
-        {
-            throw new NotImplementedException();
+            if (deck.IsCurrent) throw new InvalidOperationException("Cannot delete current deck");
+
+            _dbContext.Remove(deck);
+            await _dbContext.SaveChangesAsync();
         }
 
         public Deck MakeCurrent(int deckId)
