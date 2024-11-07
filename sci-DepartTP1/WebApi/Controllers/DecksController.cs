@@ -21,13 +21,11 @@ namespace WebApi.Controllers
     {
         private readonly ApplicationDbContext _context;
         private DecksService _decksService;
-        private CardsService _cardsService;
 
-        public DecksController(ApplicationDbContext context, DecksService decksService, CardsService cardsService)
+        public DecksController(ApplicationDbContext context, DecksService decksService)
         {
             _context = context;
             _decksService = decksService;
-            _cardsService = cardsService;
         }
 
         [HttpGet]
@@ -48,21 +46,11 @@ namespace WebApi.Controllers
             return Ok(deck.OwnedCards.Select(oc => oc.Card));
         }
 
+        [Authorize]
         [HttpGet("{deckId}")]
         public async Task<ActionResult<IEnumerable<Card>>> GetCardsNotInDeck(int deckId)
         {
-            Deck? deck = await _decksService.GetDeck(deckId);
-
-            if (deck == null)
-                return NotFound();
-
-            var playerCard = _cardsService.GetPlayersCards(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var cards = new List<Card>();
-            foreach (var card in playerCard)
-            {
-                if (!deck.OwnedCards.Select(oc => oc.Card).Contains(card))
-                    cards.Add(card);
-            }
+            var cards = await _decksService.GetCardsNotInDeck(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             return Ok(cards);
         }
 

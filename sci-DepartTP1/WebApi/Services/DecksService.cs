@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Models.Models;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 using Super_Cartes_Infinies.Services;
+using System.Security.Claims;
 
 namespace WebApi.Services
 {
@@ -27,6 +29,21 @@ namespace WebApi.Services
         {
 
             return await _dbContext.Decks.FindAsync(deckId);
+        }
+
+        public async Task<IEnumerable<Card>> GetCardsNotInDeck(int deckId, string userId)
+        {
+            var player = _playersService.GetPlayerFromUserId(userId);
+            var playerOwnedCard = player.OwnedCards;
+            var deck = await GetDeck(deckId);
+
+            var cards = new List<Card>();
+            foreach (var ownedCard in playerOwnedCard)
+            {
+                if (!deck!.OwnedCards.Contains(ownedCard))
+                    cards.Add(ownedCard.Card);
+            }
+            return cards;
         }
 
         public Deck GetCurrent(string userId)
@@ -57,11 +74,8 @@ namespace WebApi.Services
         {
             var deck = await GetDeck(deckId);
 
-            if (deck == null)
-                throw new KeyNotFoundException("The deck does not exist");
-
-            if (deck.Player.UserId != userId)
-                throw new UnauthorizedAccessException("The player doesn't own the deck");
+            if (deck!.Player.UserId != userId)
+                throw new UnauthorizedAccessException("The player does not own the deck");
 
             if (deck.IsCurrent) 
                 throw new InvalidOperationException("Cannot delete current deck");
@@ -114,7 +128,7 @@ namespace WebApi.Services
             return deck;
         }
 
-        public Deck removeCard(int deckId, int ownedCardId)
+        public Deck removeCard(int deckId, int CardId)
         {
             throw new NotImplementedException();
         }
