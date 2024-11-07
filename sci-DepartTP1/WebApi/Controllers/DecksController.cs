@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,12 +40,8 @@ namespace WebApi.Controllers
         [HttpGet("{deckId}")]
         public async Task<ActionResult<IEnumerable<Card>>> GetDeckCards(int deckId)
         {
-            Deck? deck = await _decksService.GetDeck(deckId);
-
-            if (deck == null) 
-                return NotFound();
-
-            return Ok(deck.OwnedCards.Select(oc => oc.Card));
+            var deck = await _decksService.GetDeck(deckId);
+            return deck == null ? NotFound() : Ok(deck.OwnedCards.Select(oc => oc.Card));
         }
 
         [Authorize]
@@ -51,7 +49,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<IEnumerable<Card>>> GetCardsNotInDeck(int deckId)
         {
             var cards = await _decksService.GetCardsNotInDeck(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            return Ok(cards);
+            return cards == null ? NotFound() : Ok(cards);
         }
 
         [HttpPost("{name}")]
@@ -68,21 +66,16 @@ namespace WebApi.Controllers
             try
             {
                 await _decksService.Delete(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                return NoContent();
             } 
-            catch (KeyNotFoundException e)
+            catch (UnauthorizedAccessException)
             {
-                return NotFound(e.Message);
+                return Unauthorized("The deck does not belong to the player");
             }
-            catch (UnauthorizedAccessException e)
+            catch (InvalidOperationException)
             {
-                return Unauthorized(e.Message);
+                return BadRequest("Cannot delete current deck");
             }
-            catch (InvalidOperationException e)
-            {
-                return BadRequest(e.Message);
-            }
-
-            return NoContent();
         }
 
         [Authorize]
@@ -90,7 +83,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<Deck>> MakeCurrent(int deckId)
         {
             var deck = await _decksService.MakeCurrent(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            return Ok(deck);
+            return deck == null ? NotFound() : Ok(deck);
         }
 
         [Authorize]
@@ -100,15 +93,34 @@ namespace WebApi.Controllers
             try
             {
                 var deck = await _decksService.AddCard(deckId, cardId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-                return Ok(deck);
+                return deck == null ? NotFound() : Ok(deck);
             }
             catch (UnauthorizedAccessException e)
             {
-                return Unauthorized(e.Message);
+                return Unauthorized("The deck or the card does not belong to the player");
             }
             catch (InvalidOperationException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest("The card is already in the deck");
+            }
+        }
+
+        [Authorize]
+        [HttpPut("{deckId}/{CardId}")]
+        public async Task<ActionResult<Deck>> RemoveCard(int deckId, int cardId)
+        {
+            try
+            {
+                var deck = await _decksService.RemoveCard(deckId, cardId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                return deck == null ? NotFound() : Ok(deck);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                return Unauthorized("The deck or the card does not belong to the player");
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest("The card is already in the deck");
             }
         }
     }
