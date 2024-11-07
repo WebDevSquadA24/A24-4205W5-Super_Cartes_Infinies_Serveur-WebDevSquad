@@ -6,6 +6,8 @@ using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 using Super_Cartes_Infinies.Models.Dtos;
 using Super_Cartes_Infinies.Services;
+using System.Text.RegularExpressions;
+using WebApi.Combat;
 
 namespace Super_Cartes_Infinies.Hubs;
 
@@ -141,6 +143,35 @@ public class MatchHub : Hub
         await Clients.Group(groupName).SendAsync("Surrender", surrenderEvent);
     }
 
-    
+    public async Task PlayCard(JoiningMatchData joiningMatchData, int playableId)
+    {
+
+        string userId = CurentUser.Id;
+
+        MatchPlayerData currentPlayerData;
+        MatchPlayerData opposingPlayerData;
+        Player player = _playerService.GetPlayerFromUserId(userId);
+
+        bool yourTurn = false;
+
+        if (joiningMatchData.Match.PlayerDataA.Player == player)
+        {
+            currentPlayerData = joiningMatchData.Match.PlayerDataA;
+            opposingPlayerData = joiningMatchData.Match.PlayerDataB;
+        }
+        else
+        {
+            currentPlayerData = joiningMatchData.Match.PlayerDataB;
+            opposingPlayerData = joiningMatchData.Match.PlayerDataA;
+        }
+
+        PlayCardEvent playEvent = new PlayCardEvent(currentPlayerData, opposingPlayerData, playableId);
+
+        string groupName = "Match" + joiningMatchData.Match.Id;
+
+        await Clients.Group(groupName).SendAsync("PlayCard", playEvent);
+    }
+
+
 
 }
