@@ -15,21 +15,9 @@ namespace Models.VM
     public class CardVM
     {
         public Card Card { get; set; }
-        public SelectList AvailablePowers { get; set; }
+        public List<SelectListItem>? AvailablePowers { get; set; }
 
-        private int _selectedItemId;
-
-        public int SelectedItemId
-        {
-            get { return _selectedItemId; }
-            set
-            {
-                foreach (var power in AvailablePowers)
-                {
-                    _selectedItemId = int.Parse(power.Value) ;
-                }
-            }
-        }
+        public int SelectedPowerId { get; set; }
         public int PowerValue { get; set; }
 
         

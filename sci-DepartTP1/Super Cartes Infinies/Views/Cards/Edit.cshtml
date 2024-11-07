@@ -39,13 +39,36 @@
                 <span asp-validation-for="Card.ImageUrl" class="text-danger"></span>
             </div>
             @* SelectList *@
+            <label for="powers">Power</label>
             <div class="form-group">
-                <label for="powers">Powers</label>
-                <select asp-for="SelectedItemId" asp-items="@Model.AvailablePowers" class="form-control">
-                    <option selected="false" disabled value="">--Select a Power--</option>
-                </select>
+                <div>
+                    @Html.DropDownListFor(m => m.SelectedPowerId, Model.AvailablePowers, "Aucun")
+                </div>
+                <span asp-validation-for="SelectedPowerId" class="text-danger"></span>
+            </div>
+
+            @* Card's powers *@
+            @if (Model.Card.CardPowers.Count() == 0)
+            {
+                <p> Cette carte ne possède aucun pouvoirs</p>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Card.CardPowers" class="control-label"></label>
+                    <input asp-for="Card.CardPowers" class="form-control" />
+                    <span asp-validation-for="Card.CardPowers" class="text-danger"></span>
+                </div>
+            }
+            
+            @* Value *@
+            <div class="form-group">
+                <label asp-for="PowerValue" class="control-label">Power Value</label>
+                <input asp-for="PowerValue" class="form-control" />
                 <span asp-validation-for="PowerValue" class="text-danger"></span>
             </div>
+
+
 
             <div class="form-group">
                 <input type="submit" value="Enregistrer" class="btn btn-primary" />

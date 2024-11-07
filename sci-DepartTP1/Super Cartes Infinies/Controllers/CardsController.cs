@@ -66,12 +66,17 @@ namespace Super_Cartes_Infinies.Controllers
                 return NotFound();
             }
 
-            List<Power> powers = await _context.Powers.ToListAsync();
-            SelectList availablePowers = new SelectList(powers, "Id", "Name"); // les 4 pouvoirs
 
             CardVM cardVM = new CardVM();
             cardVM.Card = card;
-            cardVM.AvailablePowers = availablePowers;
+
+            var powers = await _context.Powers.ToListAsync();
+            var selectListPowers = powers.Select(item => new SelectListItem
+            {
+                Value = item.Id.ToString(),  // 'Id' is assumed to be the primary key
+                Text = item.Name             // 'Name' is the property displayed in the dropdown
+            }).ToList();
+            cardVM.AvailablePowers = selectListPowers;
 
             return View(cardVM);
         }
@@ -81,11 +86,9 @@ namespace Super_Cartes_Infinies.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,  Card card) /*[Bind("Id,Name,Attack,Health,Cost,ImageUrl")]*/
+        public async Task<IActionResult> Edit(int id, CardVM cardVM) /*[Bind("Id,Name,Attack,Health,Cost,ImageUrl")]*/
         {
-            CardVM cardVM = new CardVM();
-            cardVM.Card = card;
-            if (id != card.Id)
+            if (id != cardVM.Card.Id)
             {
                 return NotFound();
             }
@@ -94,31 +97,40 @@ namespace Super_Cartes_Infinies.Controllers
             {
                 try
                 {
-                    //_context.Update(card);
-                    //await _context.SaveChangesAsync();
+                    
 
                     List<Power> powers = await _context.Powers.ToListAsync();
-                    SelectList availablePowers = new SelectList(powers, "Id", "Name", cardVM.SelectedItemId); // les 4 pouvoirs
+                    List<SelectListItem> selectListPowers = powers.Select(item => new SelectListItem
+                    {
+                        Value = item.Id.ToString(),  // 'Id' is assumed to be the primary key
+                        Text = item.Name             // 'Name' is the property displayed in the dropdown
+                    }).ToList();
+                    cardVM.AvailablePowers = selectListPowers;
 
+                    int selectedValue = cardVM.SelectedPowerId;
 
-                    cardVM.AvailablePowers = availablePowers;
-                    var selectedPower = availablePowers.SelectedValue;
-                    int value = int.Parse(selectedPower.ToString());
-            
+                    // You can now process the selected value (for example, retrieve the selected item)
+                    Power selectedPower = _context.Powers.FirstOrDefault(x => x.Id == selectedValue);
 
                     CardPower cardPower = new CardPower
                     {
-                        CardId = card.Id,
-                        PowerId = value,
+                        Card = cardVM.Card,
+                        CardId = cardVM.Card.Id,
+                        Power = selectedPower,
+                        PowerId = cardVM.SelectedPowerId,
                         Value = cardVM.PowerValue,
-
                     };
+
+                    
                     cardVM.Card.CardPowers.Add(cardPower);
+
+                    _context.Update(cardVM.Card);
+                    await _context.SaveChangesAsync();
 
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CardExists(card.Id))
+                    if (!CardExists(cardVM.Card.Id))
                     {
                         return NotFound();
                     }
