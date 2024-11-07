@@ -53,12 +53,18 @@ namespace WebApi.Services
             return deck;
         }
 
-        public async Task Delete(Deck deck, string userId)
+        public async Task Delete(int deckId, string userId)
         {
+            var deck = await GetDeck(deckId);
+
+            if (deck == null)
+                throw new KeyNotFoundException("The deck does not exist");
+
             if (deck.Player.UserId != userId)
                 throw new UnauthorizedAccessException("The player doesn't own the deck");
 
-            if (deck.IsCurrent) throw new InvalidOperationException("Cannot delete current deck");
+            if (deck.IsCurrent) 
+                throw new InvalidOperationException("Cannot delete current deck");
 
             _dbContext.Remove(deck);
             await _dbContext.SaveChangesAsync();
@@ -82,9 +88,30 @@ namespace WebApi.Services
             return newCurrentDeck;
         }
 
-        public Deck AddCard(int deckId, int ownedCardId)
+        public async Task<Deck> AddCard(int deckId, int cardId, string userId)
         {
-            throw new NotImplementedException();
+            var deck = await GetDeck(deckId);
+            var player = _playersService.GetPlayerFromUserId(userId);
+            var playerCardInstances = player.OwnedCards.Where(c => c.Card.Id == cardId).ToList();
+
+            foreach (var ownedCard in deck!.OwnedCards)
+            {
+                playerCardInstances.Remove(ownedCard);
+            }
+
+            if (playerCardInstances.Count == 0)
+                throw new InvalidOperationException("The card is already in the deck");
+
+            var cardToAdd = playerCardInstances.First();
+
+            if (deck!.Player != player || cardToAdd.Player != player)
+                throw new UnauthorizedAccessException("The deck or the card does not belong to the player");
+
+            deck.OwnedCards.Add(cardToAdd);
+            _dbContext.Update(deck);
+            await _dbContext.SaveChangesAsync();
+
+            return deck;
         }
 
         public Deck removeCard(int deckId, int ownedCardId)
