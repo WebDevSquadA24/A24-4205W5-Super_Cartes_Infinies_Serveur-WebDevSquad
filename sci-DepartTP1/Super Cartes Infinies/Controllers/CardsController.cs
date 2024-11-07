@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models.Models;
+using Models.VM;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 
@@ -66,10 +67,13 @@ namespace Super_Cartes_Infinies.Controllers
             }
 
             List<Power> powers = await _context.Powers.ToListAsync();
-            ViewBag.Powers = new SelectList(powers, "Id", "Name");
+            SelectList availablePowers = new SelectList(powers, "Id", "Name"); // les 4 pouvoirs
 
-            //List<CardPower>  
-            return View(card);
+            CardVM cardVM = new CardVM();
+            cardVM.Card = card;
+            cardVM.AvailablePowers = availablePowers;
+
+            return View(cardVM);
         }
 
         // POST: Cards/Edit/5
@@ -77,8 +81,10 @@ namespace Super_Cartes_Infinies.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Attack,Health,Cost,ImageUrl")] Card card)
+        public async Task<IActionResult> Edit(int id,  Card card) /*[Bind("Id,Name,Attack,Health,Cost,ImageUrl")]*/
         {
+            CardVM cardVM = new CardVM();
+            cardVM.Card = card;
             if (id != card.Id)
             {
                 return NotFound();
@@ -88,8 +94,27 @@ namespace Super_Cartes_Infinies.Controllers
             {
                 try
                 {
-                    _context.Update(card);
-                    await _context.SaveChangesAsync();
+                    //_context.Update(card);
+                    //await _context.SaveChangesAsync();
+
+                    List<Power> powers = await _context.Powers.ToListAsync();
+                    SelectList availablePowers = new SelectList(powers, "Id", "Name", cardVM.SelectedItemId); // les 4 pouvoirs
+
+
+                    cardVM.AvailablePowers = availablePowers;
+                    var selectedPower = availablePowers.SelectedValue;
+                    int value = int.Parse(selectedPower.ToString());
+            
+
+                    CardPower cardPower = new CardPower
+                    {
+                        CardId = card.Id,
+                        PowerId = value,
+                        Value = cardVM.PowerValue,
+
+                    };
+                    cardVM.Card.CardPowers.Add(cardPower);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -105,9 +130,7 @@ namespace Super_Cartes_Infinies.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var cardPowers = await _context.Powers.ToListAsync();
-            ViewBag.CardPowers = new SelectList(cardPowers, "Id", "Name", card.CardPowers);
-            return View(card);
+            return View(cardVM);
         }
 
         // GET: Cards/Delete/5

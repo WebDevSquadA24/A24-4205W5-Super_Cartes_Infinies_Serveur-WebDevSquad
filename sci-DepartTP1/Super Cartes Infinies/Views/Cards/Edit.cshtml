@@ -1,4 +1,4 @@
-﻿@model Super_Cartes_Infinies.Models.Card
+﻿@model Models.VM.CardVM
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,38 +12,39 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Card.Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Card.Name" class="control-label"></label>
+                <input asp-for="Card.Name" class="form-control" />
+                <span asp-validation-for="Card.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Attack" class="control-label"></label>
-                <input asp-for="Attack" class="form-control" />
-                <span asp-validation-for="Attack" class="text-danger"></span>
+                <label asp-for="Card.Attack" class="control-label"></label>
+                <input asp-for="Card.Attack" class="form-control" />
+                <span asp-validation-for="Card.Attack" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Health" class="control-label"></label>
-                <input asp-for="Health" class="form-control" />
-                <span asp-validation-for="Health" class="text-danger"></span>
+                <label asp-for="Card.Health" class="control-label"></label>
+                <input asp-for="Card.Health" class="form-control" />
+                <span asp-validation-for="Card.Health" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cost" class="control-label"></label>
-                <input asp-for="Cost" class="form-control" />
-                <span asp-validation-for="Cost" class="text-danger"></span>
+                <label asp-for="Card.Cost" class="control-label"></label>
+                <input asp-for="Card.Cost" class="form-control" />
+                <span asp-validation-for="Card.Cost" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                <label asp-for="Card.ImageUrl" class="control-label"></label>
+                <input asp-for="Card.ImageUrl" class="form-control" />
+                <span asp-validation-for="Card.ImageUrl" class="text-danger"></span>
             </div>
             @* SelectList *@
             <div class="form-group">
-                <label for="powers">Select Powers</label>
-                <select asp-for="CardPowers" asp-items="ViewBag.Powers"  class="form-control"> @* multiple="multiple" *@
+                <label for="powers">Powers</label>
+                <select asp-for="SelectedItemId" asp-items="@Model.AvailablePowers" class="form-control">
+                    <option selected="false" disabled value="">--Select a Power--</option>
                 </select>
-                <span asp-validation-for="CardPowers" class="text-danger"></span>
+                <span asp-validation-for="PowerValue" class="text-danger"></span>
             </div>
 
             <div class="form-group">
