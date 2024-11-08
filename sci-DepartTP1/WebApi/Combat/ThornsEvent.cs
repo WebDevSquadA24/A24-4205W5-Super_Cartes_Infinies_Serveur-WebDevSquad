@@ -17,9 +17,7 @@ namespace WebApi.Combat
                 myCard.Health -= thornValue;
                 if(currentPlayerData.BattleField[index].Health <= 0)
                 {
-
-                    currentPlayerData.BattleField.Remove(myCard);
-                    currentPlayerData.Graveyard.Add(myCard);
+                    currentPlayerData.RemoveCardFromBattleField(myCard);
 
                 }
             }

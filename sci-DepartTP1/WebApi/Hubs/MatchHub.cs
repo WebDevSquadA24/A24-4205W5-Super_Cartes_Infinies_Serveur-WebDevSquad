@@ -155,18 +155,21 @@ public class MatchHub : Hub
         bool yourTurn = false;
 
 
+
         if (userId == joiningMatchData.Match.UserAId)
         {
             currentPlayerData = joiningMatchData.Match.PlayerDataA;
             opposingPlayerData = joiningMatchData.Match.PlayerDataB;
+            yourTurn = joiningMatchData.Match.IsPlayerATurn;
         }
         else
         {
             currentPlayerData = joiningMatchData.Match.PlayerDataB;
             opposingPlayerData = joiningMatchData.Match.PlayerDataA;
+            yourTurn = !joiningMatchData.Match.IsPlayerATurn;
         }
 
-        PlayCardEvent playEvent = new PlayCardEvent(currentPlayerData, opposingPlayerData, playableId);
+        PlayCardEvent playEvent = new PlayCardEvent(currentPlayerData, opposingPlayerData, playableId, yourTurn);
 
         string groupName = "Match" + joiningMatchData.Match.Id;
 

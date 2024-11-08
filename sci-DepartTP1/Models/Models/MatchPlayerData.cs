@@ -69,8 +69,8 @@ namespace Super_Cartes_Infinies.Models
             // Ajout BattleField
             BattleField.Add(playableCard);
 
-            // On incrémente l'index pour la prochaine carte à attaquer
-            IndexBattleField++;
+            // Mise à jour de l'IndexBattleField
+            IndexBattleField = GetOrderedBattleField().Count();
 
 
         }
@@ -79,12 +79,16 @@ namespace Super_Cartes_Infinies.Models
             // Retirer la carte du BattleField
             // Atention: Il faut mettre les autres cartes du BattleField à jour!
 
+            // Récupération de l'index du playableCard
             int indexDeadCard = playableCard.Index;
 
+            // On enlève du BattleField
             BattleField.Remove(playableCard);
 
+            // Ajout dans Graveyard
             Graveyard.Add(playableCard);
 
+            // Décrémenter l'index du playableCard
             foreach(PlayableCard playable in GetOrderedBattleField())
             {
                 if(playable.Index > indexDeadCard)
@@ -92,6 +96,9 @@ namespace Super_Cartes_Infinies.Models
                     playable.Index--;
                 }
             }
+
+            // Mise à jour de l'IndexBattleField
+            IndexBattleField = GetOrderedBattleField().Count();
         }
 
 

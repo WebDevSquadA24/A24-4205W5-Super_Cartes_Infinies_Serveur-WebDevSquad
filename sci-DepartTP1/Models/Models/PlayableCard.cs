@@ -22,7 +22,7 @@ namespace Super_Cartes_Infinies.Models
 		public int Health { get; set; }
 		public int MaxHealth { get; set; }
 		public int Attack { get; set; }
-        public int Index { get; set; } = 0;
+        public int Index { get; set; }
 
 
         public bool HasPower(int powerId)
