@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models.Models;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 using Super_Cartes_Infinies.Services;
+using System.Security.Claims;
 
 namespace Super_Cartes_Infinies.Controllers
 {
@@ -13,11 +15,13 @@ namespace Super_Cartes_Infinies.Controllers
     {
         private ApplicationDbContext _dbContext;
         private PackService _packService;
+        private PlayersService _playersService;
 
-        public PackController(ApplicationDbContext dbContext, PackService packService)
+        public PackController(ApplicationDbContext dbContext, PackService packService, PlayersService playersService)
         {
             _dbContext = dbContext;
             _packService = packService;
+            _playersService = playersService;
         }
 
         [HttpGet]
@@ -30,12 +34,24 @@ namespace Super_Cartes_Infinies.Controllers
         public async Task<ActionResult<IEnumerable<Card>>> GetOpenPack(int packId)
         {
             var pack = await _dbContext.Packs.FindAsync(packId);
+            var user = _dbContext.Users.Single(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var player = _playersService.GetPlayerFromUserId(user.Id);
 
             if (pack == null)
             {
                 return NotFound("Pack non trouvé");
             }
 
+            if (player.Money < pack.Price)
+            {
+                return BadRequest("Fonds insuffisants");
+            }
+
+            player.Money -= pack.Price;
+
+            await _dbContext.SaveChangesAsync();
+                        
             var cards = await _packService.OpenPack(pack);
             return Ok(cards);
         }
