@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,34 +12,21 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241101153033_correctionMatchNbDead")]
+    partial class correctionMatchNbDead
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DeckOwnedCard", b =>
-                {
-                    b.Property<int>("DecksId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OwnedCardsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DecksId", "OwnedCardsId");
-
-                    b.HasIndex("OwnedCardsId");
-
-                    b.ToTable("DeckOwnedCard");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -169,15 +157,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8c7a36c6-a203-4fd2-af5b-4be145dda61a",
+                            ConcurrencyStamp = "0d61a38b-c643-4cfa-ac46-736cc4c08645",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGpRr6xXIVmroF9uZn02YohzVpNc/YXo3SW62T6LRhRcJ/5dUSOfEvHKfMP6H7yNbw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECML41+vdSBCYM5vl4ErqfnceoAaw1iq66i5DjyudewMymrqPyu6aVSDfI59uNIMcg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ea4d2ab5-39f3-4f13-97b8-b6559f769334",
+                            SecurityStamp = "f4e65b1a-ec9d-43b5-b734-de736262706e",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -185,22 +173,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4b6e7128-72ec-47bb-9edd-339977387ab6",
+                            ConcurrencyStamp = "f697683a-d211-41ee-ac5b-1706c5a47ac6",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a38bf0a3-eda5-4469-ad01-3359d7884e50",
+                            SecurityStamp = "c6e5f55d-9dbe-46ca-bb69-b1b8eb9373e3",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7d84e95a-c89f-46d3-b09e-0b97b1c6271e",
+                            ConcurrencyStamp = "bf29491e-34bb-4cc6-939f-28ac7ef978b9",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7b648ca5-423e-4410-bd54-cad2882d517e",
+                            SecurityStamp = "4157d056-d3fb-4922-a7a7-dbd2f2401268",
                             TwoFactorEnabled = false
                         });
                 });
@@ -338,9 +326,6 @@ namespace Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Deck");
@@ -376,8 +361,8 @@ namespace Models.Migrations
                             Id = 1,
                             NbCardsToDraw = 4,
                             NbManaToReceive = 3,
-                            NbMaxCard = 8,
-                            NbMaxDeck = 5
+                            NbMaxCard = 0,
+                            NbMaxDeck = 0
                         });
                 });
 
@@ -668,9 +653,6 @@ namespace Models.Migrations
                     b.Property<int>("Health")
                         .HasColumnType("int");
 
-                    b.Property<int>("IndexBattleField")
-                        .HasColumnType("int");
-
                     b.Property<int>("Mana")
                         .HasColumnType("int");
 
@@ -722,9 +704,6 @@ namespace Models.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Health")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Index")
                         .HasColumnType("int");
 
                     b.Property<int?>("MatchPlayerDataId")
@@ -792,21 +771,6 @@ namespace Models.Migrations
                             Name = "Test player 2",
                             UserId = "User2Id"
                         });
-                });
-
-            modelBuilder.Entity("DeckOwnedCard", b =>
-                {
-                    b.HasOne("Models.Models.Deck", null)
-                        .WithMany()
-                        .HasForeignKey("DecksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Super_Cartes_Infinies.Models.OwnedCard", null)
-                        .WithMany()
-                        .HasForeignKey("OwnedCardsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -879,15 +843,23 @@ namespace Models.Migrations
                     b.Navigation("Power");
                 });
 
-            modelBuilder.Entity("Models.Models.Deck", b =>
+            modelBuilder.Entity("Models.Models.OwnedCardDeck", b =>
                 {
-                    b.HasOne("Super_Cartes_Infinies.Models.Player", "Player")
-                        .WithMany("Decks")
-                        .HasForeignKey("PlayerId")
+                    b.HasOne("Models.Models.Deck", "Deck")
+                        .WithMany("OwnedCardDecks")
+                        .HasForeignKey("DeckId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Player");
+                    b.HasOne("Super_Cartes_Infinies.Models.OwnedCard", "OwnedCard")
+                        .WithMany("OwnedCardDecks")
+                        .HasForeignKey("OwnedCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deck");
+
+                    b.Navigation("OwnedCard");
                 });
 
             modelBuilder.Entity("Models.Models.StarterCard", b =>
@@ -988,6 +960,11 @@ namespace Models.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Models.Models.Deck", b =>
+                {
+                    b.Navigation("OwnedCardDecks");
+                });
+
             modelBuilder.Entity("Models.Models.Power", b =>
                 {
                     b.Navigation("CardPowers");
@@ -1009,10 +986,13 @@ namespace Models.Migrations
                     b.Navigation("Hand");
                 });
 
+            modelBuilder.Entity("Super_Cartes_Infinies.Models.OwnedCard", b =>
+                {
+                    b.Navigation("OwnedCardDecks");
+                });
+
             modelBuilder.Entity("Super_Cartes_Infinies.Models.Player", b =>
                 {
-                    b.Navigation("Decks");
-
                     b.Navigation("OwnedCards");
                 });
 #pragma warning restore 612, 618

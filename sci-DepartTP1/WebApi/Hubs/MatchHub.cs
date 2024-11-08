@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 using Super_Cartes_Infinies.Models.Dtos;
 using Super_Cartes_Infinies.Services;
+using System.Text.RegularExpressions;
+using WebApi.Combat;
 
 namespace Super_Cartes_Infinies.Hubs;
 
@@ -141,6 +144,18 @@ public class MatchHub : Hub
         await Clients.Group(groupName).SendAsync("Surrender", surrenderEvent);
     }
 
-    
+    public async Task PlayCard(JoiningMatchData joiningMatchData, int playableId)
+    {
+
+        string userId = CurentUser.Id;
+
+        PlayCardEvent playEvent = await _service.PlayCard(userId, joiningMatchData.Match.Id, playableId);
+
+        string groupName = "Match" + joiningMatchData.Match.Id;
+
+        await Clients.Group(groupName).SendAsync("PlayCard", playEvent);
+    }
+
+
 
 }

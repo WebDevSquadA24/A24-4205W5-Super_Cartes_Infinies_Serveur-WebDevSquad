@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,34 +12,21 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241108170544_IndexBattleFieldIndexPlayable")]
+    partial class IndexBattleFieldIndexPlayable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DeckOwnedCard", b =>
-                {
-                    b.Property<int>("DecksId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OwnedCardsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DecksId", "OwnedCardsId");
-
-                    b.HasIndex("OwnedCardsId");
-
-                    b.ToTable("DeckOwnedCard");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -338,9 +326,6 @@ namespace Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Deck");
@@ -376,8 +361,8 @@ namespace Models.Migrations
                             Id = 1,
                             NbCardsToDraw = 4,
                             NbManaToReceive = 3,
-                            NbMaxCard = 8,
-                            NbMaxDeck = 5
+                            NbMaxCard = 0,
+                            NbMaxDeck = 0
                         });
                 });
 
@@ -794,21 +779,6 @@ namespace Models.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DeckOwnedCard", b =>
-                {
-                    b.HasOne("Models.Models.Deck", null)
-                        .WithMany()
-                        .HasForeignKey("DecksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Super_Cartes_Infinies.Models.OwnedCard", null)
-                        .WithMany()
-                        .HasForeignKey("OwnedCardsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -879,15 +849,23 @@ namespace Models.Migrations
                     b.Navigation("Power");
                 });
 
-            modelBuilder.Entity("Models.Models.Deck", b =>
+            modelBuilder.Entity("Models.Models.OwnedCardDeck", b =>
                 {
-                    b.HasOne("Super_Cartes_Infinies.Models.Player", "Player")
-                        .WithMany("Decks")
-                        .HasForeignKey("PlayerId")
+                    b.HasOne("Models.Models.Deck", "Deck")
+                        .WithMany("OwnedCardDecks")
+                        .HasForeignKey("DeckId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Player");
+                    b.HasOne("Super_Cartes_Infinies.Models.OwnedCard", "OwnedCard")
+                        .WithMany("OwnedCardDecks")
+                        .HasForeignKey("OwnedCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deck");
+
+                    b.Navigation("OwnedCard");
                 });
 
             modelBuilder.Entity("Models.Models.StarterCard", b =>
@@ -988,6 +966,11 @@ namespace Models.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Models.Models.Deck", b =>
+                {
+                    b.Navigation("OwnedCardDecks");
+                });
+
             modelBuilder.Entity("Models.Models.Power", b =>
                 {
                     b.Navigation("CardPowers");
@@ -1009,10 +992,13 @@ namespace Models.Migrations
                     b.Navigation("Hand");
                 });
 
+            modelBuilder.Entity("Super_Cartes_Infinies.Models.OwnedCard", b =>
+                {
+                    b.Navigation("OwnedCardDecks");
+                });
+
             modelBuilder.Entity("Super_Cartes_Infinies.Models.Player", b =>
                 {
-                    b.Navigation("Decks");
-
                     b.Navigation("OwnedCards");
                 });
 #pragma warning restore 612, 618
