@@ -13,8 +13,8 @@ namespace WebApi.Combat
             if (deadCardPlayerData.BattleField.Count >0) 
             {
                 deadCard = deadCardPlayerData.BattleField[battleFieldId];
-                deadCardPlayerData.BattleField.RemoveAt(battleFieldId);
-                deadCardPlayerData.Graveyard.Add(deadCard);
+
+                deadCardPlayerData.RemoveCardFromBattleField(deadCard);
             }
         }
     }

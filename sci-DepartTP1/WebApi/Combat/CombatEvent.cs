@@ -13,7 +13,7 @@ namespace WebApi.Combat
         {
             this.Events = new List<MatchEvent>();
             // Par carte on ajoute cet event
-            for(int i= currentPlayerData.BattleField.Count-1 ; i >= 0; i--)
+            for(int i= currentPlayerData.GetOrderedBattleField().Count()-1 ; i >= 0; i--)
             {
                 this.Events.Add(new CardActivationEvent(currentPlayerData, opposingPlayerData, match, i));
 

@@ -19,8 +19,8 @@ namespace WebApi.Combat
             if (myCard.Attack >= opponentCard.Health)
             {
                 opponentCard.Health -= myCard.Attack;
-                opposingPlayerData.BattleField.Remove(opponentCard);
-                opposingPlayerData.Graveyard.Add(opponentCard);
+
+                opposingPlayerData.RemoveCardFromBattleField(opponentCard);
             }
             else
             {
