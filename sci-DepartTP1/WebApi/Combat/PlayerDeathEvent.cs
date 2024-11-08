@@ -7,10 +7,12 @@ namespace WebApi.Combat
         public override string EventType { get { return "PlayerDeath"; } }
         
 
-        public PlayerDeathEvent(MatchPlayerData currentPlayerData, Match match)
+        public PlayerDeathEvent(MatchPlayerData currentPlayerData, Match match, MatchPlayerData losingPlayer)
         {
-            match.IsMatchCompleted = true;
-            match.WinnerUserId = match.UserAId;
+            this.Events = new List<MatchEvent>()
+            {
+                new EndMatchEvent(match, currentPlayerData, losingPlayer)
+            };
         }
     }
 }
