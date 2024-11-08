@@ -110,26 +110,29 @@ namespace Super_Cartes_Infinies.Data
                     Id = Power.FIRST_STRIKE_ID,
                     Name = "First Strike",
                     Description = "permet à une carte d’attaquer en « premier » et de ne pas recevoir de dégât si elle tue la carte de l’adversaire. (Fonctionne uniquement à l’attaque, pas à la défense)",
+                    IconURL = "fas fa-bolt"
                 },
                 new Power
                 {
                     Id = Power.THORNS_ID,
                     Name = "Thorns",
                     Description = "lorsqu’une carte défend, elle inflige X de dégâts AVANT de recevoir des dégâts. Si l’attaquant est tué par ces dégâts, l’attaque s’arrête et le défenseur ne reçoit pas de dégâts.",
+                    IconURL = "fas fa-exclamation"
                 },
                 new Power
                 {
                     Id = Power.HEAL_ID,
                     Name = "Heal",
                     Description = "soigne les cartes alliées de X incluant elle-même AVANT d’attaquer (mais les cartes ne peuvent pas avoir plus de health qu’au départ.)",
+                    IconURL = "fas fa-heartbeat"
                 },
                 new Power
                 {
                     Id = Power.LOVE_OF_JESUS_CHRIST,
                     Name = "Love of Jesus Christ",
-                    Description = "se sacrifie et les cartes alliées prennent aucun dégats pour ce tour)",
+                    Description = "tant que la carte est sur le terrain son joueur gagne de la vie",
+                    IconURL = "fas fa-cross"
                 }
-
 
             };
         }
