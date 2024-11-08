@@ -23,11 +23,12 @@ namespace WebApi.Combat
             CanMoveCard = false;
             YourTurn = yourTurn;
             int maxCarte = 5;
-            PlayerId = currentPlayerData.PlayerId;
 
             // C'est tu ton tour?
             if (yourTurn)
             {
+                PlayerId = currentPlayerData.PlayerId;
+
                 // T'as tu plus que 0 carte dans ta main
                 if (currentPlayerData.Hand.Count > 0)
                 {
@@ -53,6 +54,7 @@ namespace WebApi.Combat
                     }
                 }
             }
+           
         }
     }
 }
