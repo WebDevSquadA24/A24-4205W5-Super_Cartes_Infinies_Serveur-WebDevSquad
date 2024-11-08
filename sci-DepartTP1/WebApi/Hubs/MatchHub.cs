@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
@@ -148,28 +149,7 @@ public class MatchHub : Hub
 
         string userId = CurentUser.Id;
 
-        MatchPlayerData currentPlayerData;
-        MatchPlayerData opposingPlayerData;
-        Player player = _playerService.GetPlayerFromUserId(userId);
-
-        bool yourTurn = false;
-
-
-
-        if (userId == joiningMatchData.Match.UserAId)
-        {
-            currentPlayerData = joiningMatchData.Match.PlayerDataA;
-            opposingPlayerData = joiningMatchData.Match.PlayerDataB;
-            yourTurn = joiningMatchData.Match.IsPlayerATurn;
-        }
-        else
-        {
-            currentPlayerData = joiningMatchData.Match.PlayerDataB;
-            opposingPlayerData = joiningMatchData.Match.PlayerDataA;
-            yourTurn = !joiningMatchData.Match.IsPlayerATurn;
-        }
-
-        PlayCardEvent playEvent = new PlayCardEvent(currentPlayerData, opposingPlayerData, playableId, yourTurn);
+        PlayCardEvent playEvent = await _service.PlayCard(userId, joiningMatchData.Match.Id, playableId);
 
         string groupName = "Match" + joiningMatchData.Match.Id;
 

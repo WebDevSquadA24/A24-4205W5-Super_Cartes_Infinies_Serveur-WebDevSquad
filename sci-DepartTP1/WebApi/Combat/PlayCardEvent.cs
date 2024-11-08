@@ -13,10 +13,15 @@ namespace WebApi.Combat
 
         public bool CanMoveCard { get; set; }
 
+        public int Cost{get;set;}
+
+        public bool YourTurn { get; set; }
+
         // TODO: Ajouter tout ce qui manque
         public PlayCardEvent(MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData, int playableCardId, bool yourTurn)
         {
             CanMoveCard = false;
+            YourTurn = yourTurn;
             int maxCarte = 5;
             PlayerId = currentPlayerData.PlayerId;
 
@@ -28,6 +33,7 @@ namespace WebApi.Combat
                 {
                     PlayableCard playableCard = currentPlayerData.Hand.Where(h => h.Id == playableCardId).First();
                     PlayableCardId = playableCard.Id;
+                    Cost = playableCard.Card.Cost;
 
 
                     //Est-ce que t'as assez de Mana
