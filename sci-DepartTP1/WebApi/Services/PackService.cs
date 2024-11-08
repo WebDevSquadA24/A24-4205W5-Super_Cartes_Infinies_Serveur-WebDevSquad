@@ -33,17 +33,20 @@ namespace Super_Cartes_Infinies.Services
 
             if (playerData.Money < pack.Price)
             {
-                return null;
+                return cards;
             }
 
             playerData.Money -= pack.Price;
+
+            await _dbContext.SaveChangesAsync();
 
             var rarities = GenerateRarities(pack.NbCards, pack.DefaultRarity, pack.Probabilities);
 
             foreach (var rarity in rarities)
             {
                 var card = GetRandomCardByRarity(rarity);
-                cards.Add(card);
+                if (card != null)
+                    cards.Add(card);
             }
             return cards;
         }
@@ -81,7 +84,7 @@ namespace Super_Cartes_Infinies.Services
             double x = _random.NextDouble();
             foreach (var probability in probabilities)
             {
-                if (probability.Value < x)
+                if (probability.Value > x)
                     return probability.Rarity;
                 else
                     x -= probability.Value;
@@ -91,12 +94,8 @@ namespace Super_Cartes_Infinies.Services
 
         private Card GetRandomCardByRarity(Rarity rarity)
         {
-            var cardsByRarity = _dbContext.Cards.Where(c => c.Rarity == rarity).ToList();
-            if (cardsByRarity.Any())
-            {
-                return cardsByRarity[_random.Next(cardsByRarity.Count)];
-            }
-            return null;
+            var card = _dbContext.Cards.Where(c => c.Rarity == rarity).OrderBy(c => Guid.NewGuid()).FirstOrDefault();
+            return card;
         }
     }
 }

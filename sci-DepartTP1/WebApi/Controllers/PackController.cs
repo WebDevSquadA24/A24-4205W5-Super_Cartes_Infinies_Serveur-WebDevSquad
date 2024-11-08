@@ -44,7 +44,6 @@ namespace Super_Cartes_Infinies.Controllers
             }
             
             var cards = await _packService.OpenPack(pack, player);
-            await _dbContext.SaveChangesAsync();
             return Ok(cards);
         }
     }
