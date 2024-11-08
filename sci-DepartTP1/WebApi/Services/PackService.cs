@@ -2,6 +2,7 @@
 using Models.Models;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
+using System.Security.Claims;
 
 namespace Super_Cartes_Infinies.Services
 {
@@ -9,11 +10,14 @@ namespace Super_Cartes_Infinies.Services
     {
         private ApplicationDbContext _dbContext;
         private Random _random;
+        private PlayersService _playersService;
 
-        public PackService (ApplicationDbContext dbContext)
+
+        public PackService (ApplicationDbContext dbContext, PlayersService playersService)
         {
             _dbContext = dbContext;
             _random = new Random();
+            _playersService = playersService;
         }
 
         public IEnumerable<Pack> GetAllPacks()
@@ -21,9 +25,18 @@ namespace Super_Cartes_Infinies.Services
             return _dbContext.Packs;
         }
 
-        public async Task<List<Card>> OpenPack(Pack pack)
+        public async Task<List<Card>> OpenPack(Pack pack, Player player)
         {
             var cards = new List<Card>();
+
+            var playerData = player;
+
+            if (playerData.Money < pack.Price)
+            {
+                return null;
+            }
+
+            playerData.Money -= pack.Price;
 
             var rarities = GenerateRarities(pack.NbCards, pack.DefaultRarity, pack.Probabilities);
 

@@ -286,13 +286,20 @@ namespace Super_Cartes_Infinies.Data
 
             var probabilities = new List<Probability>
             {
-                new Probability { Id = 1, Rarity = Rarity.Commune, Value = 70.0, BaseQty = 3, PackId = 1 },
+                //Basic
+                new Probability { Id = 1, Rarity = Rarity.Commune, Value = 70.0, BaseQty = 0, PackId = 1 },
                 new Probability { Id = 2, Rarity = Rarity.Rare, Value = 30.0, BaseQty = 0, PackId = 1 },
-                new Probability { Id = 3, Rarity = Rarity.Commune, Value = 60.0, BaseQty = 3, PackId = 2 },
+
+                //Normal
+                new Probability { Id = 3, Rarity = Rarity.Commune, Value = 60.0, BaseQty = 0, PackId = 2 },
                 new Probability { Id = 4, Rarity = Rarity.Rare, Value = 30.0, BaseQty = 1, PackId = 2 },
                 new Probability { Id = 5, Rarity = Rarity.Épique, Value = 10.0, BaseQty = 0, PackId = 2 },
-                new Probability { Id = 6, Rarity = Rarity.Épique, Value = 25.0, BaseQty = 1, PackId = 3 },
-                new Probability { Id = 7, Rarity = Rarity.Légendaire, Value = 10.0, BaseQty = 0, PackId = 3 }
+                new Probability { Id = 5, Rarity = Rarity.Légendaire, Value = 2.0, BaseQty = 0, PackId = 2 },
+
+                //Super
+                new Probability { Id = 4, Rarity = Rarity.Rare, Value = 65.0, BaseQty = 0, PackId = 3 },
+                new Probability { Id = 5, Rarity = Rarity.Épique, Value = 25.0, BaseQty = 1, PackId = 3 },
+                new Probability { Id = 5, Rarity = Rarity.Légendaire, Value = 10.0, BaseQty = 0, PackId = 3 },
             };
 
             return packs;

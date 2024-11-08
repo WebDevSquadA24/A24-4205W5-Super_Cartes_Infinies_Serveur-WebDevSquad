@@ -42,17 +42,9 @@ namespace Super_Cartes_Infinies.Controllers
             {
                 return NotFound("Pack non trouvé");
             }
-
-            if (player.Money < pack.Price)
-            {
-                return BadRequest("Fonds insuffisants");
-            }
-
-            player.Money -= pack.Price;
-
+            
+            var cards = await _packService.OpenPack(pack, player);
             await _dbContext.SaveChangesAsync();
-                        
-            var cards = await _packService.OpenPack(pack);
             return Ok(cards);
         }
     }
