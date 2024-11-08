@@ -12,8 +12,12 @@ namespace Tests.Services
         protected MatchPlayerData _currentPlayerData, _opposingPlayerData;
         protected Match _match;
         protected Card _cardA, _cardB;
-        protected PlayableCard _playableCardA, _playableCardB;
+        protected PlayableCard _playableCardA, _playableCardB, _playableCardTest;
+
+
         protected Power _powerHeal, _powerThorn, _powerFStrike;
+
+        protected Card _cardTest;
 
         public BaseTests()
         {
@@ -21,7 +25,50 @@ namespace Tests.Services
 
         protected void Init()
         {
+            
+
             List<CardPower> cardP = new List<CardPower>();
+
+            _powerFStrike = new Power()
+            {
+                Id = 1,
+            };
+
+            _powerHeal = new Power()
+            {
+                Id = 2,
+            };
+
+            _powerThorn = new Power()
+            {
+                Id = 3,
+            };
+
+            CardPower cardPowerTest = new CardPower()
+            {
+                Id = 1,
+                Card = _cardTest,
+                PowerId = _powerHeal.Id,
+                Value = 3
+            };
+
+            cardP.Add(cardPowerTest);
+
+            _cardTest = new Card
+            {
+                Id = 442,
+                Attack = 1,
+                Health = 5,
+                Cost = 1,
+                CardPowers = cardP
+            };
+
+            _playableCardTest = new PlayableCard(_cardTest)
+            {
+                Id = 32
+            };
+
+
 
             Player currentPlayer = new Player()
             {
@@ -45,29 +92,8 @@ namespace Tests.Services
                 Mana = 0
             };
 
-            _powerFStrike = new Power()
-            {
-                Id = 1,
-            };
-
-            _powerHeal = new Power()
-            {
-                Id = 2,
-            };
-
-            _powerThorn = new Power()
-            {
-                Id = 3,
-            };
-
-            CardPower cardPower = new CardPower()
-            {
-                Id = 1,
-                Card = _cardB,
-                PowerId = _powerHeal.Id,
-                Value = 3
-            };
-            cardP.Add(cardPower);
+            
+            
 
             // Le match n'est pas utilisé par ce test, on peut simplement en créer un sans initializer les données
             _match = new Match
@@ -92,7 +118,6 @@ namespace Tests.Services
                 Attack = 1,
                 Health = 5,
                 Cost = 1,
-                CardPowers = cardP
             };
 
             _playableCardA = new PlayableCard(_cardA)
