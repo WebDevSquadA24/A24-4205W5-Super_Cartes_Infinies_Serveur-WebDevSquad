@@ -5,6 +5,7 @@ namespace WebApi.Combat
     public class PlayerDeathEvent : MatchEvent
     {
         public override string EventType { get { return "PlayerDeath"; } }
+        
 
         public PlayerDeathEvent(MatchPlayerData currentPlayerData, Match match)
         {

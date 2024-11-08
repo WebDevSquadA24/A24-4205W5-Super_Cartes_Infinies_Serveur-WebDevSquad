@@ -6,6 +6,10 @@ namespace WebApi.Combat
     {
         public override string EventType { get { return "CardDeath"; } }
 
+        public int PlayableCardId { get; set; }
+
+        public int PlayerId { get; set; }
+
         public PlayableCard deadCard {  get; set; }
          public CardDeathEvent(MatchPlayerData deadCardPlayerData, int battleFieldId)
         {
@@ -13,6 +17,8 @@ namespace WebApi.Combat
             if (deadCardPlayerData.BattleField.Count >0) 
             {
                 deadCard = deadCardPlayerData.BattleField[battleFieldId];
+                PlayableCardId = deadCard.Id;
+                PlayerId = deadCardPlayerData.PlayerId;
 
                 deadCardPlayerData.RemoveCardFromBattleField(deadCard);
             }
