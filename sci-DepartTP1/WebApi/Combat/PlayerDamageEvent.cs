@@ -14,7 +14,7 @@ namespace WebApi.Combat
             this.Events = new List<MatchEvent>();
             opposingPlayerData.Health -= playable.Attack;
             Damage = playable.Attack;
-            PlayerId = currentPlayerData.Id;
+            PlayerId = opposingPlayerData.PlayerId;
             PlayableCardId = playable.Id;
             if (opposingPlayerData.Health <= 0) 
             {
