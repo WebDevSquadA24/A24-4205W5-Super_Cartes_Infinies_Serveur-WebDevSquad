@@ -18,6 +18,10 @@ namespace Super_Cartes_Infinies.Combat
 
         public double LosingMoney { get; set; }
 
+        public double WinningReward { get; set; }
+
+        public double LosingReward { get; set; }
+
 
         public EndMatchEvent(Match match, MatchPlayerData winningPlayerData, MatchPlayerData losingPlayerData)
         {
@@ -29,11 +33,11 @@ namespace Super_Cartes_Infinies.Combat
             WinningPlayerId = winningPlayerData.PlayerId;
             LosingPlayerId = losingPlayerData.PlayerId;
 
-            double winningReward = match.GameConfig.WinnerMoney;
-            double losingReward = match.GameConfig.LoserMoney;
+            WinningReward = match.GameConfig.WinnerMoney;
+            LosingReward = match.GameConfig.LoserMoney;
 
-            winningPlayerData.Player.Money += winningReward;
-            losingPlayerData.Player.Money += losingReward;
+            winningPlayerData.Player.Money += WinningReward;
+            losingPlayerData.Player.Money += LosingReward;
 
             WinningMoney = winningPlayerData.Player.Money;
             LosingMoney = losingPlayerData.Player.Money;
