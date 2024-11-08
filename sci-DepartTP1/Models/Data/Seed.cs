@@ -236,6 +236,8 @@ namespace Super_Cartes_Infinies.Data
                     Id = 1,
                     NbCardsToDraw = 4,
                     NbManaToReceive = 3,
+                    NbMaxDeck = 5,
+                    NbMaxCard = 8,
                 }
             };
         }

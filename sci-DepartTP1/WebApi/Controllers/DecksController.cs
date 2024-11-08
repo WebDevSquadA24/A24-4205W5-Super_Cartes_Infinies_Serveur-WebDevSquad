@@ -38,34 +38,42 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{deckId}")]
-        public async Task<ActionResult<IEnumerable<Card>>> GetDeckCards(int deckId)
+        public ActionResult<IEnumerable<Card>> GetDeckCards(int deckId)
         {
-            var deck = await _decksService.GetDeck(deckId);
+            var deck = _decksService.GetDeck(deckId);
             return deck == null ? NotFound() : Ok(deck.OwnedCards.Select(oc => oc.Card));
         }
 
         [Authorize]
         [HttpGet("{deckId}")]
-        public async Task<ActionResult<IEnumerable<Card>>> GetCardsNotInDeck(int deckId)
+        public ActionResult<IEnumerable<Card>> GetCardsNotInDeck(int deckId)
         {
-            var cards = await _decksService.GetCardsNotInDeck(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var cards = _decksService.GetCardsNotInDeck(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             return cards == null ? NotFound() : Ok(cards.OrderBy(c => c.Name));
         }
 
         [HttpPost("{name}")]
-        public async Task<ActionResult<Deck>> Create(string name)
+        public ActionResult<Deck> Create(string name)
         {
-            var deck = await _decksService.Create(name, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            return Ok(deck);
+            try
+            {
+                var deck = _decksService.Create(name, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                return Ok(deck);
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest("The new deck is exceeding de number of deck allowed");
+            }
+            
         }
 
         [Authorize]
         [HttpDelete("{deckId}")]
-        public async Task<IActionResult> Delete(int deckId)
+        public IActionResult Delete(int deckId)
         {
             try
             {
-                await _decksService.Delete(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                _decksService.Delete(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
                 return NoContent();
             } 
             catch (UnauthorizedAccessException)
@@ -80,19 +88,19 @@ namespace WebApi.Controllers
 
         [Authorize]
         [HttpPut("{deckId}")]
-        public async Task<ActionResult<Deck>> MakeCurrent(int deckId)
+        public ActionResult<Deck> MakeCurrent(int deckId)
         {
-            var deck = await _decksService.MakeCurrent(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var deck = _decksService.MakeCurrent(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             return deck == null ? NotFound() : Ok(deck);
         }
 
         [Authorize]
         [HttpPut("{deckId}/{CardId}")]
-        public async Task<ActionResult<Deck>> AddCard(int deckId, int cardId)
+        public ActionResult<Deck> AddCard(int deckId, int cardId)
         {
             try
             {
-                var deck = await _decksService.AddCard(deckId, cardId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var deck = _decksService.AddCard(deckId, cardId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
                 return deck == null ? NotFound() : Ok(deck);
             }
             catch (UnauthorizedAccessException)
@@ -101,17 +109,17 @@ namespace WebApi.Controllers
             }
             catch (InvalidOperationException)
             {
-                return BadRequest("The card is already in the deck");
+                return BadRequest("The card cannot be added to the deck");
             }
         }
 
         [Authorize]
         [HttpPut("{deckId}/{CardId}")]
-        public async Task<ActionResult<Deck>> RemoveCard(int deckId, int cardId)
+        public ActionResult<Deck> RemoveCard(int deckId, int cardId)
         {
             try
             {
-                var deck = await _decksService.RemoveCard(deckId, cardId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var deck = _decksService.RemoveCard(deckId, cardId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
                 return deck == null ? NotFound() : Ok(deck);
             }
             catch (UnauthorizedAccessException)

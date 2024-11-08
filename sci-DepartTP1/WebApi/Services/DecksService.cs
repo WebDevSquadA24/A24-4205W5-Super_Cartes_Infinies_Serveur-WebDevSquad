@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models.Models;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
@@ -25,15 +26,15 @@ namespace WebApi.Services
             return player.Decks;
         }
 
-        public async Task<Deck?> GetDeck(int deckId)
+        public Deck? GetDeck(int deckId)
         {
-            return await _dbContext.Decks.FindAsync(deckId);
+            return _dbContext.Decks.Find(deckId);
         }
 
-        public async Task<IEnumerable<Card>?> GetCardsNotInDeck(int deckId, string userId)
+        public IEnumerable<Card>? GetCardsNotInDeck(int deckId, string userId)
         {
             var player = _playersService.GetPlayerFromUserId(userId);
-            var deck = await GetDeck(deckId);
+            var deck = GetDeck(deckId);
 
             if (deck == null) return null;
 
@@ -46,9 +47,14 @@ namespace WebApi.Services
             return player.Decks.Find(d => d.IsCurrent)!;
         }
 
-        public async Task<Deck> Create(string name, string userId)
+        public Deck Create(string name, string userId)
         {
             var player = _playersService.GetPlayerFromUserId(userId);
+
+            var x = _dbContext.GameConfigs.First().NbMaxDeck;
+
+            if (player.Decks.Count >= x)
+                throw new InvalidOperationException();
 
             var deck = new Deck()
             {
@@ -57,15 +63,15 @@ namespace WebApi.Services
                 Player = player,
             };
 
-            await _dbContext.AddAsync(deck);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.Add(deck);
+            _dbContext.SaveChanges();
 
             return deck;
         }
 
-        public async Task Delete(int deckId, string userId)
+        public void Delete(int deckId, string userId)
         {
-            var deck = await GetDeck(deckId);
+            var deck = GetDeck(deckId);
 
             if (deck!.Player.UserId != userId)
                 throw new UnauthorizedAccessException();
@@ -74,10 +80,10 @@ namespace WebApi.Services
                 throw new InvalidOperationException();
 
             _dbContext.Remove(deck);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
 
-        public async Task<Deck?> MakeCurrent(int deckId, string userId)
+        public Deck? MakeCurrent(int deckId, string userId)
         {
             var player = _playersService.GetPlayerFromUserId(userId);
 
@@ -92,42 +98,44 @@ namespace WebApi.Services
             _dbContext.Update(oldCurrentDeck);
             _dbContext.Update(newCurrentDeck);
 
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
 
             return newCurrentDeck;
         }
 
-        public async Task<Deck?> AddCard(int deckId, int cardId, string userId)
+        public Deck? AddCard(int deckId, int cardId, string userId)
         {
-            var deck = await GetDeck(deckId);
+            var deck = GetDeck(deckId);
             var player = _playersService.GetPlayerFromUserId(userId);
 
             if (deck == null) return null;
+            if (deck.OwnedCards.Count >= _dbContext.GameConfigs.First().NbMaxCard)
+                throw new InvalidOperationException();
 
-            var cardToAdd = player.OwnedCards.Where(oc => oc.Card.Id == cardId).Except(deck.OwnedCards).First();
+                var cardToAdd = player.OwnedCards.Where(oc => oc.Card.Id == cardId).Except(deck.OwnedCards).First();
 
-            if (deck!.Player != player || cardToAdd.Player != player)
+            if (deck.Player.Id != player.Id)
                 throw new UnauthorizedAccessException();
 
             deck.OwnedCards.Add(cardToAdd);
             _dbContext.Update(deck);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
 
             return deck;
         }
 
-        public async Task<Deck> RemoveCard(int deckId, int cardId, string userId)
+        public Deck RemoveCard(int deckId, int cardId, string userId)
         {
-            var deck = await GetDeck(deckId);
+            var deck = GetDeck(deckId);
             var player = _playersService.GetPlayerFromUserId(userId);
             var cardToRemove = deck!.OwnedCards.Where(c => c.Card.Id == cardId).First();
 
-            if (deck!.Player != player || cardToRemove.Player != player)
+            if (deck!.Player.Id != player.Id || cardToRemove.Player.Id != player.Id)
                 throw new UnauthorizedAccessException();
 
             deck.OwnedCards.Remove(cardToRemove);
             _dbContext.Update(deck);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
 
             return deck;
         }

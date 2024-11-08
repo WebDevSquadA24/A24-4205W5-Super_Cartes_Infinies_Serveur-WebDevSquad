@@ -24,7 +24,7 @@ namespace WebApi.Services.Tests
         public DecksServiceTests()
         {
             options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: "CardsService")
+            .UseInMemoryDatabase(databaseName: $"DecksService_{Guid.NewGuid()}")
             .UseLazyLoadingProxies(true)
             .Options;
         }
@@ -32,12 +32,12 @@ namespace WebApi.Services.Tests
         [TestInitialize]
         public void Init()
         {
-            var db = new ApplicationDbContext(options);
+            using ApplicationDbContext db = new ApplicationDbContext(options);
 
             var players = new Player[]
             {
-            new Player() { UserId = "1" },
-            new Player() { UserId = "2" },
+            new Player() { Id = 1, UserId = "1" },
+            new Player() { Id = 2, UserId = "2" },
             };
             db.AddRange(players);
 
@@ -54,9 +54,17 @@ namespace WebApi.Services.Tests
             var deck = new Deck[]
             {
                 new Deck() { Id = 1, Player = players[0] },
-                new Deck() { Id = 2, Player = players[0], OwnedCards = [ownedCard[1]] },
+                new Deck() { Id = 2, Player = players[0], OwnedCards = [ownedCard[0]], IsCurrent = true },
             };
             db.AddRange(deck);
+
+            var gameConfig = new GameConfig()
+            {
+                Id = 1,
+                NbMaxDeck = 10,
+                NbMaxCard = 10
+            };
+            db.Add(gameConfig);
 
             db.SaveChanges();
 
@@ -78,91 +86,85 @@ namespace WebApi.Services.Tests
             db.Players.RemoveRange(db.Players);
             db.Cards.RemoveRange(db.Cards);
             db.SaveChanges();
+
+
         }
 
         [TestMethod]
-        public async Task CreateDeck()
+        public void CreateDeck()
         {
             using ApplicationDbContext db = new ApplicationDbContext(options);
 
-            var result = await _decksService.Create("test", "1");
+            var result = _decksService.Create("test", "1");
 
             Assert.IsNotNull(result);
+            Assert.AreEqual(3, db.Decks.Count());
+        }
+
+        [TestMethod]
+        public void DeleteDeck_Ok()
+        {
+            using ApplicationDbContext db = new ApplicationDbContext(options);
+
+            _decksService.Delete(1, "1");
+
+            Assert.AreEqual(1, db.Decks.Count());
+        }
+
+        [TestMethod]
+        public void DeleteDeck_Current()
+        {
+            using ApplicationDbContext db = new ApplicationDbContext(options);
+
+            Assert.ThrowsException<InvalidOperationException>(() => _decksService.Delete(2, "1"));
+
             Assert.AreEqual(2, db.Decks.Count());
         }
 
         [TestMethod]
-        public async Task DeleteDeck_Ok()
+        public void DeleteDeck_NotOwned()
         {
             using ApplicationDbContext db = new ApplicationDbContext(options);
 
-            await _decksService.Delete(1, "1");
-            Assert.AreEqual(0, db.Decks.Count());
+            Assert.ThrowsException<UnauthorizedAccessException>(() => _decksService.Delete(1, "2"));
+
+            Assert.AreEqual(2, db.Decks.Count());
         }
 
         [TestMethod]
-        public async Task DeleteDeck_Current()
+        public void AddCardToDeck_Ok()
         {
             using ApplicationDbContext db = new ApplicationDbContext(options);
 
-            await _decksService.MakeCurrent(1, "1");
-            Assert.ThrowsException<InvalidOperationException>(async () => await _decksService.Delete(1, "1"));
-
-            Assert.AreEqual(1, db.Decks.Count());
-        }
-
-        [TestMethod]
-        public async Task DeleteDeck_NotOwned()
-        {
-            using ApplicationDbContext db = new ApplicationDbContext(options);
-
-            var e = Assert.ThrowsException<UnauthorizedAccessException>(async () => await _decksService.Delete(1, "2"));
-
-            Assert.AreEqual(1, db.Decks.Count());
-        }
-
-        [TestMethod]
-        public async Task AddCardToDeck_Ok()
-        {
-            using ApplicationDbContext db = new ApplicationDbContext(options);
-
-            await _decksService.AddCard(1, 1, "1");
+            _decksService.AddCard(1, 1, "1");
 
             Assert.IsTrue(db.Decks.Single(d => d.Id == 1).OwnedCards.Contains(db.OwnedCards.Single(oc => oc.Id == 1)));
         }
 
         [TestMethod]
-        public async Task AddCardToDeck_DeckNotOwned()
+        public void AddCardToDeck_DeckNotOwned()
         {
             using ApplicationDbContext db = new ApplicationDbContext(options);
 
-            Assert.ThrowsException<UnauthorizedAccessException>(async () => await _decksService.AddCard(1, 1, "2"));
+            Assert.ThrowsException<UnauthorizedAccessException>(() => _decksService.AddCard(1, 1, "2"));
         }
 
         [TestMethod]
-        public async Task AddCardToDeck_CardNotOwned()
+        public void RemoveCard_Owned()
         {
             using ApplicationDbContext db = new ApplicationDbContext(options);
 
-            Assert.IsTrue(true);
+            _decksService.RemoveCard(2, 1, "1");
+
+            Assert.AreEqual(0, db.Decks.Single(d => d.Id == 2).OwnedCards.Count);
         }
 
         [TestMethod]
-        public async Task RemoveCard_Owned()
+        public void RemoveCard_NotOwned()
         {
             using ApplicationDbContext db = new ApplicationDbContext(options);
 
-            await _decksService.RemoveCard(2, 1, "1");
-
-            Assert.AreEqual(0, db.Decks.Single(d => d.Id == 1).OwnedCards.Count);
-        }
-
-        [TestMethod]
-        public async Task RemoveCard_NotOwned()
-        {
-            using ApplicationDbContext db = new ApplicationDbContext(options);
-
-            Assert.ThrowsException<UnauthorizedAccessException>(async () => await _decksService.RemoveCard(1, 1, "2"));
+            Assert.ThrowsException<UnauthorizedAccessException>(() => _decksService.RemoveCard(2, 1, "2"));
 
             Assert.IsTrue(true);
         }
