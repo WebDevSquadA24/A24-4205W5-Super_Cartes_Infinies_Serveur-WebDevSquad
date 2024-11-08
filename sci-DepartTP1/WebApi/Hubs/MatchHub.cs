@@ -154,7 +154,8 @@ public class MatchHub : Hub
 
         bool yourTurn = false;
 
-        if (joiningMatchData.Match.PlayerDataA.Player == player)
+
+        if (userId == joiningMatchData.Match.UserAId)
         {
             currentPlayerData = joiningMatchData.Match.PlayerDataA;
             opposingPlayerData = joiningMatchData.Match.PlayerDataB;

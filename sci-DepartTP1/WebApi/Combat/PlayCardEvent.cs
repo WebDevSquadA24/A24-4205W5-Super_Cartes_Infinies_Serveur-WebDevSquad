@@ -11,9 +11,12 @@ namespace WebApi.Combat
 
         public int PlayerId { get; set; }
 
+        public bool CanMoveCard { get; set; }
+
         // TODO: Ajouter tout ce qui manque
         public PlayCardEvent(MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData, int playableCardId)
         {
+            CanMoveCard = false;
             int maxCarte = 6;
             PlayerId = currentPlayerData.PlayerId;
             if (currentPlayerData.Hand.Count > 0)
@@ -22,7 +25,7 @@ namespace WebApi.Combat
                 PlayableCardId = playableCard.Id;
 
 
-                if (playableCard.Card.Cost < currentPlayerData.Mana)
+                if (playableCard.Card.Cost <= currentPlayerData.Mana)
                 {
                     if (currentPlayerData.BattleField.Count < maxCarte)
                     {
@@ -32,6 +35,7 @@ namespace WebApi.Combat
 
                         currentPlayerData.Hand.Remove(playableCard);
                         currentPlayerData.BattleField.Add(playableCard);
+                        CanMoveCard = true;
                     }
                 }
             }
