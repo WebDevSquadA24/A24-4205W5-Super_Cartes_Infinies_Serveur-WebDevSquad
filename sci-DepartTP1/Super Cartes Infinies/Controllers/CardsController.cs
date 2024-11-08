@@ -97,8 +97,6 @@ namespace Super_Cartes_Infinies.Controllers
             {
                 try
                 {
-                    
-
                     List<Power> powers = await _context.Powers.ToListAsync();
                     List<SelectListItem> selectListPowers = powers.Select(item => new SelectListItem
                     {
@@ -181,6 +179,21 @@ namespace Super_Cartes_Infinies.Controllers
         private bool CardExists(int id)
         {
             return _context.Cards.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> DeletePower(int id, CardVM cardVM)
+        {
+            var card = await _context.Cards.FindAsync(cardVM.Card.Id);
+            List<CardPower> cardPowers = card.CardPowers;
+            if (cardPowers != null)
+            {
+                var cardPower = cardPowers.Find(x => x.Id == id);
+                
+                cardPowers.Remove(cardPower);
+            }
+
+            //await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Edit));
         }
     }
 }
