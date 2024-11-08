@@ -49,7 +49,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult<IEnumerable<Card>>> GetCardsNotInDeck(int deckId)
         {
             var cards = await _decksService.GetCardsNotInDeck(deckId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            return cards == null ? NotFound() : Ok(cards);
+            return cards == null ? NotFound() : Ok(cards.OrderBy(c => c.Name));
         }
 
         [HttpPost("{name}")]
@@ -95,11 +95,11 @@ namespace WebApi.Controllers
                 var deck = await _decksService.AddCard(deckId, cardId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
                 return deck == null ? NotFound() : Ok(deck);
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized("The deck or the card does not belong to the player");
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 return BadRequest("The card is already in the deck");
             }
@@ -114,11 +114,11 @@ namespace WebApi.Controllers
                 var deck = await _decksService.RemoveCard(deckId, cardId, User.FindFirstValue(ClaimTypes.NameIdentifier)!);
                 return deck == null ? NotFound() : Ok(deck);
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
                 return Unauthorized("The deck or the card does not belong to the player");
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 return BadRequest("The card is already in the deck");
             }

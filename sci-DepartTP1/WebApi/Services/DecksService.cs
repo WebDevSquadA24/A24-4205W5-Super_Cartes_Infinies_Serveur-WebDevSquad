@@ -33,18 +33,11 @@ namespace WebApi.Services
         public async Task<IEnumerable<Card>?> GetCardsNotInDeck(int deckId, string userId)
         {
             var player = _playersService.GetPlayerFromUserId(userId);
-            var playerOwnedCard = player.OwnedCards;
             var deck = await GetDeck(deckId);
 
             if (deck == null) return null;
 
-            var cards = new List<Card>();
-            foreach (var ownedCard in playerOwnedCard)
-            {
-                if (!deck!.OwnedCards.Contains(ownedCard))
-                    cards.Add(ownedCard.Card);
-            }
-            return cards;
+            return player.OwnedCards.Except(deck.OwnedCards).Select(oc => oc.Card);
         }
 
         public Deck GetCurrent(string userId)
@@ -59,7 +52,6 @@ namespace WebApi.Services
 
             var deck = new Deck()
             {
-                Id = 0,
                 Name = name,
                 IsCurrent = false,
                 Player = player,
