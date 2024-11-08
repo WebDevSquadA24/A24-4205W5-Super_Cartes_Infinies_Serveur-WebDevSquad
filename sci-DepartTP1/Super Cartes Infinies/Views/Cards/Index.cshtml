@@ -27,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.ImageUrl)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CardPowers)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -45,13 +48,22 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Cost)
             </td>
+
             <td>
                 <img src="@item.ImageUrl" alt="@item.ImageUrl" style="width: 300px; height: 200px" />
+            </td>
+            <td>
+                @foreach (var cardPower in item.CardPowers)
+                    {
+                        <p>@(cardPower.Power.Name + ": ") <span> @cardPower.Value</span></p>
+                    }
+                
             </td>
             <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
             </td>
+
         </tr>
 }
     </tbody>

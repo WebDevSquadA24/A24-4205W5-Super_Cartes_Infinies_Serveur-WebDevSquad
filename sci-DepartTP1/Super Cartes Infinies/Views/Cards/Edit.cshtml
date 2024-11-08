@@ -10,6 +10,7 @@
 <hr />
 <div class="row" >
     <div class="col-md-4">
+        @* Form Edit *@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Card.Id" />
@@ -62,9 +63,9 @@
                 <input type="submit" value="Enregistrer" class="btn btn-primary" />
             </div>
         </form>
+        @* Form DeletePower *@
         <form asp-action="DeletePower">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.Card.Id" />
             <input type="hidden" asp-for="@Model.Card.Id" />
             @* Card's powers *@
             @if (Model.Card.CardPowers.Count() == 0)
@@ -73,9 +74,10 @@
             }
             else
             {
-
+                <label asp-for="Card.CardPowers" class="control-label"></label>
                 @foreach (var cardPower in Model.Card.CardPowers)
                 {
+                    <input type="hidden" name="id" asp-for=@cardPower.Id />
                     <div class="card-container">
                         <input type="submit" value="X" class="close-btn" />
                         <div class="card-text">
@@ -89,16 +91,12 @@
                 <input type="submit" value="X" class="btn btn-primary" />
             </div> *@
         </form>
-
     </div>
 </div>
 
 <div>
     <a asp-action="Index">Retourner à la liste</a>
 </div>
-
-
-
 
 @section Scripts {
     @{

@@ -27,7 +27,7 @@ namespace Super_Cartes_Infinies.Controllers
         // GET: Cards
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cards.OrderBy(c => c.Name).ToListAsync());
+            return View(await _context.Cards.Include(c => c.CardPowers).OrderBy(c => c.Name).ToListAsync());
         }
 
         // GET: Cards/Create
@@ -137,7 +137,7 @@ namespace Super_Cartes_Infinies.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
 
             return View(cardVM);
@@ -181,19 +181,21 @@ namespace Super_Cartes_Infinies.Controllers
             return _context.Cards.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> DeletePower(int id, CardVM cardVM)
+        public async Task<IActionResult> DeletePower(int id, CardVM cardVm)
         {
-            var card = await _context.Cards.FindAsync(cardVM.Card.Id);
+            Card card = await _context.Cards.FindAsync(cardVm.Card.Id);
+            cardVm.Card = card;
             List<CardPower> cardPowers = card.CardPowers;
             if (cardPowers != null)
             {
-                var cardPower = cardPowers.Find(x => x.Id == id);
+                CardPower cardPower = cardPowers.Find(x => x.Id == id);
                 
                 cardPowers.Remove(cardPower);
+                _context.CardPowers.Remove(cardPower);
             }
 
-            //await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Edit));
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Edit), new { id = card.Id, cardVM = cardVm });
         }
     }
 }
