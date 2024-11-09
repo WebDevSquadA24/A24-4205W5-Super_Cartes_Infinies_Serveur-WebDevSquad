@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.Models;
@@ -21,12 +21,15 @@ namespace Super_Cartes_Infinies.Services
 
         public Player CreatePlayer(IdentityUser user)
         {
+            var gameConfig = _dbContext.GameConfigs.FirstOrDefault();
+            
             Player p = new Player()
             {
                 Id = 0,
                 UserId = user.Id,
                 Name = user.Email!,
                 User = user,
+                Money = gameConfig.BeginnerMoney,
             };
 
             // TODO: Utilisez le service StartingCardsService pour obtenir les cartes de départ

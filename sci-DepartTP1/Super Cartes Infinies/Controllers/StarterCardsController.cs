@@ -186,7 +186,8 @@ namespace Super_Cartes_Infinies.Controllers
                 attack = card.Attack,
                 health = card.Health,
                 cost = card.Cost,
-                imageUrl = card.ImageUrl
+                imageUrl = card.ImageUrl,
+                rarity = card.Rarity.ToString(),
             });
         }
 

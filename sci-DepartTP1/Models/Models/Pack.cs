@@ -1,4 +1,5 @@
-﻿using Super_Cartes_Infinies.Models;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Super_Cartes_Infinies.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,17 @@ namespace Models.Models
     {
         public int Id { get; set; }
 
+        public string Name { get; set; }
+
         public double Price { get; set; }
 
         public string ImageURL { get; set; }
 
         public int NbCards { get; set; }
 
-        public Rarity Rarity { get; set; }
+        public Rarity DefaultRarity { get; set; }
+
+        [ValidateNever]
+        public virtual List<Probability> Probabilities { get; set; }
     }
 }

@@ -10,5 +10,8 @@ namespace WebAPI.DTOs
         public string Username { get; set; } = "";
         [Required]
         public int PlayerId { get; set; }
+        
+        [Required]
+        public double PlayerMoney { get; set; }
     }
 }

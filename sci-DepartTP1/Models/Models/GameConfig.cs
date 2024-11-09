@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Models.Models
 {
-    public class GameConfig:IModel
+    public class GameConfig : IModel
     {
         public int Id { get; set; }
         [Display(Name = "Nombre de cartes à piger")]
@@ -19,5 +19,14 @@ namespace Models.Models
         public int NbMaxDeck { get; set; }
 
         public int NbMaxCard { get; set; }
+
+        [Display(Name = "Argent de départ")]
+        public double BeginnerMoney { get; set; } = 1000;
+
+        [Display(Name = "Argent par victoire")]
+        public double WinnerMoney { get; set; } = 100;
+
+        [Display(Name = "Argent par défaite")]
+        public double LoserMoney { get; set; } = 50;
     }
 }

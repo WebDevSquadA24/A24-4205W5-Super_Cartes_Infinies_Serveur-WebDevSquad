@@ -18,7 +18,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 3,
                     Health = 3,
                     Cost = 3,
-                    ImageUrl = "https://i.pinimg.com/originals/a8/16/49/a81649bd4b0f032ce633161c5a076b87.jpg"
+                    ImageUrl = "https://i.pinimg.com/originals/a8/16/49/a81649bd4b0f032ce633161c5a076b87.jpg",
+                    Rarity = Rarity.Commune,
                 }, new Card
                 {
                     Id = 2,
@@ -26,7 +27,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 2,
                     Health = 5,
                     Cost = 3,
-                    ImageUrl = "https://i0.wp.com/thediscerningcat.com/wp-content/uploads/2021/02/tabby-cat-wearing-sunglasses.jpg"
+                    ImageUrl = "https://i0.wp.com/thediscerningcat.com/wp-content/uploads/2021/02/tabby-cat-wearing-sunglasses.jpg",
+                    Rarity = Rarity.Rare,
                 }, new Card
                 {
                     Id = 3,
@@ -34,7 +36,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 2,
                     Health = 1,
                     Cost = 1,
-                    ImageUrl = "https://cdn.wallpapersafari.com/27/53/SZ8PO9.jpg"
+                    ImageUrl = "https://cdn.wallpapersafari.com/27/53/SZ8PO9.jpg",
+                    Rarity = Rarity.Commune,
                 }, new Card
                 {
                     Id = 4,
@@ -42,7 +45,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 8,
                     Health = 4,
                     Cost = 4,
-                    ImageUrl = "https://wallpapers.com/images/hd/epic-cat-poster-baavft05ylgta4j8.jpg"
+                    ImageUrl = "https://wallpapers.com/images/hd/epic-cat-poster-baavft05ylgta4j8.jpg",
+                    Rarity = Rarity.Légendaire,
                 }, new Card
                 {
                     Id = 5,
@@ -50,7 +54,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 7,
                     Health = 7,
                     Cost = 5,
-                    ImageUrl = "https://i.etsystatic.com/6230905/r/il/32aa5a/3474618751/il_fullxfull.3474618751_mfvf.jpg"
+                    ImageUrl = "https://i.etsystatic.com/6230905/r/il/32aa5a/3474618751/il_fullxfull.3474618751_mfvf.jpg",
+                    Rarity = Rarity.Légendaire,
                 }, new Card
                 {
                     Id = 6,
@@ -58,7 +63,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 4,
                     Health = 2,
                     Cost = 2,
-                    ImageUrl = "https://store.playstation.com/store/api/chihiro/00_09_000/container/AU/en/99/EP2402-CUSA05624_00-ETH0000000002875/0/image?_version=00_09_000&platform=chihiro&bg_color=000000&opacity=100&w=720&h=720"
+                    ImageUrl = "https://store.playstation.com/store/api/chihiro/00_09_000/container/AU/en/99/EP2402-CUSA05624_00-ETH0000000002875/0/image?_version=00_09_000&platform=chihiro&bg_color=000000&opacity=100&w=720&h=720",
+
                 }, new Card
                 {
                     Id = 7,
@@ -66,7 +72,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 6,
                     Health = 3,
                     Cost = 4,
-                    ImageUrl = "https://images.squarespace-cdn.com/content/51b3dc8ee4b051b96ceb10de/1394662654865-JKOZ7ZFF39247VYDTGG9/hilarious-jedi-cats-fight-video-preview.jpg?content-type=image%2Fjpeg"
+                    ImageUrl = "https://images.squarespace-cdn.com/content/51b3dc8ee4b051b96ceb10de/1394662654865-JKOZ7ZFF39247VYDTGG9/hilarious-jedi-cats-fight-video-preview.jpg?content-type=image%2Fjpeg",
+                    Rarity = Rarity.Épique,
                 }, new Card
                 {
                     Id = 8,
@@ -74,7 +81,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 1,
                     Health = 9,
                     Cost = 2,
-                    ImageUrl = "https://i.ytimg.com/vi/2I7pZlUhZak/maxresdefault.jpg"
+                    ImageUrl = "https://i.ytimg.com/vi/2I7pZlUhZak/maxresdefault.jpg",
+                    Rarity = Rarity.Épique,
                 }, new Card
                 {
                     Id = 9,
@@ -82,7 +90,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 5,
                     Health = 1,
                     Cost = 2,
-                    ImageUrl = "https://townsquare.media/site/142/files/2011/08/jedicats.jpg?w=980&q=75"
+                    ImageUrl = "https://townsquare.media/site/142/files/2011/08/jedicats.jpg?w=980&q=75",
+
                 }, new Card
                 {
                     Id = 10,
@@ -90,7 +99,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 6,
                     Health = 1,
                     Cost = 2,
-                    ImageUrl = "https://cdn.theatlantic.com/thumbor/fOZjgqHH0RmXA1A5ek-yDz697W4=/133x0:2091x1020/1200x625/media/img/mt/2015/12/RTRD62Q/original.jpg"
+                    ImageUrl = "https://cdn.theatlantic.com/thumbor/fOZjgqHH0RmXA1A5ek-yDz697W4=/133x0:2091x1020/1200x625/media/img/mt/2015/12/RTRD62Q/original.jpg",
+                    Rarity = Rarity.Rare,
                 }
             };
         }
@@ -240,6 +250,61 @@ namespace Super_Cartes_Infinies.Data
                     NbMaxCard = 8,
                 }
             };
+        }
+
+        public static Pack[] SeedPacks()
+        {
+            var basicPack = new Pack
+            {
+                Id = 1,
+                Name = "Basic Pack",
+                Price = 200.0,
+                ImageURL = "https://th-thumbnailer.cdn-si-edu.com/3hb9uUW7hZHUXxJmBmfFkwkivJI=/fit-in/1600x0/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/fd/e7/fde77fde-700d-4a08-8e19-305a0de60130/5879116857_4ab170f4d5_b.jpg",
+                NbCards = 3,
+                DefaultRarity = Rarity.Commune
+            };
+
+            var normalPack = new Pack
+            {
+                Id = 2,
+                Name = "Normal Pack",
+                Price = 500.0,
+                ImageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUe7jv0hsq3INvymTpQvP8F-TprBnerk4HGnyHKY5nFj1kXHEg",
+                NbCards = 4,
+                DefaultRarity = Rarity.Commune
+            };
+
+            var superPack = new Pack
+            {
+                Id = 3,
+                Name = "Super Pack",
+                Price = 2000.0,
+                ImageURL = "https://i.pinimg.com/474x/f8/39/37/f839377928c94ac922cc39f35fd0a841.jpg",
+                NbCards = 5,
+                DefaultRarity = Rarity.Rare
+            };
+
+            var packs = new Pack[] { basicPack, normalPack, superPack };
+
+            var probabilities = new List<Probability>
+            {
+                //Basic
+                new Probability { Id = 1, Rarity = Rarity.Commune, Value = 70.0, BaseQty = 0, PackId = 1 },
+                new Probability { Id = 2, Rarity = Rarity.Rare, Value = 30.0, BaseQty = 0, PackId = 1 },
+
+                //Normal
+                new Probability { Id = 3, Rarity = Rarity.Commune, Value = 60.0, BaseQty = 0, PackId = 2 },
+                new Probability { Id = 4, Rarity = Rarity.Rare, Value = 30.0, BaseQty = 1, PackId = 2 },
+                new Probability { Id = 5, Rarity = Rarity.Épique, Value = 10.0, BaseQty = 0, PackId = 2 },
+                new Probability { Id = 5, Rarity = Rarity.Légendaire, Value = 2.0, BaseQty = 0, PackId = 2 },
+
+                //Super
+                new Probability { Id = 4, Rarity = Rarity.Rare, Value = 65.0, BaseQty = 0, PackId = 3 },
+                new Probability { Id = 5, Rarity = Rarity.Épique, Value = 25.0, BaseQty = 1, PackId = 3 },
+                new Probability { Id = 5, Rarity = Rarity.Légendaire, Value = 10.0, BaseQty = 0, PackId = 3 },
+            };
+
+            return packs;
         }
 
     }
