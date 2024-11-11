@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Super_Cartes_Infinies.Models.Card>
+@model IEnumerable<Super_Cartes_Infinies.Models.Card>
 
 @{
     ViewData["Title"] = "Index";
@@ -28,6 +28,9 @@
                 @Html.DisplayNameFor(model => model.ImageUrl)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.CardPowers)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Rarity)
             </th>
             <th></th>
@@ -48,8 +51,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Cost)
             </td>
+
             <td>
                 <img src="@item.ImageUrl" alt="@item.ImageUrl" style="width: 300px; height: 200px" />
+            </td>
+            <td>
+                @foreach (var cardPower in item.CardPowers)
+                    {
+                        <p>@(cardPower.Power.Name + ": ") <span> @cardPower.Value</span></p>
+                    }
+                
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Rarity)
@@ -58,6 +69,7 @@
                     <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
             </td>
+
         </tr>
 }
     </tbody>

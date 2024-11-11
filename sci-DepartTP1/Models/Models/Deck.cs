@@ -20,8 +20,10 @@ namespace Models.Models
 
         [ValidateNever]
         [JsonIgnore]
+        [ForeignKey("OwnedCardId")]
         public virtual List<OwnedCard> OwnedCards { get; set; } = [];
 
+        [ValidateNever]
         [JsonIgnore]
         public virtual Player Player { get; set; }
     }

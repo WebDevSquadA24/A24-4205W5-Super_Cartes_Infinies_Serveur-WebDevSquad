@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Models.Models;
 using Super_Cartes_Infinies.Models;
 
@@ -99,9 +99,50 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 6,
                     Health = 1,
                     Cost = 2,
-                    ImageUrl = "https://cdn.theatlantic.com/thumbor/fOZjgqHH0RmXA1A5ek-yDz697W4=/133x0:2091x1020/1200x625/media/img/mt/2015/12/RTRD62Q/original.jpg",
-                    Rarity = Rarity.Rare,
+                    ImageUrl = "https://cdn.theatlantic.com/thumbor/fOZjgqHH0RmXA1A5ek-yDz697W4=/133x0:2091x1020/1200x625/media/img/mt/2015/12/RTRD62Q/original.jpg"
+                }, new Card
+                {
+                    Id = 11,
+                    Name = "Chat Jesus",
+                    Attack = 0,
+                    Health = 10,
+                    Cost = 1,
+                    ImageUrl = "https://cdn.openart.ai/uploads/image_FkweA3pP_1695446033995_512.webp"
                 }
+            };
+        }
+        public static Power[] SeedPowers()
+        {
+            return new Power[] {
+                new Power
+                {
+                    Id = Power.FIRST_STRIKE_ID,
+                    Name = "First Strike",
+                    Description = "permet à une carte d’attaquer en « premier » et de ne pas recevoir de dégât si elle tue la carte de l’adversaire. (Fonctionne uniquement à l’attaque, pas à la défense)",
+                    IconURL = "fas fa-bolt"
+                },
+                new Power
+                {
+                    Id = Power.THORNS_ID,
+                    Name = "Thorns",
+                    Description = "lorsqu’une carte défend, elle inflige X de dégâts AVANT de recevoir des dégâts. Si l’attaquant est tué par ces dégâts, l’attaque s’arrête et le défenseur ne reçoit pas de dégâts.",
+                    IconURL = "fas fa-exclamation"
+                },
+                new Power
+                {
+                    Id = Power.HEAL_ID,
+                    Name = "Heal",
+                    Description = "soigne les cartes alliées de X incluant elle-même AVANT d’attaquer (mais les cartes ne peuvent pas avoir plus de health qu’au départ.)",
+                    IconURL = "fas fa-heartbeat"
+                },
+                new Power
+                {
+                    Id = Power.LOVE_OF_JESUS_CHRIST,
+                    Name = "Love of Jesus Christ",
+                    Description = "tant que la carte est sur le terrain son joueur gagne de la vie",
+                    IconURL = "fas fa-cross"
+                }
+
             };
         }
 
@@ -124,7 +165,6 @@ namespace Super_Cartes_Infinies.Data
 
             return new IdentityUser[] { admin };
         }
-
         public static IdentityRole[] SeedRoles()
         {
             IdentityRole adminRole = new IdentityRole
@@ -136,7 +176,6 @@ namespace Super_Cartes_Infinies.Data
 
             return new IdentityRole[] { adminRole };
         }
-
         public static IdentityUserRole<string>[] SeedUserRoles()
         {
             IdentityUserRole<string> userAdmin = new IdentityUserRole<string>
@@ -146,7 +185,6 @@ namespace Super_Cartes_Infinies.Data
             };
             return new IdentityUserRole<string>[] { userAdmin };
         }
-
         public static IdentityUser[] SeedTestUsers()
         {
             return new IdentityUser[] {
@@ -160,7 +198,6 @@ namespace Super_Cartes_Infinies.Data
                 }
             };
         }
-
         public static Player[] SeedTestPlayers()
         {
             return new Player[] {

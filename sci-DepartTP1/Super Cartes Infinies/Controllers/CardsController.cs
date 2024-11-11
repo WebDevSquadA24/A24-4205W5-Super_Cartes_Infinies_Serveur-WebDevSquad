@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,8 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
+using Models.VM;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
+
 
 namespace Super_Cartes_Infinies.Controllers
 {
@@ -24,7 +27,7 @@ namespace Super_Cartes_Infinies.Controllers
         // GET: Cards
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cards.OrderBy(c => c.Name).ToListAsync());
+            return View(await _context.Cards.Include(c => c.CardPowers).OrderBy(c => c.Name).ToListAsync());
         }
 
         // GET: Cards/Create
@@ -57,12 +60,25 @@ namespace Super_Cartes_Infinies.Controllers
                 return NotFound();
             }
 
-            var card = await _context.Cards.FindAsync(id);
+            var card = await _context.Cards.Include(c => c.CardPowers).ThenInclude(cp => cp.Power).FirstAsync(c => c.Id == id);
             if (card == null)
             {
                 return NotFound();
             }
-            return View(card);
+
+
+            CardVM cardVM = new CardVM();
+            cardVM.Card = card;
+
+            var powers = await _context.Powers.ToListAsync();
+            var selectListPowers = powers.Select(item => new SelectListItem
+            {
+                Value = item.Id.ToString(),  // 'Id' is assumed to be the primary key
+                Text = item.Name             // 'Name' is the property displayed in the dropdown
+            }).ToList();
+            cardVM.AvailablePowers = selectListPowers;
+
+            return View(cardVM);
         }
 
         // POST: Cards/Edit/5
@@ -70,9 +86,9 @@ namespace Super_Cartes_Infinies.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Attack,Health,Cost,ImageUrl,Rarity")] Card card)
+        public async Task<IActionResult> Edit(int id, CardVM cardVM) /*[Bind("Id,Name,Attack,Health,Cost,ImageUrl")]*/
         {
-            if (id != card.Id)
+            if (id != cardVM.Card.Id)
             {
                 return NotFound();
             }
@@ -81,12 +97,38 @@ namespace Super_Cartes_Infinies.Controllers
             {
                 try
                 {
-                    _context.Update(card);
+                    List<Power> powers = await _context.Powers.ToListAsync();
+                    List<SelectListItem> selectListPowers = powers.Select(item => new SelectListItem
+                    {
+                        Value = item.Id.ToString(),  // 'Id' is assumed to be the primary key
+                        Text = item.Name             // 'Name' is the property displayed in the dropdown
+                    }).ToList();
+                    cardVM.AvailablePowers = selectListPowers;
+
+                    int selectedValue = cardVM.SelectedPowerId;
+
+                    // You can now process the selected value (for example, retrieve the selected item)
+                    Power selectedPower = _context.Powers.FirstOrDefault(x => x.Id == selectedValue);
+
+                    CardPower cardPower = new CardPower
+                    {
+                        Card = cardVM.Card,
+                        CardId = cardVM.Card.Id,
+                        Power = selectedPower,
+                        PowerId = cardVM.SelectedPowerId,
+                        Value = cardVM.PowerValue,
+                    };
+
+                    
+                    cardVM.Card.CardPowers.Add(cardPower);
+
+                    _context.Update(cardVM.Card);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CardExists(card.Id))
+                    if (!CardExists(cardVM.Card.Id))
                     {
                         return NotFound();
                     }
@@ -95,9 +137,10 @@ namespace Super_Cartes_Infinies.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
-            return View(card);
+
+            return View(cardVM);
         }
 
         // GET: Cards/Delete/5
@@ -136,6 +179,23 @@ namespace Super_Cartes_Infinies.Controllers
         private bool CardExists(int id)
         {
             return _context.Cards.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> DeletePower(int id, CardVM cardVm)
+        {
+            Card card = await _context.Cards.FindAsync(cardVm.Card.Id);
+            cardVm.Card = card;
+            List<CardPower> cardPowers = card.CardPowers;
+            if (cardPowers != null)
+            {
+                CardPower cardPower = cardPowers.Find(x => x.Id == id);
+                
+                cardPowers.Remove(cardPower);
+                _context.CardPowers.Remove(cardPower);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Edit), new { id = card.Id, cardVM = cardVm });
         }
     }
 }

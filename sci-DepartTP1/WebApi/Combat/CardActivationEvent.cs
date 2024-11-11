@@ -26,7 +26,7 @@ namespace WebApi.Combat
             }
 
             // LoveOfJesusChrist
-            if (myCard.HasPower(Power.LoveOfJesusChrist_ID))
+            if (myCard.HasPower(Power.LOVE_OF_JESUS_CHRIST))
             {
                 this.Events.Add(new LoveOfJesusChristEvent(currentPlayerData));
             }

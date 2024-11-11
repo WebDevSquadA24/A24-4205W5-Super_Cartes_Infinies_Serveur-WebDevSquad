@@ -1,4 +1,4 @@
-﻿@model Super_Cartes_Infinies.Models.Card
+﻿@model Models.VM.CardVM
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,46 +8,95 @@
 
 <h4>Cartes</h4>
 <hr />
-<div class="row">
+<div class="row" >
     <div class="col-md-4">
+        @* Form Edit *@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Card.Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Card.Name" class="control-label"></label>
+                <input asp-for="Card.Name" class="form-control" />
+                <span asp-validation-for="Card.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Attack" class="control-label"></label>
-                <input asp-for="Attack" class="form-control" />
-                <span asp-validation-for="Attack" class="text-danger"></span>
+                <label asp-for="Card.Attack" class="control-label"></label>
+                <input asp-for="Card.Attack" class="form-control" />
+                <span asp-validation-for="Card.Attack" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Health" class="control-label"></label>
-                <input asp-for="Health" class="form-control" />
-                <span asp-validation-for="Health" class="text-danger"></span>
+                <label asp-for="Card.Health" class="control-label"></label>
+                <input asp-for="Card.Health" class="form-control" />
+                <span asp-validation-for="Card.Health" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cost" class="control-label"></label>
-                <input asp-for="Cost" class="form-control" />
-                <span asp-validation-for="Cost" class="text-danger"></span>
+                <label asp-for="Card.Cost" class="control-label"></label>
+                <input asp-for="Card.Cost" class="form-control" />
+                <span asp-validation-for="Card.Cost" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                <label asp-for="Card.ImageUrl" class="control-label"></label>
+                <input asp-for="Card.ImageUrl" class="form-control" />
+                <span asp-validation-for="Card.ImageUrl" class="text-danger"></span>
             </div>
+            @* SelectList *@
+            <label for="powers">Power</label>
             <div class="form-group">
-                <label asp-for="Rarity" class="control-label"></label>
-                <select asp-for="Rarity" class="form-control" asp-items="Html.GetEnumSelectList<Rarity>()">
+                <div>
+                    @Html.DropDownListFor(m => m.SelectedPowerId, Model.AvailablePowers, "Aucun")
+                </div>
+
+            </div>
+
+
+            
+            @* Value *@
+            <div class="form-group">
+                <label asp-for="PowerValue" class="control-label">Power Value</label>
+                <input asp-for="PowerValue" class="form-control" />
+@*                 <span asp-validation-for="PowerValue" class="text-danger"></span> *@
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="Card.Rarity" class="control-label"></label>
+                <select asp-for="Card.Rarity" class="form-control" asp-items="Html.GetEnumSelectList<Rarity>()">
                     <option value="">Sélectionner une rareté</option>
                 </select>
-                <span asp-validation-for="Rarity" class="text-danger"></span>
+                <span asp-validation-for="Card.Rarity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Enregistrer" class="btn btn-primary" />
             </div>
+        </form>
+        @* Form DeletePower *@
+        <form asp-action="DeletePower">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.Card.Id" />
+            @* Card's powers *@
+            @if (Model.Card.CardPowers.Count() == 0)
+            {
+                <p> Cette carte ne possède aucun pouvoirs</p>
+            }
+            else
+            {
+                <label asp-for="Card.CardPowers" class="control-label"></label>
+                @foreach (var cardPower in Model.Card.CardPowers)
+                {
+                    <input type="hidden" name="id" asp-for=@cardPower.Id />
+                    <div class="card-container">
+                        <input type="submit" value="X" class="close-btn" />
+                        <div class="card-text">
+                            @(cardPower.Power.Name + " : ")@cardPower.Value
+                        </div>
+                    </div>
+                }
+            }
+
+@*             <div class="form-group">
+                <input type="submit" value="X" class="btn btn-primary" />
+            </div> *@
         </form>
     </div>
 </div>
@@ -57,5 +106,48 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    @* Style pour un power (card) *@
+    <style>
+        .card-container {
+            position: relative;
+            width: 150px;
+            height: 50px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 10px
+        }
+
+        .card-text {
+            position: absolute;
+            text-align: center;
+            font-size: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centers the text */
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            background: none;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            color: #999;
+        }
+
+            .close-btn:hover {
+                color: #333;
+            }
+    </style>
+    
 }
+
+
