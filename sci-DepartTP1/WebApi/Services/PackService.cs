@@ -46,8 +46,19 @@ namespace Super_Cartes_Infinies.Services
             {
                 var card = GetRandomCardByRarity(rarity);
                 if (card != null)
+                {
+                    var ownedCard = new OwnedCard
+                    {
+                        Card = card,
+                        Player = playerData
+                    };
                     cards.Add(card);
+                    playerData.OwnedCards.Add(ownedCard);
+                    await _dbContext.SaveChangesAsync();
+                }
             }
+
+
             return cards;
         }
 

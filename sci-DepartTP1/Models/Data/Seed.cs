@@ -107,7 +107,8 @@ namespace Super_Cartes_Infinies.Data
                     Attack = 0,
                     Health = 10,
                     Cost = 1,
-                    ImageUrl = "https://cdn.openart.ai/uploads/image_FkweA3pP_1695446033995_512.webp"
+                    ImageUrl = "https://cdn.openart.ai/uploads/image_FkweA3pP_1695446033995_512.webp",
+                    Rarity = Rarity.Légendaire,
                 }
             };
         }
