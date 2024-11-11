@@ -79,6 +79,8 @@ namespace WebApi.Services
             if (deck.IsCurrent) 
                 throw new InvalidOperationException();
 
+            deck.OwnedCards.Clear();
+
             _dbContext.Remove(deck);
             _dbContext.SaveChanges();
         }

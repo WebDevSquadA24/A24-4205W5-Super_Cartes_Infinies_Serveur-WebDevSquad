@@ -145,6 +145,66 @@ namespace Super_Cartes_Infinies.Data
 
             };
         }
+        public static CardPower[] SeedCardPowers()
+        {
+            return new CardPower[] {
+                new CardPower
+                {
+                    Id = 1,
+                    CardId = 1,
+                    PowerId = Power.FIRST_STRIKE_ID,
+                    Value = 1
+
+                },
+                new CardPower
+                {
+                    Id = 2,
+                    CardId = 1,
+                    PowerId = Power.THORNS_ID,
+                    Value = 1
+
+                },
+                new CardPower
+                {
+                    Id = 3,
+                    CardId = 2,
+                    PowerId = Power.HEAL_ID,
+                    Value = 2
+
+                },
+                new CardPower
+                {
+                    Id = 4,
+                    CardId = 11,
+                    PowerId = Power.LOVE_OF_JESUS_CHRIST,
+                    Value = 1
+                },
+                new CardPower
+                {
+                    Id = 5,
+                    CardId = 3,
+                    PowerId = Power.FIRST_STRIKE_ID,
+                    Value = 1
+
+                },
+                new CardPower
+                {
+                    Id = 6,
+                    CardId = 3,
+                    PowerId = Power.THORNS_ID,
+                    Value = 1
+
+                },
+                new CardPower
+                {
+                    Id = 7,
+                    CardId = 3,
+                    PowerId = Power.HEAL_ID,
+                    Value = 1
+
+                },
+            };
+        }
 
         public static IdentityUser[] SeedUsers()
         {

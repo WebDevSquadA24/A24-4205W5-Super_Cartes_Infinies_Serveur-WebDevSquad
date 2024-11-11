@@ -36,7 +36,7 @@ public class ApplicationDbContext : IdentityDbContext
 
 
         builder.Entity<Power>().HasData(Seed.SeedPowers());
-        //builder.Entity<CardPower>().HasData(Seed.SeedCardPowers());
+        builder.Entity<CardPower>().HasData(Seed.SeedCardPowers());
 
         // Lorsque le modèle de données se complexifient, il faut éventuellement utiliser Fluent API
         // https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/fluent/types-and-properties
