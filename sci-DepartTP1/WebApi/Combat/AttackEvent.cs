@@ -20,8 +20,9 @@ namespace WebApi.Combat
 
             if (opposingPlayerData.BattleField.Count > index)
             {
-                myCard = currentPlayerData.BattleField[index];
-                opponentCard = opposingPlayerData.BattleField[index];
+                
+                myCard = currentPlayerData.GetOrderedBattleField().Where(b => b.Index == index).First();
+                opponentCard = opposingPlayerData.GetOrderedBattleField().Where(b => b.Index == index).First();
 
                 if (opponentCard.HasPower(Power.THORNS_ID))
                 {

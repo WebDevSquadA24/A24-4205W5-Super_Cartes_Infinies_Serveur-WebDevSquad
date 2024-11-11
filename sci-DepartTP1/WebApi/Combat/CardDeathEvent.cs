@@ -16,7 +16,7 @@ namespace WebApi.Combat
             this.Events = new List<MatchEvent>();
             if (deadCardPlayerData.BattleField.Count >0) 
             {
-                deadCard = deadCardPlayerData.BattleField[battleFieldId];
+                deadCard = deadCardPlayerData.GetOrderedBattleField().Where(b => b.Index == battleFieldId).First();
                 PlayableCardId = deadCard.Id;
                 PlayerId = deadCardPlayerData.PlayerId;
 

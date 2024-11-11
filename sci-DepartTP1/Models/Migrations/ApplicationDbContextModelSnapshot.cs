@@ -169,25 +169,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-<<<<<<< Updated upstream
-                            ConcurrencyStamp = "961c6e2c-ee72-4d74-942c-9926cb48580d",
-=======
-                            ConcurrencyStamp = "6c6108bc-04b9-46e9-a55a-daa5442bb68c",
->>>>>>> Stashed changes
+                            ConcurrencyStamp = "7745de87-fbca-487d-a621-25f9b173e322",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-<<<<<<< Updated upstream
-                            PasswordHash = "AQAAAAIAAYagAAAAEM0KQ/RzavbkdIRnCfDXPhQ7TBUSVHhhVy7z/ttd0n/oJYcOfy+ADTWaXOUbl6BdjQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBc4UFgxAL9UbPrWAYMbXr8KXeYFGWaKJJhLRqxOfPwWfmFe97qCYbDfezAGkdjaFw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "71dff3a8-d0d4-4278-b0af-fe816932732f",
-=======
-                            PasswordHash = "AQAAAAIAAYagAAAAEM13VpA8ztz5b4dPV1/6pcctIDq80TsY+B+W5u024SheXjSI786uLhsia5hxVceeIQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "21da835e-349b-4630-9595-52cedf1a768c",
->>>>>>> Stashed changes
+                            SecurityStamp = "f3eae262-b224-41ce-8117-22fe50dff3f4",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -195,38 +185,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-<<<<<<< Updated upstream
-                            ConcurrencyStamp = "e692f374-b1c6-4718-af9e-e3299b811849",
+                            ConcurrencyStamp = "02fad762-78c8-4dce-83eb-8ecf7e746374",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "13814889-1f19-4807-88a9-d73604f8501f",
-=======
-                            ConcurrencyStamp = "11192e65-e7d3-4a77-be21-59524bb44500",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "9df9c5b6-f95c-4401-b2f5-e59a8ce86ba0",
->>>>>>> Stashed changes
+                            SecurityStamp = "048a7040-6e52-4d2c-8a4d-ad4daf117d66",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-<<<<<<< Updated upstream
-                            ConcurrencyStamp = "74e66e0f-839d-4801-99c8-1704930fa58d",
+                            ConcurrencyStamp = "fc476a7a-ff0b-4b04-bd3d-d73820ed9086",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "42bcae6a-d33d-44b5-83c1-8589b9fd728f",
-=======
-                            ConcurrencyStamp = "23faa931-5756-4182-9389-cb90074db024",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "3b6eab8c-ac4a-4c56-9bf1-61ea5c46658f",
->>>>>>> Stashed changes
+                            SecurityStamp = "21606440-3aa4-4710-bbe3-e95075758da5",
                             TwoFactorEnabled = false
                         });
                 });
@@ -347,7 +321,6 @@ namespace Models.Migrations
                     b.HasIndex("PowerId");
 
                     b.ToTable("CardPowers");
-<<<<<<< Updated upstream
 
                     b.HasData(
                         new
@@ -399,8 +372,6 @@ namespace Models.Migrations
                             PowerId = 3,
                             Value = 1
                         });
-=======
->>>>>>> Stashed changes
                 });
 
             modelBuilder.Entity("Models.Models.Deck", b =>
@@ -821,11 +792,7 @@ namespace Models.Migrations
                             Health = 10,
                             ImageUrl = "https://cdn.openart.ai/uploads/image_FkweA3pP_1695446033995_512.webp",
                             Name = "Chat Jesus",
-<<<<<<< Updated upstream
                             Rarity = 3
-=======
-                            Rarity = 0
->>>>>>> Stashed changes
                         });
                 });
 
@@ -933,12 +900,6 @@ namespace Models.Migrations
                     b.Property<int>("CardId")
                         .HasColumnType("int");
 
-<<<<<<< Updated upstream
-=======
-                    b.Property<int>("Damage")
-                        .HasColumnType("int");
-
->>>>>>> Stashed changes
                     b.Property<int>("Health")
                         .HasColumnType("int");
 

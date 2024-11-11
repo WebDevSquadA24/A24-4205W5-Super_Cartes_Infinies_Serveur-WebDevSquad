@@ -8,16 +8,21 @@ namespace WebApi.Combat
         public override string EventType { get { return "Thorns"; } }
 
         public PlayableCard myCard { get; set; }
+
+        public int ThornsDamage { get; set; }
+        public int PlayerId { get; set; }
         public ThornsEvent(MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData,Match match, int index, int thornValue)
         {
             this.Events = new List<MatchEvent>();
+            ThornsDamage = thornValue;
+            PlayerId = currentPlayerData.PlayerId;
             if (currentPlayerData.BattleField.Count > 0 && opposingPlayerData.BattleField.Count > 0)
             {
-                myCard = currentPlayerData.BattleField[index];
+                myCard = currentPlayerData.GetOrderedBattleField().Where(b => b.Index == index).First();
                 myCard.Health -= thornValue;
-                if(currentPlayerData.BattleField[index].Health <= 0)
+                if(currentPlayerData.GetOrderedBattleField().Where(b => b.Index == index).First().Health <= 0)
                 {
-                    currentPlayerData.RemoveCardFromBattleField(myCard);
+                    this.Events.Add(new CardDeathEvent(currentPlayerData, index));
 
                 }
             }

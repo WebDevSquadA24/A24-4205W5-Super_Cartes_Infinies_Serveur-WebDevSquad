@@ -13,14 +13,14 @@ namespace WebApi.Combat
         {
             this.Events = new List<MatchEvent>();
 
-            myCard = currentPlayerData.BattleField[index];
-            opponentCard = opposingPlayerData.BattleField[index];
+            myCard = currentPlayerData.GetOrderedBattleField().Where(b => b.Index == index).First();
+            opponentCard = opposingPlayerData.GetOrderedBattleField().Where(b => b.Index == index).First();
 
             if (myCard.Attack >= opponentCard.Health)
             {
                 opponentCard.Health -= myCard.Attack;
 
-                opposingPlayerData.RemoveCardFromBattleField(opponentCard);
+                this.Events.Add(new CardDeathEvent(opposingPlayerData, index));
             }
             else
             {

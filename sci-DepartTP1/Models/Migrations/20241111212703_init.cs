@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Models.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -425,7 +425,6 @@ namespace Models.Migrations
                     MaxHealth = table.Column<int>(type: "int", nullable: false),
                     Attack = table.Column<int>(type: "int", nullable: false),
                     Index = table.Column<int>(type: "int", nullable: false),
-                    Damage = table.Column<int>(type: "int", nullable: false),
                     MatchPlayerDataId = table.Column<int>(type: "int", nullable: true),
                     MatchPlayerDataId1 = table.Column<int>(type: "int", nullable: true),
                     MatchPlayerDataId2 = table.Column<int>(type: "int", nullable: true),
@@ -477,13 +476,13 @@ namespace Models.Migrations
                         column: x => x.OwnedCardId,
                         principalTable: "Deck",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_DeckOwnedCard_OwnedCards_DeckId",
                         column: x => x.DeckId,
                         principalTable: "OwnedCards",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.InsertData(
@@ -496,9 +495,9 @@ namespace Models.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "11111111-1111-1111-1111-111111111111", 0, "6c6108bc-04b9-46e9-a55a-daa5442bb68c", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEM13VpA8ztz5b4dPV1/6pcctIDq80TsY+B+W5u024SheXjSI786uLhsia5hxVceeIQ==", null, false, "21da835e-349b-4630-9595-52cedf1a768c", false, "admin@admin.com" },
-                    { "User1Id", 0, "11192e65-e7d3-4a77-be21-59524bb44500", null, false, false, null, null, null, null, null, false, "9df9c5b6-f95c-4401-b2f5-e59a8ce86ba0", false, null },
-                    { "User2Id", 0, "23faa931-5756-4182-9389-cb90074db024", null, false, false, null, null, null, null, null, false, "3b6eab8c-ac4a-4c56-9bf1-61ea5c46658f", false, null }
+                    { "11111111-1111-1111-1111-111111111111", 0, "7745de87-fbca-487d-a621-25f9b173e322", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEBc4UFgxAL9UbPrWAYMbXr8KXeYFGWaKJJhLRqxOfPwWfmFe97qCYbDfezAGkdjaFw==", null, false, "f3eae262-b224-41ce-8117-22fe50dff3f4", false, "admin@admin.com" },
+                    { "User1Id", 0, "02fad762-78c8-4dce-83eb-8ecf7e746374", null, false, false, null, null, null, null, null, false, "048a7040-6e52-4d2c-8a4d-ad4daf117d66", false, null },
+                    { "User2Id", 0, "fc476a7a-ff0b-4b04-bd3d-d73820ed9086", null, false, false, null, null, null, null, null, false, "21606440-3aa4-4710-bbe3-e95075758da5", false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -516,7 +515,7 @@ namespace Models.Migrations
                     { 8, 1, 2, 9, "https://i.ytimg.com/vi/2I7pZlUhZak/maxresdefault.jpg", "Blob Chat", 2 },
                     { 9, 5, 2, 1, "https://townsquare.media/site/142/files/2011/08/jedicats.jpg?w=980&q=75", "Jedi Chatton", 0 },
                     { 10, 6, 2, 1, "https://cdn.theatlantic.com/thumbor/fOZjgqHH0RmXA1A5ek-yDz697W4=/133x0:2091x1020/1200x625/media/img/mt/2015/12/RTRD62Q/original.jpg", "Chat Furtif", 0 },
-                    { 11, 0, 1, 10, "https://cdn.openart.ai/uploads/image_FkweA3pP_1695446033995_512.webp", "Chat Jesus", 0 }
+                    { 11, 0, 1, 10, "https://cdn.openart.ai/uploads/image_FkweA3pP_1695446033995_512.webp", "Chat Jesus", 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -549,6 +548,20 @@ namespace Models.Migrations
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[] { "11111111-1111-1111-1111-111111111112", "11111111-1111-1111-1111-111111111111" });
+
+            migrationBuilder.InsertData(
+                table: "CardPowers",
+                columns: new[] { "Id", "CardId", "PowerId", "Value" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, 1 },
+                    { 2, 1, 2, 1 },
+                    { 3, 2, 3, 2 },
+                    { 4, 11, 4, 1 },
+                    { 5, 3, 1, 1 },
+                    { 6, 3, 2, 1 },
+                    { 7, 3, 3, 1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Players",

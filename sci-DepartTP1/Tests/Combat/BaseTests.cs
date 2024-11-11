@@ -92,8 +92,8 @@ namespace Tests.Services
                 Mana = 0
             };
 
-            
-            
+
+
 
             // Le match n'est pas utilisé par ce test, on peut simplement en créer un sans initializer les données
             _match = new Match
@@ -101,7 +101,8 @@ namespace Tests.Services
                 UserAId = "UserAId",
                 UserBId = "UserBId",
                 PlayerDataA = _currentPlayerData,
-                PlayerDataB = _opposingPlayerData
+                PlayerDataB = _opposingPlayerData,
+                GameConfig = new GameConfig()
             };
 
             _cardA = new Card

@@ -26,8 +26,8 @@ namespace WebApi.Combat
             this.Events = new List<MatchEvent>();
 
 
-            myCard = currentPlayerData.BattleField[index];
-            opponentCard = opposingPlayerData.BattleField[index];
+            myCard = currentPlayerData.GetOrderedBattleField().Where(b => b.Index == index).First();
+            opponentCard = opposingPlayerData.GetOrderedBattleField().Where(b => b.Index == index).First();
 
             myCard.Health -= opponentCard.Attack;
             opponentCard.Health -= myCard.Attack;

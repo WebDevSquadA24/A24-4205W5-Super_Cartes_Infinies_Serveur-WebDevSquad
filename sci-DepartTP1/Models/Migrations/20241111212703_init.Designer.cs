@@ -12,15 +12,15 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241111195948_jin_a_oublie_de_faire_une_migration")]
-    partial class jin_a_oublie_de_faire_une_migration
+    [Migration("20241111212703_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -172,15 +172,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e4c73d24-dd83-4f58-9636-e50b10eaebf6",
+                            ConcurrencyStamp = "7745de87-fbca-487d-a621-25f9b173e322",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEu3hkeLceLhcDiCje4f17LAdm9RcorQakbsSk+SiOjeyvK4DZKst/lLdKoT8JC5vw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBc4UFgxAL9UbPrWAYMbXr8KXeYFGWaKJJhLRqxOfPwWfmFe97qCYbDfezAGkdjaFw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d79504ed-345f-4316-8c01-2db65a474909",
+                            SecurityStamp = "f3eae262-b224-41ce-8117-22fe50dff3f4",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -188,22 +188,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "891e5d75-7372-4722-9683-99ffef055b9d",
+                            ConcurrencyStamp = "02fad762-78c8-4dce-83eb-8ecf7e746374",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f5f9fe68-8f88-4042-b5ef-1b8886cabf7a",
+                            SecurityStamp = "048a7040-6e52-4d2c-8a4d-ad4daf117d66",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "be6f8764-8d18-4df2-977d-f937ead54c89",
+                            ConcurrencyStamp = "fc476a7a-ff0b-4b04-bd3d-d73820ed9086",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3ed5108b-4eb1-4c9c-a2ac-df9a819be17d",
+                            SecurityStamp = "21606440-3aa4-4710-bbe3-e95075758da5",
                             TwoFactorEnabled = false
                         });
                 });
@@ -324,6 +324,57 @@ namespace Models.Migrations
                     b.HasIndex("PowerId");
 
                     b.ToTable("CardPowers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CardId = 1,
+                            PowerId = 1,
+                            Value = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CardId = 1,
+                            PowerId = 2,
+                            Value = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CardId = 2,
+                            PowerId = 3,
+                            Value = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CardId = 11,
+                            PowerId = 4,
+                            Value = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CardId = 3,
+                            PowerId = 1,
+                            Value = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CardId = 3,
+                            PowerId = 2,
+                            Value = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CardId = 3,
+                            PowerId = 3,
+                            Value = 1
+                        });
                 });
 
             modelBuilder.Entity("Models.Models.Deck", b =>
@@ -744,7 +795,7 @@ namespace Models.Migrations
                             Health = 10,
                             ImageUrl = "https://cdn.openart.ai/uploads/image_FkweA3pP_1695446033995_512.webp",
                             Name = "Chat Jesus",
-                            Rarity = 0
+                            Rarity = 3
                         });
                 });
 
