@@ -24,7 +24,6 @@ namespace Super_Cartes_Infinies.Models
 		public int Attack { get; set; }
         public int Index { get; set; }
 
-
         public bool HasPower(int powerId)
         {
 			// Return true if the Card has that power

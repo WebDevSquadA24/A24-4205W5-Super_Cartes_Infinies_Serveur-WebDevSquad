@@ -8,10 +8,20 @@ namespace WebApi.Combat
         public override string EventType { get { return "CardDamage"; } }
         public PlayableCard myCard { get; set; }
         public PlayableCard opponentCard { get; set; }
+        public int DamageToMe { get; set; }
+        public int DamageToOpponent { get; set; }
+
+        public int Index { get; set; }
+
+        public int PlayerId { get; set; }
+
+
+
 
 
         public CardDamageEvent(MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData, Match match, int index)
         {
+            Index = index;
 
             this.Events = new List<MatchEvent>();
 
@@ -21,6 +31,10 @@ namespace WebApi.Combat
 
             myCard.Health -= opponentCard.Attack;
             opponentCard.Health -= myCard.Attack;
+
+            DamageToMe = opponentCard.Attack;
+            DamageToOpponent = myCard.Attack;
+            PlayerId = currentPlayerData.PlayerId;
 
             //Opponent Card Dead
             if (opponentCard.Health <= 0)
