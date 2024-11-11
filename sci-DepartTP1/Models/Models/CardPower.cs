@@ -1,4 +1,5 @@
 using Super_Cartes_Infinies.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Models.Models

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Models.Migrations
 {
     /// <inheritdoc />
-    public partial class initiale : Migration
+    public partial class post_merge_main_into_mvc_init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -111,7 +111,10 @@ namespace Models.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IconURL = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -492,9 +495,9 @@ namespace Models.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "11111111-1111-1111-1111-111111111111", 0, "bdc65033-cf50-477b-8011-1c0603b93d96", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEJh8mJQTOBosseY9rcdTWp6Su7Qq5oZiz0EI+cSJtLU/ZlQYKjjj/z3OkwsDdNlqcQ==", null, false, "c9275323-30bc-4f61-889e-475edc58bcf7", false, "admin@admin.com" },
-                    { "User1Id", 0, "8df5f65d-54e0-4bf4-bd68-feff7d3a1d4c", null, false, false, null, null, null, null, null, false, "f4628f81-102f-4858-9789-35c1de074814", false, null },
-                    { "User2Id", 0, "20216c84-fa34-4c45-ad55-38dfb70be960", null, false, false, null, null, null, null, null, false, "49bc5491-f55e-4020-9168-a609ebd825f2", false, null }
+                    { "11111111-1111-1111-1111-111111111111", 0, "8790e697-0b1e-4bcb-989b-fedf590138ab", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAECHKjB3zUperiaES2Um9VJ2HGDrSjP0dMvwsXfVKM+5p6HaVBPw3xyeKOz1QuqTnBQ==", null, false, "4336048f-121d-4ed7-87e7-62e9ea1e2282", false, "admin@admin.com" },
+                    { "User1Id", 0, "9ea48969-8bbe-41a6-a9f4-1fa2c626fad6", null, false, false, null, null, null, null, null, false, "e5ebb6a3-0dbe-49ea-94b5-f88510d6c878", false, null },
+                    { "User2Id", 0, "bb4e2bff-09df-4a0b-95fc-7cd4678c464b", null, false, false, null, null, null, null, null, false, "7fbb5497-d24c-43b2-b7f8-269aa5e4304e", false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -511,7 +514,8 @@ namespace Models.Migrations
                     { 7, 6, 4, 3, "https://images.squarespace-cdn.com/content/51b3dc8ee4b051b96ceb10de/1394662654865-JKOZ7ZFF39247VYDTGG9/hilarious-jedi-cats-fight-video-preview.jpg?content-type=image%2Fjpeg", "Jedi Chat", 2 },
                     { 8, 1, 2, 9, "https://i.ytimg.com/vi/2I7pZlUhZak/maxresdefault.jpg", "Blob Chat", 2 },
                     { 9, 5, 2, 1, "https://townsquare.media/site/142/files/2011/08/jedicats.jpg?w=980&q=75", "Jedi Chatton", 0 },
-                    { 10, 6, 2, 1, "https://cdn.theatlantic.com/thumbor/fOZjgqHH0RmXA1A5ek-yDz697W4=/133x0:2091x1020/1200x625/media/img/mt/2015/12/RTRD62Q/original.jpg", "Chat Furtif", 1 }
+                    { 10, 6, 2, 1, "https://cdn.theatlantic.com/thumbor/fOZjgqHH0RmXA1A5ek-yDz697W4=/133x0:2091x1020/1200x625/media/img/mt/2015/12/RTRD62Q/original.jpg", "Chat Furtif", 0 },
+                    { 11, 0, 1, 10, "https://cdn.openart.ai/uploads/image_FkweA3pP_1695446033995_512.webp", "Chat Jesus", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -527,6 +531,17 @@ namespace Models.Migrations
                     { 1, 0, "https://th-thumbnailer.cdn-si-edu.com/3hb9uUW7hZHUXxJmBmfFkwkivJI=/fit-in/1600x0/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/fd/e7/fde77fde-700d-4a08-8e19-305a0de60130/5879116857_4ab170f4d5_b.jpg", "Basic Pack", 3, 200.0 },
                     { 2, 0, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUe7jv0hsq3INvymTpQvP8F-TprBnerk4HGnyHKY5nFj1kXHEg", "Normal Pack", 4, 500.0 },
                     { 3, 1, "https://i.pinimg.com/474x/f8/39/37/f839377928c94ac922cc39f35fd0a841.jpg", "Super Pack", 5, 2000.0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Powers",
+                columns: new[] { "Id", "Description", "IconURL", "Name" },
+                values: new object[,]
+                {
+                    { 1, "permet à une carte d’attaquer en « premier » et de ne pas recevoir de dégât si elle tue la carte de l’adversaire. (Fonctionne uniquement à l’attaque, pas à la défense)", "fas fa-bolt", "First Strike" },
+                    { 2, "lorsqu’une carte défend, elle inflige X de dégâts AVANT de recevoir des dégâts. Si l’attaquant est tué par ces dégâts, l’attaque s’arrête et le défenseur ne reçoit pas de dégâts.", "fas fa-exclamation", "Thorns" },
+                    { 3, "soigne les cartes alliées de X incluant elle-même AVANT d’attaquer (mais les cartes ne peuvent pas avoir plus de health qu’au départ.)", "fas fa-heartbeat", "Heal" },
+                    { 4, "tant que la carte est sur le terrain son joueur gagne de la vie", "fas fa-cross", "Love of Jesus Christ" }
                 });
 
             migrationBuilder.InsertData(

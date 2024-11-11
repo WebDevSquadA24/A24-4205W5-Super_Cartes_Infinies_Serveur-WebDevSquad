@@ -169,15 +169,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bdc65033-cf50-477b-8011-1c0603b93d96",
+                            ConcurrencyStamp = "8790e697-0b1e-4bcb-989b-fedf590138ab",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJh8mJQTOBosseY9rcdTWp6Su7Qq5oZiz0EI+cSJtLU/ZlQYKjjj/z3OkwsDdNlqcQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECHKjB3zUperiaES2Um9VJ2HGDrSjP0dMvwsXfVKM+5p6HaVBPw3xyeKOz1QuqTnBQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c9275323-30bc-4f61-889e-475edc58bcf7",
+                            SecurityStamp = "4336048f-121d-4ed7-87e7-62e9ea1e2282",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -185,22 +185,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8df5f65d-54e0-4bf4-bd68-feff7d3a1d4c",
+                            ConcurrencyStamp = "9ea48969-8bbe-41a6-a9f4-1fa2c626fad6",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f4628f81-102f-4858-9789-35c1de074814",
+                            SecurityStamp = "e5ebb6a3-0dbe-49ea-94b5-f88510d6c878",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "20216c84-fa34-4c45-ad55-38dfb70be960",
+                            ConcurrencyStamp = "bb4e2bff-09df-4a0b-95fc-7cd4678c464b",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "49bc5491-f55e-4020-9168-a609ebd825f2",
+                            SecurityStamp = "7fbb5497-d24c-43b2-b7f8-269aa5e4304e",
                             TwoFactorEnabled = false
                         });
                 });
@@ -476,6 +476,36 @@ namespace Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Powers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "permet à une carte d’attaquer en « premier » et de ne pas recevoir de dégât si elle tue la carte de l’adversaire. (Fonctionne uniquement à l’attaque, pas à la défense)",
+                            IconURL = "fas fa-bolt",
+                            Name = "First Strike"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "lorsqu’une carte défend, elle inflige X de dégâts AVANT de recevoir des dégâts. Si l’attaquant est tué par ces dégâts, l’attaque s’arrête et le défenseur ne reçoit pas de dégâts.",
+                            IconURL = "fas fa-exclamation",
+                            Name = "Thorns"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "soigne les cartes alliées de X incluant elle-même AVANT d’attaquer (mais les cartes ne peuvent pas avoir plus de health qu’au départ.)",
+                            IconURL = "fas fa-heartbeat",
+                            Name = "Heal"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "tant que la carte est sur le terrain son joueur gagne de la vie",
+                            IconURL = "fas fa-cross",
+                            Name = "Love of Jesus Christ"
+                        });
                 });
 
             modelBuilder.Entity("Models.Models.Probability", b =>
@@ -701,7 +731,17 @@ namespace Models.Migrations
                             Health = 1,
                             ImageUrl = "https://cdn.theatlantic.com/thumbor/fOZjgqHH0RmXA1A5ek-yDz697W4=/133x0:2091x1020/1200x625/media/img/mt/2015/12/RTRD62Q/original.jpg",
                             Name = "Chat Furtif",
-                            Rarity = 1
+                            Rarity = 0
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Attack = 0,
+                            Cost = 1,
+                            Health = 10,
+                            ImageUrl = "https://cdn.openart.ai/uploads/image_FkweA3pP_1695446033995_512.webp",
+                            Name = "Chat Jesus",
+                            Rarity = 0
                         });
                 });
 

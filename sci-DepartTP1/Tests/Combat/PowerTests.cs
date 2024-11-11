@@ -264,13 +264,13 @@ namespace Tests.Services
         {
             Power lovePower = new Power
             {
-                Id = Power.LoveOfJesusChrist_ID
+                Id = Power.LOVE_OF_JESUS_CHRIST
             };
 
             // On donne le pouvoir Heal à l'attaquant
             CardPower cardPower = new CardPower
             {
-                PowerId = Power.LoveOfJesusChrist_ID,
+                PowerId = Power.LOVE_OF_JESUS_CHRIST,
                 Power = lovePower,
                 Card = _cardB,
             };
