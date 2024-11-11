@@ -62,7 +62,8 @@ namespace Models.Migrations
                     Attack = table.Column<int>(type: "int", nullable: false),
                     Health = table.Column<int>(type: "int", nullable: false),
                     Cost = table.Column<int>(type: "int", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rarity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,11 +77,45 @@ namespace Models.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NbCardsToDraw = table.Column<int>(type: "int", nullable: false),
-                    NbManaToReceive = table.Column<int>(type: "int", nullable: false)
+                    NbManaToReceive = table.Column<int>(type: "int", nullable: false),
+                    NbMaxDeck = table.Column<int>(type: "int", nullable: false),
+                    NbMaxCard = table.Column<int>(type: "int", nullable: false),
+                    BeginnerMoney = table.Column<double>(type: "float", nullable: false),
+                    WinnerMoney = table.Column<double>(type: "float", nullable: false),
+                    LoserMoney = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GameConfigs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Packs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NbCards = table.Column<int>(type: "int", nullable: false),
+                    DefaultRarity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Packs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Powers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Powers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,7 +231,8 @@ namespace Models.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Money = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -229,6 +265,76 @@ namespace Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Probability",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<double>(type: "float", nullable: false),
+                    Rarity = table.Column<int>(type: "int", nullable: false),
+                    BaseQty = table.Column<int>(type: "int", nullable: false),
+                    PackId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Probability", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Probability_Packs_PackId",
+                        column: x => x.PackId,
+                        principalTable: "Packs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CardPowers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CardId = table.Column<int>(type: "int", nullable: false),
+                    PowerId = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CardPowers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CardPowers_Cards_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CardPowers_Powers_PowerId",
+                        column: x => x.PowerId,
+                        principalTable: "Powers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Deck",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsCurrent = table.Column<bool>(type: "bit", nullable: false),
+                    PlayerId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deck", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Deck_Players_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "Players",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MatchPlayersData",
                 columns: table => new
                 {
@@ -236,7 +342,8 @@ namespace Models.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Health = table.Column<int>(type: "int", nullable: false),
                     Mana = table.Column<int>(type: "int", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false)
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
+                    IndexBattleField = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -305,14 +412,16 @@ namespace Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlayableCard",
+                name: "PlayableCards",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CardId = table.Column<int>(type: "int", nullable: false),
                     Health = table.Column<int>(type: "int", nullable: false),
+                    MaxHealth = table.Column<int>(type: "int", nullable: false),
                     Attack = table.Column<int>(type: "int", nullable: false),
+                    Index = table.Column<int>(type: "int", nullable: false),
                     MatchPlayerDataId = table.Column<int>(type: "int", nullable: true),
                     MatchPlayerDataId1 = table.Column<int>(type: "int", nullable: true),
                     MatchPlayerDataId2 = table.Column<int>(type: "int", nullable: true),
@@ -320,33 +429,57 @@ namespace Models.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlayableCard", x => x.Id);
+                    table.PrimaryKey("PK_PlayableCards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PlayableCard_Cards_CardId",
+                        name: "FK_PlayableCards_Cards_CardId",
                         column: x => x.CardId,
                         principalTable: "Cards",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PlayableCard_MatchPlayersData_MatchPlayerDataId",
+                        name: "FK_PlayableCards_MatchPlayersData_MatchPlayerDataId",
                         column: x => x.MatchPlayerDataId,
                         principalTable: "MatchPlayersData",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PlayableCard_MatchPlayersData_MatchPlayerDataId1",
+                        name: "FK_PlayableCards_MatchPlayersData_MatchPlayerDataId1",
                         column: x => x.MatchPlayerDataId1,
                         principalTable: "MatchPlayersData",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PlayableCard_MatchPlayersData_MatchPlayerDataId2",
+                        name: "FK_PlayableCards_MatchPlayersData_MatchPlayerDataId2",
                         column: x => x.MatchPlayerDataId2,
                         principalTable: "MatchPlayersData",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PlayableCard_MatchPlayersData_MatchPlayerDataId3",
+                        name: "FK_PlayableCards_MatchPlayersData_MatchPlayerDataId3",
                         column: x => x.MatchPlayerDataId3,
                         principalTable: "MatchPlayersData",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeckOwnedCard",
+                columns: table => new
+                {
+                    DeckId = table.Column<int>(type: "int", nullable: false),
+                    OwnedCardId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeckOwnedCard", x => new { x.DeckId, x.OwnedCardId });
+                    table.ForeignKey(
+                        name: "FK_DeckOwnedCard_Deck_OwnedCardId",
+                        column: x => x.OwnedCardId,
+                        principalTable: "Deck",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_DeckOwnedCard_OwnedCards_DeckId",
+                        column: x => x.DeckId,
+                        principalTable: "OwnedCards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.InsertData(
@@ -359,32 +492,42 @@ namespace Models.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "11111111-1111-1111-1111-111111111111", 0, "4dcfb2a2-96cb-4b8e-bf4c-c1ce76274e9d", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEGtBYaNEQYtS7SYCmgVTeJm0RirmS+WretihTP1tE2ieKfHpudnOhGYvfy56BjQ5ow==", null, false, "bbc15009-c9f5-4829-8852-ba1255cca307", false, "admin@admin.com" },
-                    { "User1Id", 0, "f6074f06-0629-4dfa-bf47-c8f0b4ad6390", null, false, false, null, null, null, null, null, false, "889a7b3d-6e17-4364-b44b-9eefeb5f64fd", false, null },
-                    { "User2Id", 0, "758c2b86-a1d4-4deb-8fe0-8543e66dbc13", null, false, false, null, null, null, null, null, false, "bc0df590-1f7d-410c-9d94-4916ff15ce91", false, null }
+                    { "11111111-1111-1111-1111-111111111111", 0, "bdc65033-cf50-477b-8011-1c0603b93d96", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEJh8mJQTOBosseY9rcdTWp6Su7Qq5oZiz0EI+cSJtLU/ZlQYKjjj/z3OkwsDdNlqcQ==", null, false, "c9275323-30bc-4f61-889e-475edc58bcf7", false, "admin@admin.com" },
+                    { "User1Id", 0, "8df5f65d-54e0-4bf4-bd68-feff7d3a1d4c", null, false, false, null, null, null, null, null, false, "f4628f81-102f-4858-9789-35c1de074814", false, null },
+                    { "User2Id", 0, "20216c84-fa34-4c45-ad55-38dfb70be960", null, false, false, null, null, null, null, null, false, "49bc5491-f55e-4020-9168-a609ebd825f2", false, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Cards",
-                columns: new[] { "Id", "Attack", "Cost", "Health", "ImageUrl", "Name" },
+                columns: new[] { "Id", "Attack", "Cost", "Health", "ImageUrl", "Name", "Rarity" },
                 values: new object[,]
                 {
-                    { 1, 3, 3, 3, "https://i.pinimg.com/originals/a8/16/49/a81649bd4b0f032ce633161c5a076b87.jpg", "Chat Dragon" },
-                    { 2, 2, 3, 5, "https://i0.wp.com/thediscerningcat.com/wp-content/uploads/2021/02/tabby-cat-wearing-sunglasses.jpg", "Chat Awesome" },
-                    { 3, 2, 1, 1, "https://cdn.wallpapersafari.com/27/53/SZ8PO9.jpg", "Chatton Laser" },
-                    { 4, 8, 4, 4, "https://wallpapers.com/images/hd/epic-cat-poster-baavft05ylgta4j8.jpg", "Chat Spacial" },
-                    { 5, 7, 5, 7, "https://i.etsystatic.com/6230905/r/il/32aa5a/3474618751/il_fullxfull.3474618751_mfvf.jpg", "Chat Guerrier" },
-                    { 6, 4, 2, 2, "https://store.playstation.com/store/api/chihiro/00_09_000/container/AU/en/99/EP2402-CUSA05624_00-ETH0000000002875/0/image?_version=00_09_000&platform=chihiro&bg_color=000000&opacity=100&w=720&h=720", "Chat Laser" },
-                    { 7, 6, 4, 3, "https://images.squarespace-cdn.com/content/51b3dc8ee4b051b96ceb10de/1394662654865-JKOZ7ZFF39247VYDTGG9/hilarious-jedi-cats-fight-video-preview.jpg?content-type=image%2Fjpeg", "Jedi Chat" },
-                    { 8, 1, 2, 9, "https://i.ytimg.com/vi/2I7pZlUhZak/maxresdefault.jpg", "Blob Chat" },
-                    { 9, 5, 2, 1, "https://townsquare.media/site/142/files/2011/08/jedicats.jpg?w=980&q=75", "Jedi Chatton" },
-                    { 10, 6, 2, 1, "https://cdn.theatlantic.com/thumbor/fOZjgqHH0RmXA1A5ek-yDz697W4=/133x0:2091x1020/1200x625/media/img/mt/2015/12/RTRD62Q/original.jpg", "Chat Furtif" }
+                    { 1, 3, 3, 3, "https://i.pinimg.com/originals/a8/16/49/a81649bd4b0f032ce633161c5a076b87.jpg", "Chat Dragon", 0 },
+                    { 2, 2, 3, 5, "https://i0.wp.com/thediscerningcat.com/wp-content/uploads/2021/02/tabby-cat-wearing-sunglasses.jpg", "Chat Awesome", 1 },
+                    { 3, 2, 1, 1, "https://cdn.wallpapersafari.com/27/53/SZ8PO9.jpg", "Chatton Laser", 0 },
+                    { 4, 8, 4, 4, "https://wallpapers.com/images/hd/epic-cat-poster-baavft05ylgta4j8.jpg", "Chat Spacial", 3 },
+                    { 5, 7, 5, 7, "https://i.etsystatic.com/6230905/r/il/32aa5a/3474618751/il_fullxfull.3474618751_mfvf.jpg", "Chat Guerrier", 3 },
+                    { 6, 4, 2, 2, "https://store.playstation.com/store/api/chihiro/00_09_000/container/AU/en/99/EP2402-CUSA05624_00-ETH0000000002875/0/image?_version=00_09_000&platform=chihiro&bg_color=000000&opacity=100&w=720&h=720", "Chat Laser", 0 },
+                    { 7, 6, 4, 3, "https://images.squarespace-cdn.com/content/51b3dc8ee4b051b96ceb10de/1394662654865-JKOZ7ZFF39247VYDTGG9/hilarious-jedi-cats-fight-video-preview.jpg?content-type=image%2Fjpeg", "Jedi Chat", 2 },
+                    { 8, 1, 2, 9, "https://i.ytimg.com/vi/2I7pZlUhZak/maxresdefault.jpg", "Blob Chat", 2 },
+                    { 9, 5, 2, 1, "https://townsquare.media/site/142/files/2011/08/jedicats.jpg?w=980&q=75", "Jedi Chatton", 0 },
+                    { 10, 6, 2, 1, "https://cdn.theatlantic.com/thumbor/fOZjgqHH0RmXA1A5ek-yDz697W4=/133x0:2091x1020/1200x625/media/img/mt/2015/12/RTRD62Q/original.jpg", "Chat Furtif", 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "GameConfigs",
-                columns: new[] { "Id", "NbCardsToDraw", "NbManaToReceive" },
-                values: new object[] { 1, 4, 3 });
+                columns: new[] { "Id", "BeginnerMoney", "LoserMoney", "NbCardsToDraw", "NbManaToReceive", "NbMaxCard", "NbMaxDeck", "WinnerMoney" },
+                values: new object[] { 1, 1000.0, 50.0, 4, 3, 8, 5, 100.0 });
+
+            migrationBuilder.InsertData(
+                table: "Packs",
+                columns: new[] { "Id", "DefaultRarity", "ImageURL", "Name", "NbCards", "Price" },
+                values: new object[,]
+                {
+                    { 1, 0, "https://th-thumbnailer.cdn-si-edu.com/3hb9uUW7hZHUXxJmBmfFkwkivJI=/fit-in/1600x0/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/fd/e7/fde77fde-700d-4a08-8e19-305a0de60130/5879116857_4ab170f4d5_b.jpg", "Basic Pack", 3, 200.0 },
+                    { 2, 0, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUe7jv0hsq3INvymTpQvP8F-TprBnerk4HGnyHKY5nFj1kXHEg", "Normal Pack", 4, 500.0 },
+                    { 3, 1, "https://i.pinimg.com/474x/f8/39/37/f839377928c94ac922cc39f35fd0a841.jpg", "Super Pack", 5, 2000.0 }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -393,11 +536,11 @@ namespace Models.Migrations
 
             migrationBuilder.InsertData(
                 table: "Players",
-                columns: new[] { "Id", "Name", "UserId" },
+                columns: new[] { "Id", "Money", "Name", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Test player 1", "User1Id" },
-                    { 2, "Test player 2", "User2Id" }
+                    { 1, 0.0, "Test player 1", "User1Id" },
+                    { 2, 0.0, "Test player 2", "User2Id" }
                 });
 
             migrationBuilder.InsertData(
@@ -456,6 +599,26 @@ namespace Models.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CardPowers_CardId",
+                table: "CardPowers",
+                column: "CardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CardPowers_PowerId",
+                table: "CardPowers",
+                column: "PowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Deck_PlayerId",
+                table: "Deck",
+                column: "PlayerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeckOwnedCard_OwnedCardId",
+                table: "DeckOwnedCard",
+                column: "OwnedCardId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Matches_PlayerDataAId",
                 table: "Matches",
                 column: "PlayerDataAId");
@@ -481,34 +644,39 @@ namespace Models.Migrations
                 column: "PlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayableCard_CardId",
-                table: "PlayableCard",
+                name: "IX_PlayableCards_CardId",
+                table: "PlayableCards",
                 column: "CardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayableCard_MatchPlayerDataId",
-                table: "PlayableCard",
+                name: "IX_PlayableCards_MatchPlayerDataId",
+                table: "PlayableCards",
                 column: "MatchPlayerDataId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayableCard_MatchPlayerDataId1",
-                table: "PlayableCard",
+                name: "IX_PlayableCards_MatchPlayerDataId1",
+                table: "PlayableCards",
                 column: "MatchPlayerDataId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayableCard_MatchPlayerDataId2",
-                table: "PlayableCard",
+                name: "IX_PlayableCards_MatchPlayerDataId2",
+                table: "PlayableCards",
                 column: "MatchPlayerDataId2");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayableCard_MatchPlayerDataId3",
-                table: "PlayableCard",
+                name: "IX_PlayableCards_MatchPlayerDataId3",
+                table: "PlayableCards",
                 column: "MatchPlayerDataId3");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Players_UserId",
                 table: "Players",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Probability_PackId",
+                table: "Probability",
+                column: "PackId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StarterCards_CardId",
@@ -535,16 +703,22 @@ namespace Models.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CardPowers");
+
+            migrationBuilder.DropTable(
+                name: "DeckOwnedCard");
+
+            migrationBuilder.DropTable(
                 name: "GameConfigs");
 
             migrationBuilder.DropTable(
                 name: "Matches");
 
             migrationBuilder.DropTable(
-                name: "OwnedCards");
+                name: "PlayableCards");
 
             migrationBuilder.DropTable(
-                name: "PlayableCard");
+                name: "Probability");
 
             migrationBuilder.DropTable(
                 name: "StarterCards");
@@ -553,7 +727,19 @@ namespace Models.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Powers");
+
+            migrationBuilder.DropTable(
+                name: "Deck");
+
+            migrationBuilder.DropTable(
+                name: "OwnedCards");
+
+            migrationBuilder.DropTable(
                 name: "MatchPlayersData");
+
+            migrationBuilder.DropTable(
+                name: "Packs");
 
             migrationBuilder.DropTable(
                 name: "Cards");
