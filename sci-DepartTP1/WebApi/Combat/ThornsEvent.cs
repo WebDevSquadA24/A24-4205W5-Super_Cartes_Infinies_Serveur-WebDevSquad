@@ -11,10 +11,12 @@ namespace WebApi.Combat
 
         public int ThornsDamage { get; set; }
         public int PlayerId { get; set; }
+        public int Index { get; set; }
         public ThornsEvent(MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData,Match match, int index, int thornValue)
         {
             this.Events = new List<MatchEvent>();
             ThornsDamage = thornValue;
+            Index = index;
             PlayerId = currentPlayerData.PlayerId;
             if (currentPlayerData.BattleField.Count > 0 && opposingPlayerData.BattleField.Count > 0)
             {
