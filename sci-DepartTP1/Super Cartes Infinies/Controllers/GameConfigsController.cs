@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,7 +38,7 @@ namespace Super_Cartes_Infinies.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NbCardsToDraw,NbManaToReceive")] GameConfig gameConfig)
+        public async Task<IActionResult> Create([Bind("Id,NbCardsToDraw,NbManaToReceive,NbMaxDeck,NbMaxCard,BeginnerMoney,WinnerMoney,LoserMoney")] GameConfig gameConfig)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +70,7 @@ namespace Super_Cartes_Infinies.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NbCardsToDraw,NbManaToReceive")] GameConfig gameConfig)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NbCardsToDraw,NbManaToReceive,NbMaxDeck,NbMaxCard,BeginnerMoney,WinnerMoney,LoserMoney")] GameConfig gameConfig)
         {
             if (id != gameConfig.Id)
             {

@@ -1,11 +1,13 @@
-﻿using Super_Cartes_Infinies.Combat;
+using Microsoft.EntityFrameworkCore;
+using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 using Super_Cartes_Infinies.Models.Dtos;
+using WebApi.Combat;
 
 namespace Super_Cartes_Infinies.Services
 {
-	public class MatchesService
+    public class MatchesService
     {
         private WaitingUserService _waitingUserService;
         private PlayersService _playersService;
@@ -13,7 +15,7 @@ namespace Super_Cartes_Infinies.Services
         private MatchConfigurationService _matchConfigurationService;
         private ApplicationDbContext _dbContext;
 
-        public MatchesService(ApplicationDbContext context, WaitingUserService waitingUserService, PlayersService playersService, CardsService cardsService, MatchConfigurationService matchConfigurationService)        {
+        public MatchesService(ApplicationDbContext context, WaitingUserService waitingUserService, PlayersService playersService, CardsService cardsService, MatchConfigurationService matchConfigurationService) {
             _dbContext = context;
             _waitingUserService = waitingUserService;
             _playersService = playersService;
@@ -29,7 +31,7 @@ namespace Super_Cartes_Infinies.Services
             // Vérifier si le match n'a pas déjà été démarré (de façon plus générale, retourner un match courrant si le joueur y participe)
             IEnumerable<Match> matches = _dbContext.Matches.Where(m => m.IsMatchCompleted == false && (m.UserAId == userId || m.UserBId == userId));
 
-            if(matches.Count() > 1)
+            if (matches.Count() > 1)
             {
                 throw new Exception("A player should never be playing 2 matches at the same time!");
             }
@@ -43,7 +45,7 @@ namespace Super_Cartes_Infinies.Services
             if (matches.Count() == 1)
             {
                 match = matches.First();
-                if(specificMatchId != null && specificMatchId != match.Id )
+                if (specificMatchId != null && specificMatchId != match.Id)
                 {
                     match = null;
                 }
@@ -54,7 +56,7 @@ namespace Super_Cartes_Infinies.Services
                 }
             }
             // Si on veut rejoindre un match en particulier, on ne se met pas en file
-            else if(specificMatchId == null)
+            else if (specificMatchId == null)
             {
                 UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
 
@@ -73,7 +75,7 @@ namespace Super_Cartes_Infinies.Services
                 }
             }
 
-            if(match != null) {
+            if (match != null) {
                 return new JoiningMatchData
                 {
                     Match = match,
@@ -117,7 +119,7 @@ namespace Super_Cartes_Infinies.Services
             int nbCardsToDraw = _matchConfigurationService.GetNbCardsToDraw();
             int nbManaPerTurn = _matchConfigurationService.GetNbManaPerTurn();
             var startMatchEvent = new StartMatchEvent(match, currentPlayerData, opposingPlayerData, nbCardsToDraw, nbManaPerTurn);
-            
+
             await _dbContext.SaveChangesAsync();
 
             return startMatchEvent;
@@ -154,6 +156,7 @@ namespace Super_Cartes_Infinies.Services
             }
 
             int nbManaPerTurn = _matchConfigurationService.GetNbManaPerTurn();
+            match.GameConfig = _dbContext.GameConfigs.FirstOrDefault();
             var playerEndTurnEvent = new PlayerEndTurnEvent(match, currentPlayerData, opposingPlayerData, nbManaPerTurn);
 
             await _dbContext.SaveChangesAsync();
@@ -188,11 +191,49 @@ namespace Super_Cartes_Infinies.Services
                 opposingPlayerData = match.PlayerDataA;
             }
 
+            match.GameConfig = _dbContext.GameConfigs.FirstOrDefault();
             var surrenderEvent = new SurrenderEvent(match, currentPlayerData, opposingPlayerData);
 
             await _dbContext.SaveChangesAsync();
 
             return surrenderEvent;
+        }
+
+        public async Task<PlayCardEvent> PlayCard(string userId, int matchId, int playableId)
+        {
+            Match? match = await _dbContext.Matches.FindAsync(matchId);
+
+            if (match == null)
+                throw new Exception("Impossible de trouver le match");
+
+            if (match.IsMatchCompleted)
+                throw new Exception("Le match est déjà terminé");
+
+            if (match.UserAId != userId && match.UserBId != userId)
+                throw new Exception("Le joueur n'est pas dans ce match");
+
+            MatchPlayerData currentPlayerData;
+            MatchPlayerData opposingPlayerData;
+            bool yourTurn = false;
+
+            if (match.UserAId == userId)
+            {
+                currentPlayerData = match.PlayerDataA;
+                opposingPlayerData = match.PlayerDataB;
+                yourTurn = match.IsPlayerATurn;
+            }
+            else
+            {
+                currentPlayerData = match.PlayerDataB;
+                opposingPlayerData = match.PlayerDataA;
+                yourTurn = !match.IsPlayerATurn;
+            }
+            var playEvent = new PlayCardEvent(currentPlayerData, opposingPlayerData, playableId, yourTurn);
+            //var playEvent = new SurrenderEvent(match, currentPlayerData, opposingPlayerData);
+            await _dbContext.SaveChangesAsync();
+
+
+            return playEvent;
         }
     }
 }

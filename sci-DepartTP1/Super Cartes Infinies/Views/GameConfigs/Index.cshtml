@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Models.Models.GameConfig>
+@model IEnumerable<Models.Models.GameConfig>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,6 +18,21 @@
             <th>
                 @Html.DisplayNameFor(model => model.NbManaToReceive)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NbMaxDeck)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NbMaxCard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeginnerMoney)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WinnerMoney)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoserMoney)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -29,6 +44,21 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NbManaToReceive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NbMaxDeck)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NbMaxCard)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeginnerMoney)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WinnerMoney)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoserMoney)
             </td>
             <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |

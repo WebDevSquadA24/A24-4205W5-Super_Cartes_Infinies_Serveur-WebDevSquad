@@ -32,6 +32,9 @@ public class ApplicationDbContext : IdentityDbContext
         builder.Entity<StarterCard>().HasData(Seed.SeedStarterCards());
         builder.Entity<GameConfig>().HasData(Seed.SeedGameConfig());
 
+        builder.Entity<Pack>().HasData(Seed.SeedPacks());
+
+
         builder.Entity<Power>().HasData(Seed.SeedPowers());
         //builder.Entity<CardPower>().HasData(Seed.SeedCardPowers());
 
@@ -68,5 +71,8 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Power> Powers { get; set; } = default!;
 
     public DbSet<CardPower> CardPowers { get; set; } = default!;
+    public DbSet<PlayableCard> PlayableCards { get; set; } = default!;
+    public DbSet<Pack> Packs { get; set; } = default!;
+    public DbSet<Deck> Decks { get; set; }
 }
 

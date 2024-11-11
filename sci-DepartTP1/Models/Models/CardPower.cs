@@ -1,4 +1,4 @@
-﻿using Super_Cartes_Infinies.Models;
+using Super_Cartes_Infinies.Models;
 using System.Text.Json.Serialization;
 
 namespace Models.Models
@@ -14,5 +14,7 @@ namespace Models.Models
         public virtual Power Power { get; set; }
         public int PowerId { get; set; }
         public int Value { get; set; }
+
+        
     }
 }

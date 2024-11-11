@@ -1,12 +1,27 @@
 ﻿using Microsoft.Extensions.Logging;
+using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 
 namespace Super_Cartes_Infinies.Combat
 {
     public class EndMatchEvent : MatchEvent
     {
+        public EndMatchEvent()
+        {
+        }
+
         public override string EventType { get { return "EndMatch"; } }
         public int WinningPlayerId { get; set; }
+        public int LosingPlayerId { get; set; }
+
+        public double WinningMoney { get; set; }
+
+        public double LosingMoney { get; set; }
+
+        public double WinningReward { get; set; }
+
+        public double LosingReward { get; set; }
+
 
         public EndMatchEvent(Match match, MatchPlayerData winningPlayerData, MatchPlayerData losingPlayerData)
         {
@@ -16,6 +31,16 @@ namespace Super_Cartes_Infinies.Combat
                 return;
 
             WinningPlayerId = winningPlayerData.PlayerId;
+            LosingPlayerId = losingPlayerData.PlayerId;
+
+            WinningReward = match.GameConfig.WinnerMoney;
+            LosingReward = match.GameConfig.LoserMoney;
+
+            winningPlayerData.Player.Money += WinningReward;
+            losingPlayerData.Player.Money += LosingReward;
+
+            WinningMoney = winningPlayerData.Player.Money;
+            LosingMoney = losingPlayerData.Player.Money;
 
             match.IsMatchCompleted = true;
 
@@ -27,5 +52,6 @@ namespace Super_Cartes_Infinies.Combat
 
             match.WinnerUserId = userId;
         }
+
     }
 }

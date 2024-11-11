@@ -33,6 +33,7 @@ namespace Super_Cartes_Infinies.Models
 		public int Health { get; set; }
         public int Mana { get; set; }
 
+
         public virtual Player Player { get; set; }
         public int PlayerId { get; set; }
 
@@ -42,6 +43,65 @@ namespace Super_Cartes_Infinies.Models
 
         public virtual List<PlayableCard> BattleField { get; set; }
         public virtual List<PlayableCard> Graveyard { get; set; }
+
+
+        public int IndexBattleField { get; set; } = 0;
+
+
+
+        // Assurez-vous d'utiliser cette méthode pour votre logique de combat!
+        public IEnumerable<PlayableCard> GetOrderedBattleField()
+        {
+            // Retourner les cartes dans l'ordre de l'Index
+            return BattleField.OrderBy(b=>b.Index).ToList();
+        }
+
+        public void AddCardToBattleField(PlayableCard playableCard)
+        {
+            // Ajouter la carte au BattleField et lui donner le bon index (En fonction du nombre de cartes déjà sur le BattleField)
+            
+            // Enlever du Hand
+            Hand.Remove(playableCard);
+
+            // On lui attribue son index
+            playableCard.Index = IndexBattleField;
+
+            // Ajout BattleField
+            BattleField.Add(playableCard);
+
+            // Mise à jour de l'IndexBattleField
+            IndexBattleField = GetOrderedBattleField().Count();
+
+
+        }
+        public void RemoveCardFromBattleField(PlayableCard playableCard)
+        {
+            // Retirer la carte du BattleField
+            // Atention: Il faut mettre les autres cartes du BattleField à jour!
+
+            // Récupération de l'index du playableCard
+            int indexDeadCard = playableCard.Index;
+
+            // On enlève du BattleField
+            BattleField.Remove(playableCard);
+
+            // Ajout dans Graveyard
+            Graveyard.Add(playableCard);
+
+            // Décrémenter l'index du playableCard
+            foreach(PlayableCard playable in GetOrderedBattleField())
+            {
+                if(playable.Index > indexDeadCard)
+                {
+                    playable.Index--;
+                }
+            }
+
+            // Mise à jour de l'IndexBattleField
+            IndexBattleField = GetOrderedBattleField().Count();
+        }
+
+
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using Super_Cartes_Infinies.Models;
+using WebApi.Combat;
 
 namespace Super_Cartes_Infinies.Combat
 {
@@ -16,6 +17,8 @@ namespace Super_Cartes_Infinies.Combat
             match.IsPlayerATurn = !match.IsPlayerATurn;
 
             this.Events.Add(new PlayerStartTurnEvent(opposingPlayerData, nbManaPerTurn));
+            this.Events.Add(new CombatEvent(currentPlayerData, opposingPlayerData, match));
+
         }
 
     }

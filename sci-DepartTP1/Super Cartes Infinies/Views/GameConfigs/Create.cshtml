@@ -1,4 +1,4 @@
-﻿@model Models.Models.GameConfig
+@model Models.Models.GameConfig
 
 @{
     ViewData["Title"] = "Create";
@@ -21,6 +21,31 @@
                 <label asp-for="NbManaToReceive" class="control-label"></label>
                 <input asp-for="NbManaToReceive" class="form-control" />
                 <span asp-validation-for="NbManaToReceive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NbMaxDeck" class="control-label"></label>
+                <input asp-for="NbMaxDeck" class="form-control" />
+                <span asp-validation-for="NbMaxDeck" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NbMaxCard" class="control-label"></label>
+                <input asp-for="NbMaxCard" class="form-control" />
+                <span asp-validation-for="NbMaxCard" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BeginnerMoney" class="control-label"></label>
+                <input asp-for="BeginnerMoney" class="form-control" />
+                <span asp-validation-for="BeginnerMoney" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WinnerMoney" class="control-label"></label>
+                <input asp-for="WinnerMoney" class="form-control" />
+                <span asp-validation-for="WinnerMoney" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoserMoney" class="control-label"></label>
+                <input asp-for="LoserMoney" class="form-control" />
+                <span asp-validation-for="LoserMoney" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Créer" class="btn btn-primary" />

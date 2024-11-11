@@ -27,6 +27,7 @@ namespace Tests.Services
 
             CardPower cardPower = new CardPower
             {
+                PowerId = Power.FIRST_STRIKE_ID,
                 Power = firstStrikePower,
                 Card = _cardA
             };
@@ -121,6 +122,7 @@ namespace Tests.Services
             CardPower cardPower = new CardPower
             {
                 Power = thornsPower,
+                PowerId = Power.THORNS_ID,
                 Card = _cardB,
                 Value = 1
             };
@@ -152,6 +154,7 @@ namespace Tests.Services
             {
                 Power = thornsPower,
                 Card = _cardB,
+                PowerId = Power.THORNS_ID,
                 // On veut être certain que l'attaquant meurt par Thorns pendant le test
                 Value = _cardA.Health
             };
@@ -213,6 +216,7 @@ namespace Tests.Services
             // On donne le pouvoir Heal à l'attaquant
             CardPower cardPower = new CardPower
             {
+                PowerId = Power.HEAL_ID,
                 Power = healPower,
                 Card = _cardB,
                 Value = 3
@@ -254,32 +258,84 @@ namespace Tests.Services
             Assert.AreEqual(1, _opposingPlayerData.BattleField.Count);
             Assert.AreEqual(0, _opposingPlayerData.Graveyard.Count);
         }
+
+        [TestMethod]
+        public void Love()
+        {
+            Power lovePower = new Power
+            {
+                Id = Power.LoveOfJesusChrist_ID
+            };
+
+            // On donne le pouvoir Heal à l'attaquant
+            CardPower cardPower = new CardPower
+            {
+                PowerId = Power.LoveOfJesusChrist_ID,
+                Power = lovePower,
+                Card = _cardB,
+            };
+            _cardA.CardPowers = new List<CardPower> { cardPower };
+
+            var playableCardOpponent = new PlayableCard(_cardB)
+            {
+                Id = 3
+            };
+
+            // On retire 2 PVs à l'attaquant et 4 PVs à l'autre carte de l'attaquant
+
+            _currentPlayerData.BattleField.Add(_playableCardA);
+            _currentPlayerData.BattleField.Add(playableCardOpponent);
+
+            _opposingPlayerData.BattleField.Add(_playableCardB);
+
+            var playerTurnEvent = new PlayerEndTurnEvent(_match, _currentPlayerData, _opposingPlayerData, NB_MANA_PER_TURN);
+
+            Assert.AreEqual(_currentPlayerData.PlayerId, playerTurnEvent.PlayerId);
+
+            // _playableCardA devrait avoir retrouvé ses points de vie initiaux            
+            Assert.AreEqual(_cardA.Health - _playableCardB.Attack, _playableCardA.Health);
+            Assert.AreEqual(_cardB.Health - _playableCardA.Attack, _playableCardB.Health);
+
+            // Le damagedPlayableCard tue le joueur adverse car il n'y avait pas de carte pour le protéger
+            Assert.AreEqual(0, _opposingPlayerData.Health);
+
+            // Le currentPlayer a un Hp de plus
+            Assert.AreEqual(2, _currentPlayerData.Health);
+
+            // Toutes les cartes sont encore en jeu
+            Assert.AreEqual(2, _currentPlayerData.BattleField.Count);
+            Assert.AreEqual(0, _currentPlayerData.Graveyard.Count);
+            Assert.AreEqual(1, _opposingPlayerData.BattleField.Count);
+            Assert.AreEqual(0, _opposingPlayerData.Graveyard.Count);
+        }
+
+
         [TestMethod]
         public void HasPowerFalse()
         {
 
-            Assert.AreEqual(false, _playableCardB.HasPower(1));
+            Assert.AreEqual(false, _playableCardTest.HasPower(1));
         }
 
         [TestMethod]
         public void HasPowerTrue()
         {
 
-            Assert.AreEqual(true, _playableCardB.HasPower(2));
+            Assert.AreEqual(true, _playableCardTest.HasPower(2));
         }
 
         [TestMethod]
         public void GetPowerValueOtherPower()
         {
 
-            Assert.AreEqual(0, _playableCardB.GetPowerValue(1));
+            Assert.AreEqual(0, _playableCardTest.GetPowerValue(1));
         }
 
         [TestMethod]
         public void GetPowerValueGoodPower()
         {
 
-            Assert.AreEqual(3, _playableCardB.GetPowerValue(2));
+            Assert.AreEqual(3, _playableCardTest.GetPowerValue(2));
         }
     }
 }

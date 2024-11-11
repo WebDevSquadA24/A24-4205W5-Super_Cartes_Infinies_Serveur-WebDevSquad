@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
+using WebApi.Services;
 
 namespace Super_Cartes_Infinies.Services
 {
@@ -18,12 +21,15 @@ namespace Super_Cartes_Infinies.Services
 
         public Player CreatePlayer(IdentityUser user)
         {
+            var gameConfig = _dbContext.GameConfigs.FirstOrDefault();
+            
             Player p = new Player()
             {
                 Id = 0,
                 UserId = user.Id,
                 Name = user.Email!,
                 User = user,
+                Money = gameConfig.BeginnerMoney,
             };
 
             // TODO: Utilisez le service StartingCardsService pour obtenir les cartes de départ
@@ -35,8 +41,18 @@ namespace Super_Cartes_Infinies.Services
                 Card = c,
             }).ToList();
 
+            Deck deck = new Deck()
+            {
+                Id = 0,
+                Name = "Depart",
+                IsCurrent = true,
+                OwnedCards = startingCards,
+                Player = p,
+            };
+
             _dbContext.Add(p);
             _dbContext.AddRange(startingCards);
+            _dbContext.Add(deck);
             _dbContext.SaveChanges();
 
             return p;
