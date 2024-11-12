@@ -24,9 +24,10 @@ namespace Super_Cartes_Infinies.Models
         public MatchPlayerData(Player p) : this(p.Id)
         {
             // TODO: Lors de l'intégration, remplacer par les cartes du joueur, on n'aura plus besoin de la liste de cartes
-            foreach (var card in p.OwnedCards.Select(c => c.Card)) {
-                CardsPile.Add(new PlayableCard(card));
-            }
+            CardsPile = p.Decks.Single(d => d.IsCurrent).OwnedCards.Select(oc => new PlayableCard(oc.Card)).ToList();
+            //foreach (var card in p.OwnedCards.Select(c => c.Card)) {
+            //    CardsPile.Add(new PlayableCard(card));
+            //}
         }
 
         public int Id { get; set; }
