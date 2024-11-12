@@ -11,9 +11,11 @@ namespace WebApi.Combat
         public HealEvent(MatchPlayerData playerData, int healValue)
         {
             this.Events = new List<MatchEvent>();
-            for (int i =0; i< playerData.GetOrderedBattleField().Count(); i++)
+            int cpt = playerData.GetOrderedBattleField().Count();
+            for (int i =0; i< cpt; i++)
             {
-                Events.Add(new CardHealEvent(playerData.GetOrderedBattleField().Where(p=>p.Index == i).First(), healValue));
+                PlayableCard playable = playerData.BattleField.Where(p => p.Index == i).First();
+                Events.Add(new CardHealEvent(playable, healValue));
             }
         }
     }

@@ -232,8 +232,8 @@ namespace Tests.Services
             _playableCardA.Health -= 2;
             damagedPlayableCard.Health -= 4;
 
-            _currentPlayerData.BattleField.Add(_playableCardA);
-            _currentPlayerData.BattleField.Add(damagedPlayableCard);
+            _currentPlayerData.AddCardToBattleField(_playableCardA);
+            _currentPlayerData.AddCardToBattleField(damagedPlayableCard);
 
             _opposingPlayerData.BattleField.Add(_playableCardB);
 
