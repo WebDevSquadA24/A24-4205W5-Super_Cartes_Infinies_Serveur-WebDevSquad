@@ -33,7 +33,7 @@ namespace Super_Cartes_Infinies.Services
 
             if (playerData.Money < pack.Price)
             {
-                return cards;
+                return null;
             }
 
             playerData.Money -= pack.Price;
