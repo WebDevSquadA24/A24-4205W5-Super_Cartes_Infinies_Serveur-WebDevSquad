@@ -38,11 +38,13 @@ namespace WebApi.Combat
                         this.Events.Add(new FirstStrikeEvent(currentPlayerData, opposingPlayerData, match, index));
 
                     }
-
-                    if (!(opponentCard.Health <= 0))
+                    if (myCard.Health > 0)
                     {
-                        this.Events.Add(new CardDamageEvent(currentPlayerData, opposingPlayerData, match, index));
+                        if (!(opponentCard.Health <= 0))
+                        {
+                            this.Events.Add(new CardDamageEvent(currentPlayerData, opposingPlayerData, match, index));
 
+                        }
                     }
                 }
             }

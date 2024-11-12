@@ -12,6 +12,7 @@ namespace WebApi.Combat
             if(playerData.Health < 20)
             {
                 playerData.Health++;
+
             }
            
         }
