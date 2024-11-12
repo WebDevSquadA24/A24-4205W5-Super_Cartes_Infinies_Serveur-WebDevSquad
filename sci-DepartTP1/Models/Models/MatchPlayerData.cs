@@ -51,7 +51,7 @@ namespace Super_Cartes_Infinies.Models
 
 
         // Assurez-vous d'utiliser cette méthode pour votre logique de combat!
-        public IEnumerable<PlayableCard> GetOrderedBattleField()
+        public List<PlayableCard> GetOrderedBattleField()
         {
             // Retourner les cartes dans l'ordre de l'Index
             return BattleField.OrderBy(b=>b.Index).ToList();

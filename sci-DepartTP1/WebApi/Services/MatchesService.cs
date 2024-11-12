@@ -51,6 +51,9 @@ namespace Super_Cartes_Infinies.Services
                 }
                 else
                 {
+                    match.PlayerDataA.BattleField = match.PlayerDataA.GetOrderedBattleField();
+                    match.PlayerDataB.BattleField = match.PlayerDataB.GetOrderedBattleField();
+
                     playerA = _playersService.GetPlayerFromUserId(match.UserAId);
                     playerB = _playersService.GetPlayerFromUserId(match.UserBId);
                 }
