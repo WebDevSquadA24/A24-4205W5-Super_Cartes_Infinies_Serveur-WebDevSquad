@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.SqlServer.Server;
 using Models.Models;
 using Super_Cartes_Infinies.Models;
 
@@ -346,6 +347,9 @@ namespace Super_Cartes_Infinies.Data
                     NbManaToReceive = 3,
                     NbMaxDeck = 5,
                     NbMaxCard = 8,
+                    BeginnerMoney = 1000,
+                    WinnerMoney = 100,
+                    LoserMoney = 50,
                 }
             };
         }
@@ -361,7 +365,7 @@ namespace Super_Cartes_Infinies.Data
                 NbCards = 3,
                 DefaultRarity = Rarity.Commune
             };
-
+            
             var normalPack = new Pack
             {
                 Id = 2,
@@ -383,8 +387,13 @@ namespace Super_Cartes_Infinies.Data
             };
 
             var packs = new Pack[] { basicPack, normalPack, superPack };
+            
+            return packs;
+        }
 
-            var probabilities = new List<Probability>
+        public static Probability[] SeedProbabilities()
+        {
+            return new Probability[]
             {
                 //Basic
                 new Probability { Id = 1, Rarity = Rarity.Commune, Value = 0.70, BaseQty = 0, PackId = 1 },
@@ -394,15 +403,14 @@ namespace Super_Cartes_Infinies.Data
                 new Probability { Id = 3, Rarity = Rarity.Commune, Value = 0.60, BaseQty = 0, PackId = 2 },
                 new Probability { Id = 4, Rarity = Rarity.Rare, Value = 0.30, BaseQty = 1, PackId = 2 },
                 new Probability { Id = 5, Rarity = Rarity.Épique, Value = 0.10, BaseQty = 0, PackId = 2 },
-                new Probability { Id = 5, Rarity = Rarity.Légendaire, Value = 0.2, BaseQty = 0, PackId = 2 },
+                new Probability { Id = 6, Rarity = Rarity.Légendaire, Value = 0.2, BaseQty = 0, PackId = 2 },
 
                 //Super
-                new Probability { Id = 4, Rarity = Rarity.Rare, Value = 0.65, BaseQty = 0, PackId = 3 },
-                new Probability { Id = 5, Rarity = Rarity.Épique, Value = 0.25, BaseQty = 1, PackId = 3 },
-                new Probability { Id = 5, Rarity = Rarity.Légendaire, Value = 0.10, BaseQty = 0, PackId = 3 },
+                new Probability { Id = 7, Rarity = Rarity.Rare, Value = 0.65, BaseQty = 0, PackId = 3 },
+                new Probability { Id = 8, Rarity = Rarity.Épique, Value = 0.25, BaseQty = 1, PackId = 3 },
+                new Probability { Id = 9, Rarity = Rarity.Légendaire, Value = 0.10, BaseQty = 0, PackId = 3 },
             };
 
-            return packs;
         }
 
     }

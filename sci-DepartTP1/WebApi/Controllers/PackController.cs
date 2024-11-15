@@ -33,7 +33,7 @@ namespace Super_Cartes_Infinies.Controllers
         [HttpGet("{packId}")]
         public async Task<ActionResult<IEnumerable<Card>>> GetOpenPack(int packId)
         {
-            var pack = await _dbContext.Packs.FindAsync(packId);
+            var pack = await _dbContext.Packs.Include(prob => prob.Probabilities).FirstOrDefaultAsync(p => p.Id == packId);
             var user = _dbContext.Users.Single(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var player = _playersService.GetPlayerFromUserId(user.Id);

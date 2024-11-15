@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,9 +12,11 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241115190307_ajustementSeedProbability_2")]
+    partial class ajustementSeedProbability_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,15 +172,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7088b879-b8a4-4bdd-86cf-ef2225625625",
+                            ConcurrencyStamp = "53d7ad62-38de-4200-97b6-0a9979c981a1",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO0z1v6Pt32b/qMy7mgxV9aOg2Oe486uZmPeCkZyjJtXBV+7SINkmAISBhHkxeCyPA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAlfB7rxwwBZTqoPly4+MUiFsO5Kk9ylTZpZTVQPACVBrr4x8TG6Jt+OJw8q0Kjeiw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8dc13d2d-3fd8-4e81-b94e-68dcd7079514",
+                            SecurityStamp = "ef7a4fa6-1bbf-4eaf-97cc-62c6f4f35960",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -185,22 +188,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "508adccd-56c1-48cb-befc-ca4f5bbb779e",
+                            ConcurrencyStamp = "11181b06-cfc3-4616-ade6-c4c064333107",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7f4ca70b-0fcd-4bf3-bcf3-3d23e32af395",
+                            SecurityStamp = "6c1098bf-c434-4e82-83e6-ea5a06629442",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d6bda682-d1a2-481a-a6db-15ab9ba38387",
+                            ConcurrencyStamp = "c69c762e-95ca-40cb-8e16-0991fc3fa525",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "845737b6-77b0-4925-9aad-c6c57c6adae2",
+                            SecurityStamp = "9fa87280-84a2-4f29-a40f-8b441f7344cc",
                             TwoFactorEnabled = false
                         });
                 });
@@ -609,81 +612,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PackId");
 
-                    b.ToTable("Probabilities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BaseQty = 0,
-                            PackId = 1,
-                            Rarity = 0,
-                            Value = 0.69999999999999996
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BaseQty = 0,
-                            PackId = 1,
-                            Rarity = 1,
-                            Value = 0.29999999999999999
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BaseQty = 0,
-                            PackId = 2,
-                            Rarity = 0,
-                            Value = 0.59999999999999998
-                        },
-                        new
-                        {
-                            Id = 4,
-                            BaseQty = 1,
-                            PackId = 2,
-                            Rarity = 1,
-                            Value = 0.29999999999999999
-                        },
-                        new
-                        {
-                            Id = 5,
-                            BaseQty = 0,
-                            PackId = 2,
-                            Rarity = 2,
-                            Value = 0.10000000000000001
-                        },
-                        new
-                        {
-                            Id = 6,
-                            BaseQty = 0,
-                            PackId = 2,
-                            Rarity = 3,
-                            Value = 0.20000000000000001
-                        },
-                        new
-                        {
-                            Id = 7,
-                            BaseQty = 0,
-                            PackId = 3,
-                            Rarity = 1,
-                            Value = 0.65000000000000002
-                        },
-                        new
-                        {
-                            Id = 8,
-                            BaseQty = 1,
-                            PackId = 3,
-                            Rarity = 2,
-                            Value = 0.25
-                        },
-                        new
-                        {
-                            Id = 9,
-                            BaseQty = 0,
-                            PackId = 3,
-                            Rarity = 3,
-                            Value = 0.10000000000000001
-                        });
+                    b.ToTable("Probability");
                 });
 
             modelBuilder.Entity("Models.Models.StarterCard", b =>
