@@ -1,4 +1,5 @@
-﻿using Models.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Models.Interfaces;
 using Models.Models;
 
 namespace Super_Cartes_Infinies.Models
@@ -23,6 +24,9 @@ namespace Super_Cartes_Infinies.Models
 		public int MaxHealth { get; set; }
 		public int Attack { get; set; }
         public int Index { get; set; }
+
+		[ValidateNever]
+		public virtual List<PlayableCardStatus> PlayableCardStatuses { get; set; } = [];
 
         public bool HasPower(int powerId)
         {
@@ -51,6 +55,19 @@ namespace Super_Cartes_Infinies.Models
 
             return card.Value;
         }
+
+		public bool HasStatus(int statusId)
+		{
+			if (PlayableCardStatuses.Select(pcs => pcs.Status.Id).Contains(statusId)) return true;
+			return false;
+		}
+
+		public int GetStatusValue(int statusId)
+		{
+			if (!HasStatus(statusId)) return 0;
+
+			return PlayableCardStatuses.First(pcs => pcs.Status.Id == statusId).Value;
+		}
     }
 }
 

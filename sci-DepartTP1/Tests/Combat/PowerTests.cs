@@ -37,8 +37,8 @@ namespace Tests.Services
             // On réduit le Health de la carte B pour que la carte meurt
             _playableCardB.Health = _playableCardA.Attack;
 
-            _currentPlayerData.BattleField.Add(_playableCardA);
-            _opposingPlayerData.BattleField.Add(_playableCardB);
+            _currentPlayerData.AddCardToBattleField(_playableCardA);
+            _opposingPlayerData.AddCardToBattleField(_playableCardB);
 
             var playerTurnEvent = new PlayerEndTurnEvent(_match, _currentPlayerData, _opposingPlayerData, NB_MANA_PER_TURN);
 

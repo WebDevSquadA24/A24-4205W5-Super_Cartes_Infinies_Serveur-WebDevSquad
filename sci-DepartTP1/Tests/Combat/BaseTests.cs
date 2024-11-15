@@ -11,11 +11,11 @@ namespace Tests.Services
 
         protected MatchPlayerData _currentPlayerData, _opposingPlayerData;
         protected Match _match;
-        protected Card _cardA, _cardB;
-        protected PlayableCard _playableCardA, _playableCardB, _playableCardTest;
+        protected Card _cardA, _cardB, _cardC;
+        protected PlayableCard _playableCardA, _playableCardB, _playableCardC, _playableCardTest;
 
 
-        protected Power _powerHeal, _powerThorn, _powerFStrike;
+        protected Power _powerHeal, _powerThorn, _powerFStrike, _powerChaos, _powerPoison, _powerStun, _powerEarthquake, _powerRandomPain;
 
         protected Card _cardTest;
 
@@ -25,7 +25,7 @@ namespace Tests.Services
 
         protected void Init()
         {
-            
+
 
             List<CardPower> cardP = new List<CardPower>();
 
@@ -42,6 +42,31 @@ namespace Tests.Services
             _powerThorn = new Power()
             {
                 Id = 3,
+            };
+
+            _powerChaos = new Power()
+            {
+                Id = Power.CHAOS_ID,
+            };
+
+            _powerPoison = new Power()
+            {
+                Id = Power.POISON_ID,
+            };
+
+            _powerStun = new Power()
+            {
+                Id = Power.STUN_ID,
+            };
+
+            _powerEarthquake = new Power()
+            {
+                Id = Power.EARTHQUAKE_ID,
+            };
+
+            _powerRandomPain = new Power()
+            {
+                Id = Power.RANDOM_PAIN_ID,
             };
 
             CardPower cardPowerTest = new CardPower()
@@ -121,6 +146,14 @@ namespace Tests.Services
                 Cost = 1,
             };
 
+            _cardC = new Card
+            {
+                Id = 44,
+                Attack = 1,
+                Health = 5,
+                Cost = 1,
+            };
+
             _playableCardA = new PlayableCard(_cardA)
             {
                 Id = 1
@@ -130,9 +163,11 @@ namespace Tests.Services
                 Id = 2
             };
 
-           
+            _playableCardC = new PlayableCard(_cardC)
+            {
+                Id = 2
+            };
 
-            
 
         }
 

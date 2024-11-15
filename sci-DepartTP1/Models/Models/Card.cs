@@ -29,7 +29,7 @@ namespace Super_Cartes_Infinies.Models
         public Rarity Rarity { get; set; }
 
         [ValidateNever]
-        public virtual List<CardPower>? CardPowers { get; set; } = new List<CardPower>();
+        public virtual List<CardPower> CardPowers { get; set; } = new List<CardPower>();
     }
 }
 
