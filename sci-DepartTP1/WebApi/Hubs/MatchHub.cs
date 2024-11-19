@@ -82,9 +82,6 @@ public class MatchHub : Hub
 
                 //Celui qui appelle la métohde
                 await Clients.Caller.SendAsync("JoiningMatchData", joiningMatchData);
-                
-
-
             }
             else
             {
@@ -93,8 +90,6 @@ public class MatchHub : Hub
 
                 // Il faut tout de même envoyer le joiningMatchData au 2 joueurs
                 await this.StartMatch(userId, joiningMatchData, groupName);
-               
-
             }
         }
         else

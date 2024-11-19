@@ -61,6 +61,12 @@ namespace Super_Cartes_Infinies.Services
             // Si on veut rejoindre un match en particulier, on ne se met pas en file
             else if (specificMatchId == null)
             {
+                // ICI on ajoute dans la liste de PlayerInfo un nouveau joueur qui veut se connecter.
+                // Dans le backgroudService qui contient le Pseudo Code, qui est exécuté chaque x secondes, on va envoyer en Hub un event à partir des pairs ainsi crée. (StartMatchEvent)
+                // En gros, le pseudo code va servir, au niveau du background service, de générer une paire d'utilisateur ayant un ELO similaire, chaque seconde.
+                // Le Constant équivaut aux niveau de patience. Plus c'est haut, on est impatient et on veut se connecter immédiatement,
+                // if difference < playerInfo.attente * CONSTANTE | Veut dire que si la différence est plus petit que la seconde d'attente fois  la constante --> Match
+                // Donc Constante c'est la différence toléré chaque seconde
                 UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
 
                 if (pairOfUsers != null)
