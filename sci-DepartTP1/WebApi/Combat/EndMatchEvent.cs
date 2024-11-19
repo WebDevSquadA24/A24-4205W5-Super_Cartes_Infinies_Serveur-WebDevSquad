@@ -39,8 +39,13 @@ namespace Super_Cartes_Infinies.Combat
             winningPlayerData.Player.Money += WinningReward;
             losingPlayerData.Player.Money += LosingReward;
 
+            //Nombre de victoires et de défaites sur Player 
             winningPlayerData.Player.NbVictories++;
             losingPlayerData.Player.NbDefeats++;
+
+            //Nombre de victoires et de défaites sur Deck
+            winningPlayerData.Player.Decks.Where(d => d.IsCurrent = true).FirstOrDefault().NbVictories++;
+            losingPlayerData.Player.Decks.Where(d => d.IsCurrent = true).FirstOrDefault().NbDefeats++;
 
             WinningMoney = winningPlayerData.Player.Money;
             LosingMoney = losingPlayerData.Player.Money;
