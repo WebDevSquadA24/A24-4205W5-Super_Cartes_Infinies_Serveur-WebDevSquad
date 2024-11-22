@@ -8,7 +8,7 @@ using WebApi.Services;
 
 namespace Super_Cartes_Infinies.Services
 {
-	public class PlayersService
+	public class PlayersService : IPlayersService
     {
         private ApplicationDbContext _dbContext;
         private StartingCardsService _startingCardsService;

@@ -12,9 +12,9 @@ namespace WebApi.Services
     public class DecksService
     {
         private ApplicationDbContext _dbContext;
-        private PlayersService _playersService;
+        private IPlayersService _playersService;
 
-        public DecksService(ApplicationDbContext dbContext, PlayersService playersService)
+        public DecksService(ApplicationDbContext dbContext, IPlayersService playersService)
         {
             _dbContext = dbContext;
             _playersService = playersService;
@@ -114,7 +114,7 @@ namespace WebApi.Services
             if (deck.OwnedCards.Count >= _dbContext.GameConfigs.First().NbMaxCard)
                 throw new InvalidOperationException();
 
-                var cardToAdd = player.OwnedCards.Where(oc => oc.Card.Id == cardId).Except(deck.OwnedCards).First();
+            var cardToAdd = player.OwnedCards.Where(oc => oc.Card.Id == cardId).Except(deck.OwnedCards).First();
 
             if (deck.Player.Id != player.Id)
                 throw new UnauthorizedAccessException();
