@@ -337,6 +337,7 @@ namespace Tests.Services
 
             Assert.AreEqual(3, _playableCardTest.GetPowerValue(2));
         }
+
     }
 }
 
