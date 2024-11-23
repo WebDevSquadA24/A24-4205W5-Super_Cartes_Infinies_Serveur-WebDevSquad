@@ -86,8 +86,12 @@ public class MatchHub : Hub
 
 
             }
+            // ON NAURA PAS BESOIN D'UN ELSE
             else
             {
+                // ICI On ajoute que le user dans la liste de PlayerInfo
+                // Tout l'envoi des données se fait dans le background service.
+
                 //UserA
                 await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
 

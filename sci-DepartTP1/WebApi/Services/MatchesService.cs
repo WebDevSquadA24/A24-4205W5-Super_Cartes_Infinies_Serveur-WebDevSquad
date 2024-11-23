@@ -68,6 +68,9 @@ namespace Super_Cartes_Infinies.Services
                 // On n'utilisera plus WaitingUserService.
                 // Dans le BackGroundService, on va envoyer directement aux clients.
                 // Ici c'est juste pour ajouter dans la liste des PlayerInfo
+
+                // ADD user to PlayerInfo
+                // --> EloBackGroundService
                 UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
 
                 if (pairOfUsers != null)
