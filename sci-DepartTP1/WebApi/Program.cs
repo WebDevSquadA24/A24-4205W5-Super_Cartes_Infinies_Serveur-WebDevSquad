@@ -94,6 +94,9 @@ builder.Services.AddAuthentication(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<EloBackGroundService>();
+builder.Services.AddHostedService<EloBackGroundService>(p => p.GetService<EloBackGroundService>());
+
 
 var app = builder.Build();
 

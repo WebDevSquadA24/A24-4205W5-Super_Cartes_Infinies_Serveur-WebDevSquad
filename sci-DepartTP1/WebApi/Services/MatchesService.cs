@@ -61,6 +61,13 @@ namespace Super_Cartes_Infinies.Services
             // Si on veut rejoindre un match en particulier, on ne se met pas en file
             else if (specificMatchId == null)
             {
+                // On ajoute dans la liste de PlayerInfo un joueur
+                // Constante c'est le niv de patience. Cela représente le nb de elo de difference qu'on tolère chaque seconde.
+                // List<PairOfPlayers> est la liste des joueurs qui sont en jeu.
+                // La vérif va être exécuté chaque x secondes
+                // On n'utilisera plus WaitingUserService.
+                // Dans le BackGroundService, on va envoyer directement aux clients.
+                // Ici c'est juste pour ajouter dans la liste des PlayerInfo
                 UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
 
                 if (pairOfUsers != null)
