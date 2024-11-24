@@ -1,5 +1,6 @@
 ﻿
 using Humanizer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Super_Cartes_Infinies.Models;
 using Super_Cartes_Infinies.Models.Dtos;
 using Super_Cartes_Infinies.Services;
 using System.Text.RegularExpressions;
+using Match = Super_Cartes_Infinies.Models.Match;
 
 namespace WebApi.Services
 {
@@ -22,14 +24,21 @@ namespace WebApi.Services
 
         private IServiceScopeFactory _serviceScopeFactory;
 
-        private List<PairOfPlayers> pairs;
+        private PlayersService _playersService;
+        private CardsService _cardsService;
+        private MatchesService _service;
 
-        private PlayerInfo playerInfo;
 
-        public EloBackGroundService(IHubContext<MatchHub> monHub, IServiceScopeFactory serviceScopeFactory)
+
+        public EloBackGroundService(IHubContext<MatchHub> monHub, IServiceScopeFactory serviceScopeFactory, PlayersService playersService, CardsService cardsService, MatchesService service)
         {
             _matchHub = monHub;
             _serviceScopeFactory = serviceScopeFactory;
+            _playersService = playersService;
+            _cardsService = cardsService;
+            _service = service;
+
+
         }
 
 
@@ -39,15 +48,57 @@ namespace WebApi.Services
 
         }
 
-        // Passer une COPIE de l'information sur les players (Car on va retirer les éléments de la liste, même si le player n'est pas mis dans une paire)
-        List<PairOfPlayers> GeneratePairs(List<PlayerInfo> playerInfos)
+
+        public Match CreateMatch(PairOfPlayers pairOfPlayers)
         {
-            pairs = new List<PairOfPlayers>();
+            Player? playerA = _playersService.GetPlayerFromUserId(pairOfPlayers.UserAId);
+            Player? playerB = _playersService.GetPlayerFromUserId(pairOfPlayers.UserBId);
+
+            //// Création d'un nouveau match
+            IEnumerable<Card> cards = _cardsService.GetAllCards();
+            Match match = new Match(playerA, playerB, cards);
+            return match;
+        }
+
+        public JoiningMatchData CreateJoiningMatch(Match match, PairOfPlayers pairOfPlayers)
+        {
+            // JoiningMatchdata
+            //-------------------------------------------------------------------------
+            //if (match != null)
+            //{
+            //    return new JoiningMatchData
+            //    {
+            //        Match = match,
+            //        PlayerA = playerA!,
+            //        PlayerB = playerB!,
+            //        OtherPlayerConnectionId = otherPlayerConnectionId,
+            //        IsStarted = otherPlayerConnectionId == null
+            //    };
+            //}
+            //-------------------------------------------------------------------------
+            Player? playerA = _playersService.GetPlayerFromUserId(pairOfPlayers.UserAId);
+            Player? playerB = _playersService.GetPlayerFromUserId(pairOfPlayers.UserBId);
+            JoiningMatchData joiningMatchData = new JoiningMatchData{
+                Match = match,
+                PlayerA = playerA!,
+                PlayerB = playerB!,
+                OtherPlayerConnectionId = pairOfPlayers.OtherConnectionId,
+                IsStarted = true,
+
+            };
+            return joiningMatchData;
+        }
+
+        // Passer une COPIE de l'information sur les players (Car on va retirer les éléments de la liste, même si le player n'est pas mis dans une paire)
+        async Task GeneratePairsAsync(List<PlayerInfo> playerInfos)
+        {
+            List<PairOfPlayers> pairs = new List<PairOfPlayers>();
             int index = -1;
             int smallestELODifference = int.MaxValue;
             PlayerInfo playerInfo2 = null;
-
-
+            PlayerInfo playerInfo = null;
+            string groupName = "";
+             
             // Tant qu'il y a des joueurs à mettre en pair
             while (playerInfos.Count > 0)
             {
@@ -73,43 +124,41 @@ namespace WebApi.Services
             {
                 playerInfo2 = playerInfos[index];
                 playerInfos.RemoveAt(index);
-                pairs.Add(new PairOfPlayers(playerInfo, playerInfo2));
+                PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
+                pairs.Add(pairOfPlayers);
+
 
                 using (IServiceScope scope = _serviceScopeFactory.CreateScope())
                 {
                     ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                    // Update db With PairofPlayers (REMOVE)
 
-                    // JoiningMatchdata
-                    //-------------------------------------------------------------------------
-                    //if (match != null)
-                    //{
-                    //    return new JoiningMatchData
-                    //    {
-                    //        Match = match,
-                    //        PlayerA = playerA!,
-                    //        PlayerB = playerB!,
-                    //        OtherPlayerConnectionId = otherPlayerConnectionId,
-                    //        IsStarted = otherPlayerConnectionId == null
-                    //    };
-                    //}
-                    //-------------------------------------------------------------------------
+                    // Update db With PlayerInfo (REMOVE)
+                    dbContext.PlayerInfo.Remove(playerInfo);
+                    dbContext.PlayerInfo.Remove(playerInfo2);
+
+                    // Créer le match
+                    Match match = CreateMatch(pairOfPlayers);
+
+                    string otherPlayerConnectionId = null;
+
+                    dbContext.Update(match);
+                    dbContext.SaveChangesAsync();
+
+                    //Créer le JoiningMatchData
+                    JoiningMatchData joiningMatchData = CreateJoiningMatch(match, pairOfPlayers);
+
+                    groupName = "Match" + joiningMatchData.Match.Id;
+
+                    await _matchHub.Groups.AddToGroupAsync(playerInfo.ConnectionId, groupName);
+                    await _matchHub.Groups.AddToGroupAsync(playerInfo2.ConnectionId, groupName);
+
+                    await _matchHub.Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+
+                    StartMatchEvent startMatchEvent = await _service.StartMatch(playerInfo2.UserId, joiningMatchData.Match);
+
+                    await _matchHub.Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
 
 
-
-                    // Create match
-                    //----------------------------------------------------------------------------
-
-                    //playerA = _playersService.GetPlayerFromUserId(pairOfUsers.UserAId);
-                    //playerB = _playersService.GetPlayerFromUserId(pairOfUsers.UserBId);
-
-                    //// Création d'un nouveau match
-                    //IEnumerable<Card> cards = _cardsService.GetAllCards();
-                    //match = new Match(playerA, playerB, cards);
-                    //otherPlayerConnectionId = pairOfUsers.UserAConnectionId;
-
-                    //_dbContext.Update(match);
-                    //_dbContext.SaveChanges();
 
                     // We would like to send to the client the necessary information
                     //----------------------------------------------------------------------------
@@ -129,7 +178,6 @@ namespace WebApi.Services
             }
 
             // Sinon, c'est pas grave, on a retiré l'élément de la liste et on va évaluer le prochain
-            return pairs;
 
         }
 
@@ -145,7 +193,7 @@ namespace WebApi.Services
                     //INCRÉMENTER Propriété attente dans PLAYERIFNO
                     // --
                     //Update database
-                    GeneratePairs(dbContext.PlayerInfo.ToList());
+                    GeneratePairsAsync(dbContext.PlayerInfo.ToList());
 
                 }
             }

@@ -14,6 +14,9 @@ namespace Models.Models
 
         public string UserBId { get; set; }
 
+        public string OtherConnectionId {  get; set; }
+
+        public PairOfPlayers() { }
 
         public PairOfPlayers(PlayerInfo playerInfo1, PlayerInfo playerInfo2)
         {
