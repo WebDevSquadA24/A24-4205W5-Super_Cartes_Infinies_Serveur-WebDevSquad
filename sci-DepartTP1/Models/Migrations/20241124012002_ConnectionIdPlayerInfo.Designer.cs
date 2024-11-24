@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,9 +12,11 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241124012002_ConnectionIdPlayerInfo")]
+    partial class ConnectionIdPlayerInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,15 +172,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9eaa054a-2435-4b29-b850-e3386e3c4afb",
+                            ConcurrencyStamp = "de5a87f0-277d-492c-a386-aa67ba3fb3e6",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIB/DLLIiPndgInipO7zpeAlgWpLpxzUKqFNFPLZcx1f4CNfAP4cPrBczg5GQ80lSQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELZzaIp6NYQj9WL4IEilF9ddQXivS55263QCt2UKeFtfueNStcLdLRyW58xuAH+Ayg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cb87092e-9ba0-43e0-a710-527b4f56e463",
+                            SecurityStamp = "4ebbb12f-aca9-4f30-897b-54152de17c35",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -185,22 +188,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a1444214-74c4-4a53-b062-318047022268",
+                            ConcurrencyStamp = "66653709-041f-4873-996d-aaccfca088b3",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "17e2ac27-de4c-45ca-b6df-8b074059e288",
+                            SecurityStamp = "7a65fb0b-2355-4455-a8d9-e334e77b08f3",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "db7705a7-b79c-4e9f-a89b-ebf8ce61ba02",
+                            ConcurrencyStamp = "cbdd4d26-82a2-4369-a294-0303eb515347",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0012e779-0b5b-42f6-973b-a0c276338f8f",
+                            SecurityStamp = "10cc6d0d-8b8b-4b06-a656-59e7a19f9439",
                             TwoFactorEnabled = false
                         });
                 });
@@ -512,10 +515,6 @@ namespace Models.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("OtherConnectionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserAId")
                         .IsRequired()

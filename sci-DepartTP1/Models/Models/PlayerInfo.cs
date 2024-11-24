@@ -16,5 +16,7 @@ namespace Models.Models
 
         public int attente { get; set; }
 
+        public string ConnectionId { get; set; }
+
     }
 }
