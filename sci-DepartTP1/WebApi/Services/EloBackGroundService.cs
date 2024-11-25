@@ -178,6 +178,7 @@ namespace WebApi.Services
                         playerInfo2 = playerInfos[index];
                         playerInfos.RemoveAt(index);
                         PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
+                        pairOfPlayers.OtherConnectionId = playerInfo2.ConnectionId;
                         pairs.Add(pairOfPlayers);
 
 
@@ -205,7 +206,7 @@ namespace WebApi.Services
 
                         await _matchHub.Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
 
-                        StartMatchEvent startMatchEvent = await StartMatch(playerInfo2.UserId, joiningMatchData.Match);
+                        StartMatchEvent startMatchEvent = await StartMatch(pairOfPlayers.OtherConnectionId, joiningMatchData.Match);
 
 
                         await _matchHub.Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
