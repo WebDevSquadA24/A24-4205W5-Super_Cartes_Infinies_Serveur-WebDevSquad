@@ -193,7 +193,7 @@ namespace WebApi.Services
                         string otherPlayerConnectionId = null;
 
                         dbContext.Update(match);
-                        dbContext.SaveChangesAsync();
+                        await dbContext.SaveChangesAsync();
 
                         //Créer le JoiningMatchData
                         JoiningMatchData joiningMatchData = CreateJoiningMatch(match, pairOfPlayers);
@@ -252,7 +252,8 @@ namespace WebApi.Services
                         dbContext.PlayerInfo.Update(player);
                         dbContext.SaveChanges();
                     }
-                    await GeneratePairsAsync(dbContext.PlayerInfo.ToList());
+                    List<PlayerInfo> playerInfos = dbContext.PlayerInfo.ToList();
+                    await GeneratePairsAsync(playerInfos);
 
                 }
             }
