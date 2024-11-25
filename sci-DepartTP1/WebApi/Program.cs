@@ -39,6 +39,8 @@ builder.Services.AddScoped<MatchesService>();
 builder.Services.AddScoped<StartingCardsService>();
 builder.Services.AddScoped<MatchConfigurationService>();
 builder.Services.AddScoped<DecksService>();
+builder.Services.AddSingleton<EloBackGroundService>();
+builder.Services.AddHostedService<EloBackGroundService>(p => p.GetService<EloBackGroundService>());
 
 builder.Services.AddSignalR(o =>
 {
@@ -94,8 +96,7 @@ builder.Services.AddAuthentication(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<EloBackGroundService>();
-builder.Services.AddHostedService<EloBackGroundService>(p => p.GetService<EloBackGroundService>());
+
 
 
 var app = builder.Build();

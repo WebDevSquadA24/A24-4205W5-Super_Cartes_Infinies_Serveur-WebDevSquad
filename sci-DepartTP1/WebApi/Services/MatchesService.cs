@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
@@ -71,6 +72,14 @@ namespace Super_Cartes_Infinies.Services
 
                 // ADD user to PlayerInfo
                 // --> EloBackGroundService
+                //PlayerInfo playerInfo = new PlayerInfo
+                //{
+                //    UserId = userId,
+                //    ELO = ,
+                //    attente = 0,
+                //    ConnectionId = connectionId,
+                //};
+                //_dbContext.PlayerInfo.Add(playerInfo);
                 UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
 
                 if (pairOfUsers != null)

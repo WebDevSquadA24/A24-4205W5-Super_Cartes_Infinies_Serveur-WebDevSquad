@@ -24,21 +24,13 @@ namespace WebApi.Services
 
         private IServiceScopeFactory _serviceScopeFactory;
 
-        private PlayersService _playersService;
-        private CardsService _cardsService;
-        private MatchesService _service;
 
 
 
-        public EloBackGroundService(IHubContext<MatchHub> monHub, IServiceScopeFactory serviceScopeFactory, PlayersService playersService, CardsService cardsService, MatchesService service)
+        public EloBackGroundService(IHubContext<MatchHub> monHub, IServiceScopeFactory serviceScopeFactory)
         {
             _matchHub = monHub;
             _serviceScopeFactory = serviceScopeFactory;
-            _playersService = playersService;
-            _cardsService = cardsService;
-            _service = service;
-
-
         }
 
 
@@ -51,13 +43,56 @@ namespace WebApi.Services
 
         public Match CreateMatch(PairOfPlayers pairOfPlayers)
         {
-            Player? playerA = _playersService.GetPlayerFromUserId(pairOfPlayers.UserAId);
-            Player? playerB = _playersService.GetPlayerFromUserId(pairOfPlayers.UserBId);
+            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+            {
+                ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                Player? playerA = dbContext.Players.Single(p => p.UserId == pairOfPlayers.UserAId);
+                Player? playerB = dbContext.Players.Single(p => p.UserId == pairOfPlayers.UserBId);
 
-            //// Création d'un nouveau match
-            IEnumerable<Card> cards = _cardsService.GetAllCards();
-            Match match = new Match(playerA, playerB, cards);
-            return match;
+                //// Création d'un nouveau match
+                IEnumerable<Card> cards = dbContext.Cards;
+                Match match = new Match(playerA, playerB, cards);
+
+                return match;
+
+
+            }
+
+        }
+
+        public async Task<StartMatchEvent> StartMatch(string currentUserId, Match match)
+        {
+            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+            {
+                ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                if ((match.UserAId == currentUserId) != match.IsPlayerATurn)
+                    throw new Exception("Ce n'est pas le tour de ce joueur");
+
+                MatchPlayerData currentPlayerData;
+                MatchPlayerData opposingPlayerData;
+
+                if (match.UserAId == currentUserId)
+                {
+                    currentPlayerData = match.PlayerDataA;
+                    opposingPlayerData = match.PlayerDataB;
+                }
+                else
+                {
+                    currentPlayerData = match.PlayerDataB;
+                    opposingPlayerData = match.PlayerDataA;
+                }
+
+                int nbCardsToDraw = dbContext.GameConfigs.First().NbCardsToDraw;
+                int nbManaPerTurn = dbContext.GameConfigs.First().NbManaToReceive;
+                var startMatchEvent = new StartMatchEvent(match, currentPlayerData, opposingPlayerData, nbCardsToDraw, nbManaPerTurn);
+
+                await dbContext.SaveChangesAsync();
+
+                return startMatchEvent;
+
+            }
+
         }
 
         public JoiningMatchData CreateJoiningMatch(Match match, PairOfPlayers pairOfPlayers)
@@ -76,103 +111,117 @@ namespace WebApi.Services
             //    };
             //}
             //-------------------------------------------------------------------------
-            Player? playerA = _playersService.GetPlayerFromUserId(pairOfPlayers.UserAId);
-            Player? playerB = _playersService.GetPlayerFromUserId(pairOfPlayers.UserBId);
-            JoiningMatchData joiningMatchData = new JoiningMatchData{
-                Match = match,
-                PlayerA = playerA!,
-                PlayerB = playerB!,
-                OtherPlayerConnectionId = pairOfPlayers.OtherConnectionId,
-                IsStarted = true,
 
-            };
-            return joiningMatchData;
+            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+            {
+                ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                Player? playerA = dbContext.Players.Single(p => p.UserId == pairOfPlayers.UserAId);
+                Player? playerB = dbContext.Players.Single(p => p.UserId == pairOfPlayers.UserBId);
+                JoiningMatchData joiningMatchData = new JoiningMatchData
+                {
+                    Match = match,
+                    PlayerA = playerA!,
+                    PlayerB = playerB!,
+                    OtherPlayerConnectionId = pairOfPlayers.OtherConnectionId,
+                    IsStarted = true,
+
+                };
+                return joiningMatchData;
+
+
+            }
+               
         }
 
         // Passer une COPIE de l'information sur les players (Car on va retirer les éléments de la liste, même si le player n'est pas mis dans une paire)
         async Task GeneratePairsAsync(List<PlayerInfo> playerInfos)
         {
-            List<PairOfPlayers> pairs = new List<PairOfPlayers>();
-            int index = -1;
-            int smallestELODifference = int.MaxValue;
-            PlayerInfo playerInfo2 = null;
-            PlayerInfo playerInfo = null;
-            string groupName = "";
+            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+            {
+
+                ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                List<PairOfPlayers> pairs = new List<PairOfPlayers>();
+                int index = -1;
+                int smallestELODifference = int.MaxValue;
+                PlayerInfo playerInfo2 = null;
+                PlayerInfo playerInfo = null;
+                string groupName = "";
              
-            // Tant qu'il y a des joueurs à mettre en pair
-            while (playerInfos.Count > 0)
-            {
-                playerInfo = playerInfos[0];
-                playerInfos.Remove(playerInfo);
-                for (int i = 0; i < playerInfos.Count; i++)
+                // Tant qu'il y a des joueurs à mettre en pair
+                while (playerInfos.Count > 0)
                 {
-                    PlayerInfo pi = playerInfos[i];
-                    int difference = Math.Abs(pi.ELO - playerInfo.ELO);
-                    if (difference < playerInfo.attente * CONSTANTE)
+                    playerInfo = playerInfos[0];
+                    playerInfos.Remove(playerInfo);
+                    for (int i = 0; i < playerInfos.Count; i++)
                     {
-                        if (difference < smallestELODifference)
-                            smallestELODifference = difference;
-                        index = i;
-                    }
+                        PlayerInfo pi = playerInfos[i];
+                        int difference = Math.Abs(pi.ELO - playerInfo.ELO);
+                        if (difference < playerInfo.attente * CONSTANTE)
+                        {
+                            if (difference < smallestELODifference)
+                                smallestELODifference = difference;
+                            index = i;
+                        }
                 
-                }
+                    }
                     
-            }
+                }
 
-            // Si on a trouvé une paire
-            if (index >= 0)
-            {
-                playerInfo2 = playerInfos[index];
-                playerInfos.RemoveAt(index);
-                PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
-                pairs.Add(pairOfPlayers);
-
-
-                using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+                // Si on a trouvé une paire
+                if (index >= 0)
                 {
-                    ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-                    // Update db With PlayerInfo (REMOVE)
-                    dbContext.PlayerInfo.Remove(playerInfo);
-                    dbContext.PlayerInfo.Remove(playerInfo2);
-
-                    // Créer le match
-                    Match match = CreateMatch(pairOfPlayers);
-
-                    string otherPlayerConnectionId = null;
-
-                    dbContext.Update(match);
-                    dbContext.SaveChangesAsync();
-
-                    //Créer le JoiningMatchData
-                    JoiningMatchData joiningMatchData = CreateJoiningMatch(match, pairOfPlayers);
-
-                    groupName = "Match" + joiningMatchData.Match.Id;
-
-                    await _matchHub.Groups.AddToGroupAsync(playerInfo.ConnectionId, groupName);
-                    await _matchHub.Groups.AddToGroupAsync(playerInfo2.ConnectionId, groupName);
-
-                    await _matchHub.Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
-
-                    StartMatchEvent startMatchEvent = await _service.StartMatch(playerInfo2.UserId, joiningMatchData.Match);
-
-                    await _matchHub.Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+                    playerInfo2 = playerInfos[index];
+                    playerInfos.RemoveAt(index);
+                    PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
+                    pairs.Add(pairOfPlayers);
 
 
+                
 
-                    // We would like to send to the client the necessary information
-                    //----------------------------------------------------------------------------
+                        // Update db With PlayerInfo (REMOVE)
+                        dbContext.PlayerInfo.Remove(playerInfo);
+                        dbContext.PlayerInfo.Remove(playerInfo2);
 
-                    // await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
+                        // Créer le match
+                        Match match = CreateMatch(pairOfPlayers);
 
-                    //Envoyer à Player A et B
-                    //await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
-                    //StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
+                        string otherPlayerConnectionId = null;
+
+                        dbContext.Update(match);
+                        dbContext.SaveChangesAsync();
+
+                        //Créer le JoiningMatchData
+                        JoiningMatchData joiningMatchData = CreateJoiningMatch(match, pairOfPlayers);
+
+                        groupName = "Match" + joiningMatchData.Match.Id;
+
+                        await _matchHub.Groups.AddToGroupAsync(playerInfo.ConnectionId, groupName);
+                        await _matchHub.Groups.AddToGroupAsync(playerInfo2.ConnectionId, groupName);
+
+                        await _matchHub.Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+
+                        StartMatchEvent startMatchEvent = await StartMatch(playerInfo2.UserId, joiningMatchData.Match);
 
 
-                    //await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+                        await _matchHub.Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
 
-                    //----------------------------------------------------------------------------
+
+
+                        // We would like to send to the client the necessary information
+                        //----------------------------------------------------------------------------
+
+                        // await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
+
+                        //Envoyer à Player A et B
+                        //await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+                        //StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
+
+
+                        //await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+
+                        //----------------------------------------------------------------------------
                 }
 
             }
@@ -193,7 +242,7 @@ namespace WebApi.Services
                     //INCRÉMENTER Propriété attente dans PLAYERIFNO
                     // --
                     //Update database
-                    GeneratePairsAsync(dbContext.PlayerInfo.ToList());
+                    await GeneratePairsAsync(dbContext.PlayerInfo.ToList());
 
                 }
             }
