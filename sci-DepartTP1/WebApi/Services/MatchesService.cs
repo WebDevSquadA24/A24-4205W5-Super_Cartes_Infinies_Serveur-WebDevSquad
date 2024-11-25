@@ -72,29 +72,32 @@ namespace Super_Cartes_Infinies.Services
 
                 // ADD user to PlayerInfo
                 // --> EloBackGroundService
-                //PlayerInfo playerInfo = new PlayerInfo
-                //{
-                //    UserId = userId,
-                //    ELO = ,
-                //    attente = 0,
-                //    ConnectionId = connectionId,
-                //};
-                //_dbContext.PlayerInfo.Add(playerInfo);
-                UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
-
-                if (pairOfUsers != null)
+                Player player = _playersService.GetPlayerFromUserId(userId);
+                PlayerInfo playerInfo = new PlayerInfo
                 {
-                    playerA = _playersService.GetPlayerFromUserId(pairOfUsers.UserAId);
-                    playerB = _playersService.GetPlayerFromUserId(pairOfUsers.UserBId);
+                    UserId = userId,
+                    ELO = player.ELO,
+                    attente = 0,
+                    ConnectionId = connectionId,
+                };
+                _dbContext.PlayerInfo.Add(playerInfo);
+                _dbContext.SaveChanges();
 
-                    // Création d'un nouveau match
-                    IEnumerable<Card> cards = _cardsService.GetAllCards();
-                    match = new Match(playerA, playerB, cards);
-                    otherPlayerConnectionId = pairOfUsers.UserAConnectionId;
+                //UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
 
-                    _dbContext.Update(match);
-                    _dbContext.SaveChanges();
-                }
+                //if (pairOfUsers != null)
+                //{
+                //    playerA = _playersService.GetPlayerFromUserId(pairOfUsers.UserAId);
+                //    playerB = _playersService.GetPlayerFromUserId(pairOfUsers.UserBId);
+
+                //    // Création d'un nouveau match
+                //    IEnumerable<Card> cards = _cardsService.GetAllCards();
+                //    match = new Match(playerA, playerB, cards);
+                //    otherPlayerConnectionId = pairOfUsers.UserAConnectionId;
+
+                //    _dbContext.Update(match);
+                //    _dbContext.SaveChanges();
+                //}
             }
 
             if (match != null) {

@@ -19,7 +19,7 @@ namespace Super_Cartes_Infinies.Models
 
 		public double Money { get; set; }
 
-		public int ELO { get; set; }
+		public int ELO { get; set; } = 1000;
 
         [JsonIgnore]
         public virtual List<OwnedCard> OwnedCards { get; set; }

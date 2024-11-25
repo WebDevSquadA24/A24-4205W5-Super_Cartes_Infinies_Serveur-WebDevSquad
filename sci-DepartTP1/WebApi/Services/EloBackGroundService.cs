@@ -161,8 +161,11 @@ namespace WebApi.Services
                         if (difference < playerInfo.attente * CONSTANTE)
                         {
                             if (difference < smallestELODifference)
+                            {
                                 smallestELODifference = difference;
-                            index = i;
+                                index = i;
+                            }
+                                
                         }
                 
                     }
@@ -242,6 +245,12 @@ namespace WebApi.Services
                     //INCRÉMENTER Propriété attente dans PLAYERIFNO
                     // --
                     //Update database
+                    foreach (PlayerInfo player in dbContext.PlayerInfo)
+                    {
+                        player.attente++;
+                        dbContext.PlayerInfo.Update(player);
+                        dbContext.SaveChanges();
+                    }
                     await GeneratePairsAsync(dbContext.PlayerInfo.ToList());
 
                 }
