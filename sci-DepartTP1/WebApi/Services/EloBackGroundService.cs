@@ -148,7 +148,7 @@ namespace WebApi.Services
                 PlayerInfo playerInfo2 = null;
                 PlayerInfo playerInfo = null;
                 string groupName = "";
-             
+
                 // Tant qu'il y a des joueurs à mettre en pair
                 while (playerInfos.Count > 0)
                 {
@@ -165,23 +165,23 @@ namespace WebApi.Services
                                 smallestELODifference = difference;
                                 index = i;
                             }
-                                
+
                         }
-                
+
                     }
-                    
-                }
-
-                // Si on a trouvé une paire
-                if (index >= 0)
-                {
-                    playerInfo2 = playerInfos[index];
-                    playerInfos.RemoveAt(index);
-                    PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
-                    pairs.Add(pairOfPlayers);
 
 
-                
+
+                    // Si on a trouvé une paire
+                    if (index >= 0)
+                    {
+                        playerInfo2 = playerInfos[index];
+                        playerInfos.RemoveAt(index);
+                        PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
+                        pairs.Add(pairOfPlayers);
+
+
+
 
                         // Update db With PlayerInfo (REMOVE)
                         dbContext.PlayerInfo.Remove(playerInfo);
@@ -209,24 +209,25 @@ namespace WebApi.Services
 
 
                         await _matchHub.Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+                    }
 
 
 
-                        // We would like to send to the client the necessary information
-                        //----------------------------------------------------------------------------
+                    // We would like to send to the client the necessary information
+                    //----------------------------------------------------------------------------
 
-                        // await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
+                    // await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
 
-                        //Envoyer à Player A et B
-                        //await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
-                        //StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
+                    //Envoyer à Player A et B
+                    //await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+                    //StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
 
 
-                        //await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+                    //await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
 
-                        //----------------------------------------------------------------------------
+                    //----------------------------------------------------------------------------
+
                 }
-
             }
 
             // Sinon, c'est pas grave, on a retiré l'élément de la liste et on va évaluer le prochain

@@ -75,7 +75,7 @@ namespace Super_Cartes_Infinies.Services
                 Player player = _playersService.GetPlayerFromUserId(userId);
                 PlayerInfo playerInfo = new PlayerInfo
                 {
-                    UserId = userId,
+                    UserId = player.UserId,
                     ELO = player.ELO,
                     attente = 0,
                     ConnectionId = connectionId,
