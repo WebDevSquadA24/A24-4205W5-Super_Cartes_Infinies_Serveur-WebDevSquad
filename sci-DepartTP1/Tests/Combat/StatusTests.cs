@@ -86,9 +86,13 @@ namespace Tests.Combat
             _currentPlayerData.AddCardToBattleField(_playableCardA);
             _opposingPlayerData.AddCardToBattleField(_playableCardB);
 
+            // TODO: Mieux d'ajouter des vérifications de status et de health entre les PlayerEndTurnEvent
             var endTurnEvent = new PlayerEndTurnEvent(_match, _currentPlayerData, _opposingPlayerData, NB_MANA_PER_TURN);
+
             var endTurnEvent1 = new PlayerEndTurnEvent(_match, _opposingPlayerData, _currentPlayerData, NB_MANA_PER_TURN);
+
             var endTurnEvent2 = new PlayerEndTurnEvent(_match, _currentPlayerData, _opposingPlayerData, NB_MANA_PER_TURN);
+
             var endTurnEvent3 = new PlayerEndTurnEvent(_match, _opposingPlayerData, _currentPlayerData, NB_MANA_PER_TURN);
 
             Assert.AreEqual(healthB, _playableCardB.Health);
@@ -123,6 +127,7 @@ namespace Tests.Combat
             var endTurnEvent = new PlayerEndTurnEvent(_match, _currentPlayerData, _opposingPlayerData, NB_MANA_PER_TURN);
             _currentPlayerData.RemoveCardFromBattleField(_playableCardA);
 
+            // TODO: Bonne idée de vérifier la valeur du Status Stunned entre les PlayeEndTurnEvent
             // NO ATTACK
             var endTurnEvent1 = new PlayerEndTurnEvent(_match, _opposingPlayerData, _currentPlayerData, NB_MANA_PER_TURN);
             var endTurnEvent2 = new PlayerEndTurnEvent(_match, _currentPlayerData, _opposingPlayerData, NB_MANA_PER_TURN);
@@ -168,9 +173,11 @@ namespace Tests.Combat
             var playEvent = new PlayCardEvent(_currentPlayerData, _opposingPlayerData, _playableCardMagic.Id, true);
 
 
-
+            // TODO: Bonne idée de faire mourrir une carte pour vérifier que ça fonctionne bien
             Assert.AreEqual(healthA, _playableCardA.Health);
             Assert.AreEqual(healthB, _playableCardB.Health);
+
+            // TODO: Vérifier que la carte Spell n'est plus sur le BattleField
 
         }
 
@@ -247,6 +254,7 @@ namespace Tests.Combat
 
 
             Assert.AreEqual(healthB, _opposingPlayerData.BattleField[target].Health);
+            // TODO: Vérifier que la carte Spell n'est plus sur le BattleField (Graveyard)
 
         }
 

@@ -100,6 +100,7 @@ namespace Tests.Services
                 Cost = 2,
                 CardPowers = cardP
             };
+            // TODO: Ajouter un bool IsSpell et le mettre à true
             _playableCardTest = new PlayableCard(_cardTest)
             {
                 Id = 32
