@@ -15,7 +15,7 @@ namespace Tests.Services
         protected PlayableCard _playableCardA, _playableCardB, _playableCardC, _playableCardTest, _playableCardMagic;
 
 
-        protected Power _powerHeal, _powerThorn, _powerFStrike, _powerChaos, _powerPoison, _powerStun, _powerEarthquake, _powerRandomPain;
+        protected Power _powerHeal, _powerThorn, _powerFStrike, _powerChaos, _powerPoison, _powerStun, _powerEarthquake, _powerRandomPain, _powerTaliban;
 
         protected Card _cardTest;
 
@@ -67,6 +67,10 @@ namespace Tests.Services
             _powerRandomPain = new Power()
             {
                 Id = Power.RANDOM_PAIN_ID,
+            };
+            _powerTaliban = new Power()
+            {
+                Id = Power.TALIBAN_ID,
             };
 
             CardPower cardPowerTest = new CardPower()

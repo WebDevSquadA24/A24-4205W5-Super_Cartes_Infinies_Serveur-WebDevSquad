@@ -114,6 +114,7 @@ namespace Tests.Combat
             _cardA.CardPowers.Add(cp);
 
             //Expected
+            _currentPlayerData.Health = 20;
             int healthA = _currentPlayerData.Health - 1;
 
             _currentPlayerData.AddCardToBattleField(_playableCardA);
@@ -170,6 +171,40 @@ namespace Tests.Combat
 
             Assert.AreEqual(healthA, _playableCardA.Health);
             Assert.AreEqual(healthB, _playableCardB.Health);
+
+        }
+
+        [TestMethod]
+        public void TalibanTest()
+        {
+            var cp = new CardPower
+            {
+                Power = _powerTaliban,
+                Card = _cardB,
+                PowerId = Power.TALIBAN_ID
+            };
+
+            _playableCardA.Attack = 1000;
+            _playableCardA.Health = 100000;
+
+            _playableCardB.Attack = 1;
+            _playableCardB.Health = 10;
+
+            _cardB.CardPowers.Add(cp);
+
+            //Expected
+
+
+            _currentPlayerData.AddCardToBattleField(_playableCardA);
+            _opposingPlayerData.AddCardToBattleField(_playableCardB);
+
+            var endTurnEvent5 = new PlayerEndTurnEvent(_match, _currentPlayerData, _opposingPlayerData, NB_MANA_PER_TURN);
+
+
+
+            Assert.AreEqual(_playableCardA, _currentPlayerData.Graveyard[0]);
+            Assert.AreEqual(_playableCardB, _opposingPlayerData.Graveyard[0]);
+
 
         }
 
