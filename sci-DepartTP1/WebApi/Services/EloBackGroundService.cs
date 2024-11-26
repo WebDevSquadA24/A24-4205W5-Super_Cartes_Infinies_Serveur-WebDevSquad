@@ -178,6 +178,7 @@ namespace WebApi.Services
                         playerInfo2 = playerInfos[index];
                         playerInfos.RemoveAt(index);
                         PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
+                        // TODO: Vérifier ce qui est fait avec le OtherConnectionId vs le userId qui est attendu dans StartMatch
                         pairOfPlayers.OtherConnectionId = playerInfo2.ConnectionId;
                         pairs.Add(pairOfPlayers);
 
@@ -206,7 +207,7 @@ namespace WebApi.Services
 
                         await _matchHub.Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
 
-                        StartMatchEvent startMatchEvent = await StartMatch(pairOfPlayers.OtherConnectionId, joiningMatchData.Match);
+                        StartMatchEvent startMatchEvent = await StartMatch(playerInfo2.UserId, joiningMatchData.Match);
 
 
                         await _matchHub.Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
