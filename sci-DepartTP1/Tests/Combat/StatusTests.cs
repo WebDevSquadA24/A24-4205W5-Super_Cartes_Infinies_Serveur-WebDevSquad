@@ -32,6 +32,7 @@ namespace Tests.Combat
             {
                 Power = _powerChaos,
                 Card = _cardA,
+                PowerId = Power.CHAOS_ID
             };
 
             _cardA.CardPowers.Add(cp);
@@ -71,7 +72,8 @@ namespace Tests.Combat
             {
                 Power = _powerPoison,
                 Card = _cardA,
-                Value = 1
+                Value = 1,
+                PowerId = Power.POISON_ID
             };
             _playableCardA.Attack = 0;
             _playableCardB.Attack = 0;
@@ -99,7 +101,8 @@ namespace Tests.Combat
             {
                 Power = _powerStun,
                 Card = _cardA,
-                Value = 2
+                Value = 2,
+                PowerId = Power.STUN_ID
             };
 
             _playableCardA.Attack = 1;
@@ -141,7 +144,8 @@ namespace Tests.Combat
             {
                 Power = _powerEarthquake,
                 Card = _cardMagic,
-                Value = 2
+                Value = 2,
+                PowerId = Power.EARTHQUAKE_ID
             };
 
             _playableCardA.Attack = 1;
@@ -153,8 +157,9 @@ namespace Tests.Combat
             _cardMagic.CardPowers.Add(cp);
 
             //Expected
-            int healthA = _playableCardA.Health - _playableCardMagic.GetStatusValue(Power.EARTHQUAKE_ID);
-            int healthB = _playableCardB.Health - _playableCardMagic.GetStatusValue(Power.EARTHQUAKE_ID);
+            
+            int healthA = _playableCardA.Health - _playableCardMagic.GetPowerValue(Power.EARTHQUAKE_ID);
+            int healthB = _playableCardB.Health - _playableCardMagic.GetPowerValue(Power.EARTHQUAKE_ID);
 
             _currentPlayerData.AddCardToBattleField(_playableCardA);
             _opposingPlayerData.AddCardToBattleField(_playableCardB);
