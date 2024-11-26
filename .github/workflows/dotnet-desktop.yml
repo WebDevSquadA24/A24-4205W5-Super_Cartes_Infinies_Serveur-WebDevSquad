@@ -82,7 +82,7 @@ jobs:
       # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test --no-build --verbosity normal
-      working-directory: sci-DepartTP1/Super Cartes Infinies
+      working-directory: sci-DepartTP1/Tests
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
