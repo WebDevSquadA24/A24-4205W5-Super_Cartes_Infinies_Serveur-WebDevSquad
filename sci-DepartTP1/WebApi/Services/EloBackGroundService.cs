@@ -60,11 +60,9 @@ namespace WebApi.Services
 
         }
 
-        public async Task<StartMatchEvent> StartMatch(string currentUserId, Match match)
+        public async Task<StartMatchEvent> StartMatch(string currentUserId, Match match, ApplicationDbContext dbContext)
         {
-            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
-            {
-                ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+           
 
                 if ((match.UserAId == currentUserId) != match.IsPlayerATurn)
                     throw new Exception("Ce n'est pas le tour de ce joueur");
@@ -91,11 +89,10 @@ namespace WebApi.Services
 
                 return startMatchEvent;
 
-            }
 
         }
 
-        public JoiningMatchData CreateJoiningMatch(Match match, PairOfPlayers pairOfPlayers)
+        public JoiningMatchData CreateJoiningMatch(Match match, PairOfPlayers pairOfPlayers, ApplicationDbContext dbContext)
         {
             // JoiningMatchdata
             //-------------------------------------------------------------------------
@@ -112,9 +109,7 @@ namespace WebApi.Services
             //}
             //-------------------------------------------------------------------------
 
-            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
-            {
-                ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            
 
                 Player? playerA = dbContext.Players.Single(p => p.UserId == pairOfPlayers.UserAId);
                 Player? playerB = dbContext.Players.Single(p => p.UserId == pairOfPlayers.UserBId);
@@ -130,17 +125,13 @@ namespace WebApi.Services
                 return joiningMatchData;
 
 
-            }
                
         }
 
         // Passer une COPIE de l'information sur les players (Car on va retirer les éléments de la liste, même si le player n'est pas mis dans une paire)
-        async Task GeneratePairsAsync(List<PlayerInfo> playerInfos)
+        async Task GeneratePairsAsync(List<PlayerInfo> playerInfos, ApplicationDbContext dbContext)
         {
-            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
-            {
-
-                ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            
 
                 List<PairOfPlayers> pairs = new List<PairOfPlayers>();
                 int index = -1;
@@ -198,7 +189,7 @@ namespace WebApi.Services
                         await dbContext.SaveChangesAsync();
 
                         //Créer le JoiningMatchData
-                        JoiningMatchData joiningMatchData = CreateJoiningMatch(match, pairOfPlayers);
+                        JoiningMatchData joiningMatchData = CreateJoiningMatch(match, pairOfPlayers, dbContext);
 
                         groupName = "Match" + joiningMatchData.Match.Id;
 
@@ -207,7 +198,7 @@ namespace WebApi.Services
 
                         await _matchHub.Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
 
-                        StartMatchEvent startMatchEvent = await StartMatch(playerInfo2.UserId, joiningMatchData.Match);
+                        StartMatchEvent startMatchEvent = await StartMatch(playerInfo2.UserId, joiningMatchData.Match , dbContext);
 
 
                         await _matchHub.Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
@@ -230,7 +221,7 @@ namespace WebApi.Services
                     //----------------------------------------------------------------------------
 
                 }
-            }
+            
 
             // Sinon, c'est pas grave, on a retiré l'élément de la liste et on va évaluer le prochain
 
@@ -255,7 +246,7 @@ namespace WebApi.Services
                         dbContext.SaveChanges();
                     }
                     List<PlayerInfo> playerInfos = dbContext.PlayerInfo.ToList();
-                    await GeneratePairsAsync(playerInfos);
+                    await GeneratePairsAsync(playerInfos, dbContext);
 
                 }
             }
