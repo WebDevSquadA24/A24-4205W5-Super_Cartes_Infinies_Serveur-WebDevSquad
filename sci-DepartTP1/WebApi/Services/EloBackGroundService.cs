@@ -35,9 +35,29 @@ namespace WebApi.Services
 
 
         // NEED A FUNCTION TO ADD PLAYERINFO TO DATABASE
-        public void AddPlayerInfo(string userId, int Elo, int attente)
+        private async Task AssemblageData(PairOfPlayers pairOfPlayers, ApplicationDbContext dbContext)
         {
+            Match match = CreateMatch(pairOfPlayers);
 
+            string otherPlayerConnectionId = null;
+
+            dbContext.Update(match);
+            await dbContext.SaveChangesAsync();
+
+            //Créer le JoiningMatchData
+            JoiningMatchData joiningMatchData = CreateJoiningMatch(match, pairOfPlayers, dbContext);
+
+            string groupName = "Match" + joiningMatchData.Match.Id;
+
+            await _matchHub.Groups.AddToGroupAsync(pairOfPlayers.PlayerInfo1.ConnectionId, groupName);
+            await _matchHub.Groups.AddToGroupAsync(pairOfPlayers.PlayerInfo2.ConnectionId, groupName);
+
+            await _matchHub.Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+
+            StartMatchEvent startMatchEvent = await StartMatch(pairOfPlayers.PlayerInfo2.UserId, joiningMatchData.Match, dbContext);
+
+
+            await _matchHub.Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
         }
 
 
@@ -94,22 +114,6 @@ namespace WebApi.Services
 
         public JoiningMatchData CreateJoiningMatch(Match match, PairOfPlayers pairOfPlayers, ApplicationDbContext dbContext)
         {
-            // JoiningMatchdata
-            //-------------------------------------------------------------------------
-            //if (match != null)
-            //{
-            //    return new JoiningMatchData
-            //    {
-            //        Match = match,
-            //        PlayerA = playerA!,
-            //        PlayerB = playerB!,
-            //        OtherPlayerConnectionId = otherPlayerConnectionId,
-            //        IsStarted = otherPlayerConnectionId == null
-            //    };
-            //}
-            //-------------------------------------------------------------------------
-
-            
 
                 Player? playerA = dbContext.Players.Single(p => p.UserId == pairOfPlayers.UserAId);
                 Player? playerB = dbContext.Players.Single(p => p.UserId == pairOfPlayers.UserBId);
@@ -129,7 +133,7 @@ namespace WebApi.Services
         }
 
         // Passer une COPIE de l'information sur les players (Car on va retirer les éléments de la liste, même si le player n'est pas mis dans une paire)
-        async Task GeneratePairsAsync(List<PlayerInfo> playerInfos, ApplicationDbContext dbContext)
+        public async Task<List<PairOfPlayers>> GeneratePairsAsync(List<PlayerInfo> playerInfos, ApplicationDbContext dbContext)
         {
             
 
@@ -163,65 +167,69 @@ namespace WebApi.Services
 
 
 
-                    // Si on a trouvé une paire
-                    if (index >= 0)
-                    {
-                        playerInfo2 = playerInfos[index];
-                        playerInfos.RemoveAt(index);
-                        PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
-                        // TODO: Vérifier ce qui est fait avec le OtherConnectionId vs le userId qui est attendu dans StartMatch
-                        pairOfPlayers.OtherConnectionId = playerInfo2.ConnectionId;
-                        pairs.Add(pairOfPlayers);
+                // Si on a trouvé une paire
+                if (index >= 0)
+                {
+                    playerInfo2 = playerInfos[index];
+                    playerInfos.RemoveAt(index);
+                    PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
+                    // TODO: Vérifier ce qui est fait avec le OtherConnectionId vs le userId qui est attendu dans StartMatch
+                    pairOfPlayers.OtherConnectionId = playerInfo2.ConnectionId;
+                    pairs.Add(pairOfPlayers);
 
 
-
-
-                        // Update db With PlayerInfo (REMOVE)
-                        dbContext.PlayerInfo.Remove(playerInfo);
-                        dbContext.PlayerInfo.Remove(playerInfo2);
-
-                        // Créer le match
-                        Match match = CreateMatch(pairOfPlayers);
-
-                        string otherPlayerConnectionId = null;
-
-                        dbContext.Update(match);
-                        await dbContext.SaveChangesAsync();
-
-                        //Créer le JoiningMatchData
-                        JoiningMatchData joiningMatchData = CreateJoiningMatch(match, pairOfPlayers, dbContext);
-
-                        groupName = "Match" + joiningMatchData.Match.Id;
-
-                        await _matchHub.Groups.AddToGroupAsync(playerInfo.ConnectionId, groupName);
-                        await _matchHub.Groups.AddToGroupAsync(playerInfo2.ConnectionId, groupName);
-
-                        await _matchHub.Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
-
-                        StartMatchEvent startMatchEvent = await StartMatch(playerInfo2.UserId, joiningMatchData.Match , dbContext);
-
-
-                        await _matchHub.Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
-                    }
-
-
-
-                    // We would like to send to the client the necessary information
-                    //----------------------------------------------------------------------------
-
-                    // await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
-
-                    //Envoyer à Player A et B
-                    //await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
-                    //StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
-
-
-                    //await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
-
-                    //----------------------------------------------------------------------------
+                    // Update db With PlayerInfo (REMOVE)
+                    dbContext.PlayerInfo.Remove(playerInfo);
+                    dbContext.PlayerInfo.Remove(playerInfo2);
+                    await dbContext.SaveChangesAsync();
 
                 }
-            
+
+
+                #region Comment
+                // Créer le match -----------------------------------------------------------------
+                //Match match = CreateMatch(pairOfPlayers);
+
+                //        string otherPlayerConnectionId = null;
+
+                //        dbContext.Update(match);
+                //        await dbContext.SaveChangesAsync();
+
+                //        //Créer le JoiningMatchData
+                //        JoiningMatchData joiningMatchData = CreateJoiningMatch(match, pairOfPlayers, dbContext);
+
+                //        groupName = "Match" + joiningMatchData.Match.Id;
+
+                //        await _matchHub.Groups.AddToGroupAsync(playerInfo.ConnectionId, groupName);
+                //        await _matchHub.Groups.AddToGroupAsync(playerInfo2.ConnectionId, groupName);
+
+                //        await _matchHub.Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+
+                //        StartMatchEvent startMatchEvent = await StartMatch(playerInfo2.UserId, joiningMatchData.Match , dbContext);
+
+
+                //        await _matchHub.Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+
+
+
+                // We would like to send to the client the necessary information
+                //----------------------------------------------------------------------------
+
+                // await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
+
+                //Envoyer à Player A et B
+                //await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+                //StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
+
+
+                //await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+
+                //----------------------------------------------------------------------------
+                #endregion
+
+            }
+            return pairs;
+
 
             // Sinon, c'est pas grave, on a retiré l'élément de la liste et on va évaluer le prochain
 
@@ -246,7 +254,11 @@ namespace WebApi.Services
                         dbContext.SaveChanges();
                     }
                     List<PlayerInfo> playerInfos = dbContext.PlayerInfo.ToList();
-                    await GeneratePairsAsync(playerInfos, dbContext);
+                    List<PairOfPlayers> listePlayers = await GeneratePairsAsync(playerInfos, dbContext);
+                    if(listePlayers.Count > 0)
+                    {
+                        await AssemblageData(listePlayers[0], dbContext);
+                    }
 
                 }
             }
