@@ -26,7 +26,7 @@ namespace Super_Cartes_Infinies.Models
         public int Index { get; set; }
 
 		[ValidateNever]
-		public virtual List<PlayableCardStatus> PlayableCardStatuses { get; set; } = [];
+		public virtual List<PlayableCardStatus> PlayableCardStatuses { get; set; } = new List<PlayableCardStatus>();
 
         public bool HasPower(int powerId)
         {
@@ -37,7 +37,7 @@ namespace Super_Cartes_Infinies.Models
 				return false;
 			}
 
-			if (Card.CardPowers!.Select(cp => cp.PowerId).Contains(powerId)) 
+			if (Card.CardPowers!.Select(cp => cp.Power.Id).Contains(powerId)) 
 				hasPower = true;
 
 			return hasPower;
@@ -58,7 +58,7 @@ namespace Super_Cartes_Infinies.Models
 
 		public bool HasStatus(int statusId)
 		{
-			if (PlayableCardStatuses.Select(pcs => pcs.Status.Id).Contains(statusId)) return true;
+			if (PlayableCardStatuses.Select(pcs => pcs.StatusId).Contains(statusId)) return true;
 			return false;
 		}
 
@@ -66,7 +66,7 @@ namespace Super_Cartes_Infinies.Models
 		{
 			if (!HasStatus(statusId)) return 0;
 
-			return PlayableCardStatuses.First(pcs => pcs.Status.Id == statusId).Value;
+			return PlayableCardStatuses.First(pcs => pcs.StatusId == statusId).Value;
 		}
     }
 }

@@ -16,8 +16,12 @@ namespace WebApi.Combat
 
             myCard = currentPlayerData.BattleField[index];
 
-           
-            
+            //Chaos
+            if (myCard.HasPower(Power.CHAOS_ID))
+            {
+                this.Events.Add(new ChaosEvent(currentPlayerData, opposingPlayerData));
+            }
+
             // Heal
             if (myCard.HasPower(Power.HEAL_ID))
             {
@@ -31,15 +35,14 @@ namespace WebApi.Combat
                 this.Events.Add(new LoveOfJesusChristEvent(currentPlayerData));
             }
 
-            //Chaos
-            if (myCard.HasPower(Power.CHAOS_ID))
-            {
-                this.Events.Add(new ChaosEvent(currentPlayerData, opposingPlayerData));
-            }
 
             this.Events.Add(new AttackEvent(currentPlayerData, opposingPlayerData, match, index));
 
-            
+            //Poisoned
+            if (myCard.HasStatus((int)StatusEnum.Poisoned))
+            {
+                this.Events.Add(new PoisonedEvent(myCard));
+            }
 
         }
     }

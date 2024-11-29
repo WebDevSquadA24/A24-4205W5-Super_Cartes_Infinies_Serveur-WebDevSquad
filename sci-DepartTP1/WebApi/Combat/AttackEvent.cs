@@ -36,7 +36,10 @@ namespace WebApi.Combat
                     if (myCard.HasPower(Power.FIRST_STRIKE_ID))
                     {
                         this.Events.Add(new FirstStrikeEvent(currentPlayerData, opposingPlayerData, match, index));
-
+                    }
+                    if (myCard.HasPower(Power.POISON_ID))
+                    {
+                        this.Events.Add(new PoisonEvent(myCard, opponentCard));
                     }
                     if (myCard.Health > 0)
                     {
