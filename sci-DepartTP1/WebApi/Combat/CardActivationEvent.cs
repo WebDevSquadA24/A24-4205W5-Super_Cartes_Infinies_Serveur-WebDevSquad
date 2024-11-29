@@ -31,13 +31,11 @@ namespace WebApi.Combat
                 this.Events.Add(new LoveOfJesusChristEvent(currentPlayerData));
             }
 
-            // Thorns
-            // Opponent has Thorns
-            
-
-
-
-
+            //Chaos
+            if (myCard.HasPower(Power.CHAOS_ID))
+            {
+                this.Events.Add(new ChaosEvent(currentPlayerData, opposingPlayerData));
+            }
 
             this.Events.Add(new AttackEvent(currentPlayerData, opposingPlayerData, match, index));
 
