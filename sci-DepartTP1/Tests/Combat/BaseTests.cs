@@ -11,11 +11,11 @@ namespace Tests.Services
 
         protected MatchPlayerData _currentPlayerData, _opposingPlayerData;
         protected Match _match;
-        protected Card _cardA, _cardB, _cardC;
-        protected PlayableCard _playableCardA, _playableCardB, _playableCardC, _playableCardTest;
+        protected Card _cardA, _cardB, _cardC, _cardMagic;
+        protected PlayableCard _playableCardA, _playableCardB, _playableCardC, _playableCardTest, _playableCardMagic;
 
 
-        protected Power _powerHeal, _powerThorn, _powerFStrike, _powerChaos, _powerPoison, _powerStun, _powerEarthquake, _powerRandomPain;
+        protected Power _powerHeal, _powerThorn, _powerFStrike, _powerChaos, _powerPoison, _powerStun, _powerEarthquake, _powerRandomPain, _powerTaliban;
 
         protected Card _cardTest;
 
@@ -68,6 +68,10 @@ namespace Tests.Services
             {
                 Id = Power.RANDOM_PAIN_ID,
             };
+            _powerTaliban = new Power()
+            {
+                Id = Power.TALIBAN_ID,
+            };
 
             CardPower cardPowerTest = new CardPower()
             {
@@ -88,6 +92,15 @@ namespace Tests.Services
                 CardPowers = cardP
             };
 
+            _cardMagic = new Card
+            {
+                Id = 443,
+                Attack = 0,
+                Health = 0,
+                Cost = 2,
+                CardPowers = cardP
+            };
+            // TODO: Ajouter un bool IsSpell et le mettre à true
             _playableCardTest = new PlayableCard(_cardTest)
             {
                 Id = 32
@@ -165,7 +178,12 @@ namespace Tests.Services
 
             _playableCardC = new PlayableCard(_cardC)
             {
-                Id = 2
+                Id = 3
+            };
+
+            _playableCardMagic = new PlayableCard(_cardMagic)
+            {
+                Id = 4
             };
 
 
