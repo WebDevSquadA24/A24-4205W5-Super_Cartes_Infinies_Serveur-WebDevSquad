@@ -37,7 +37,7 @@ namespace WebApi.Services
         // NEED A FUNCTION TO ADD PLAYERINFO TO DATABASE
         private async Task AssemblageData(PairOfPlayers pairOfPlayers, ApplicationDbContext dbContext)
         {
-            Match match = CreateMatch(pairOfPlayers);
+            Match match = CreateMatch(pairOfPlayers, dbContext);
 
             string otherPlayerConnectionId = null;
 
@@ -61,11 +61,9 @@ namespace WebApi.Services
         }
 
 
-        public Match CreateMatch(PairOfPlayers pairOfPlayers)
+        public Match CreateMatch(PairOfPlayers pairOfPlayers, ApplicationDbContext dbContext)
         {
-            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
-            {
-                ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            
                 Player? playerA = dbContext.Players.Single(p => p.UserId == pairOfPlayers.UserAId);
                 Player? playerB = dbContext.Players.Single(p => p.UserId == pairOfPlayers.UserBId);
 
@@ -76,7 +74,6 @@ namespace WebApi.Services
                 return match;
 
 
-            }
 
         }
 
