@@ -5,6 +5,7 @@ using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 using Super_Cartes_Infinies.Models.Dtos;
 using WebApi.Combat;
+using WebApi.Services;
 
 namespace Super_Cartes_Infinies.Services
 {
@@ -15,13 +16,20 @@ namespace Super_Cartes_Infinies.Services
         private CardsService _cardsService;
         private MatchConfigurationService _matchConfigurationService;
         private ApplicationDbContext _dbContext;
+        private EloBackGroundService _eloBackGroundService;
 
-        public MatchesService(ApplicationDbContext context, WaitingUserService waitingUserService, PlayersService playersService, CardsService cardsService, MatchConfigurationService matchConfigurationService) {
+        public MatchesService(ApplicationDbContext context, 
+            WaitingUserService waitingUserService, 
+            PlayersService playersService, 
+            CardsService cardsService, 
+            MatchConfigurationService matchConfigurationService,
+            EloBackGroundService backgroundService) {
             _dbContext = context;
             _waitingUserService = waitingUserService;
             _playersService = playersService;
             _cardsService = cardsService;
             _matchConfigurationService = matchConfigurationService;
+            _eloBackGroundService = backgroundService;
         }
 
         // Cette fonction est assez flexible car elle peut simplement être appeler lorsqu'un user veut jouer un match
@@ -80,8 +88,7 @@ namespace Super_Cartes_Infinies.Services
                     attente = 0,
                     ConnectionId = connectionId,
                 };
-                _dbContext.PlayerInfo.Add(playerInfo);
-                _dbContext.SaveChanges();
+                _eloBackGroundService.PlayerInfos.Add(playerInfo);
 
                 //UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
 

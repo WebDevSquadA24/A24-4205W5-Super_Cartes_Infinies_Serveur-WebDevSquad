@@ -37,7 +37,7 @@ namespace Models.Migrations
 
                     b.HasIndex("OwnedCardId");
 
-                    b.ToTable("DeckOwnedCard");
+                    b.ToTable("DeckOwnedCard", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -320,7 +320,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PowerId");
 
-                    b.ToTable("CardPowers");
+                    b.ToTable("CardPowers", (string)null);
 
                     b.HasData(
                         new
@@ -396,7 +396,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("Deck");
+                    b.ToTable("Deck", (string)null);
                 });
 
             modelBuilder.Entity("Models.Models.GameConfig", b =>
@@ -430,7 +430,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameConfigs");
+                    b.ToTable("GameConfigs", (string)null);
 
                     b.HasData(
                         new
@@ -473,7 +473,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Packs");
+                    b.ToTable("Packs", (string)null);
 
                     b.HasData(
                         new
@@ -537,7 +537,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PlayerInfo2Id");
 
-                    b.ToTable("PairOfPlayers");
+                    b.ToTable("PairOfPlayers", (string)null);
                 });
 
             modelBuilder.Entity("Models.Models.PlayableCardStatus", b =>
@@ -563,7 +563,7 @@ namespace Models.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("PlayableCardStatus");
+                    b.ToTable("PlayableCardStatus", (string)null);
                 });
 
             modelBuilder.Entity("Models.Models.PlayerInfo", b =>
@@ -590,7 +590,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PlayerInfo");
+                    b.ToTable("PlayerInfo", (string)null);
                 });
 
             modelBuilder.Entity("Models.Models.Power", b =>
@@ -614,7 +614,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Powers");
+                    b.ToTable("Powers", (string)null);
 
                     b.HasData(
                         new
@@ -671,7 +671,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PackId");
 
-                    b.ToTable("Probabilities");
+                    b.ToTable("Probabilities", (string)null);
 
                     b.HasData(
                         new
@@ -763,7 +763,7 @@ namespace Models.Migrations
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("StarterCards");
+                    b.ToTable("StarterCards", (string)null);
 
                     b.HasData(
                         new
@@ -834,7 +834,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Status");
+                    b.ToTable("Status", (string)null);
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.Card", b =>
@@ -867,7 +867,7 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cards");
+                    b.ToTable("Cards", (string)null);
 
                     b.HasData(
                         new
@@ -1019,7 +1019,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PlayerDataBId");
 
-                    b.ToTable("Matches");
+                    b.ToTable("Matches", (string)null);
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.MatchPlayerData", b =>
@@ -1046,7 +1046,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("MatchPlayersData");
+                    b.ToTable("MatchPlayersData", (string)null);
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.OwnedCard", b =>
@@ -1069,7 +1069,7 @@ namespace Models.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("OwnedCards");
+                    b.ToTable("OwnedCards", (string)null);
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.PlayableCard", b =>
@@ -1119,7 +1119,7 @@ namespace Models.Migrations
 
                     b.HasIndex("MatchPlayerDataId3");
 
-                    b.ToTable("PlayableCards");
+                    b.ToTable("PlayableCards", (string)null);
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.Player", b =>
@@ -1148,7 +1148,7 @@ namespace Models.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Players");
+                    b.ToTable("Players", (string)null);
 
                     b.HasData(
                         new

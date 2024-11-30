@@ -11,6 +11,7 @@ using Super_Cartes_Infinies.Hubs;
 using Super_Cartes_Infinies.Models;
 using Super_Cartes_Infinies.Models.Dtos;
 using Super_Cartes_Infinies.Services;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Match = Super_Cartes_Infinies.Models.Match;
 
@@ -24,7 +25,9 @@ namespace WebApi.Services
 
         private IServiceScopeFactory _serviceScopeFactory;
 
+        public List<PairOfPlayers> Pairs = new List<PairOfPlayers>();
 
+        public List<PlayerInfo> PlayerInfos = new List<PlayerInfo>();
 
 
         public EloBackGroundService(IHubContext<MatchHub> monHub, IServiceScopeFactory serviceScopeFactory)
@@ -130,11 +133,10 @@ namespace WebApi.Services
         }
 
         // Passer une COPIE de l'information sur les players (Car on va retirer les éléments de la liste, même si le player n'est pas mis dans une paire)
-        public async Task<List<PairOfPlayers>> GeneratePairsAsync(List<PlayerInfo> playerInfos, ApplicationDbContext dbContext)
+        public async Task<List<PairOfPlayers>> GeneratePairsAsync(ApplicationDbContext dbContext)
         {
             
 
-                List<PairOfPlayers> pairs = new List<PairOfPlayers>();
                 int index = -1;
                 int smallestELODifference = int.MaxValue;
                 PlayerInfo playerInfo2 = null;
@@ -142,13 +144,13 @@ namespace WebApi.Services
                 string groupName = "";
 
                 // Tant qu'il y a des joueurs à mettre en pair
-                while (playerInfos.Count > 0)
+                while (PlayerInfos.Count > 0)
                 {
-                    playerInfo = playerInfos[0];
-                    playerInfos.Remove(playerInfo);
-                    for (int i = 0; i < playerInfos.Count; i++)
+                    playerInfo = PlayerInfos[0];
+                    PlayerInfos.Remove(playerInfo);
+                    for (int i = 0; i < PlayerInfos.Count; i++)
                     {
-                        PlayerInfo pi = playerInfos[i];
+                        PlayerInfo pi = PlayerInfos[i];
                         int difference = Math.Abs(pi.ELO - playerInfo.ELO);
                         if (difference < playerInfo.attente * CONSTANTE)
                         {
@@ -167,18 +169,14 @@ namespace WebApi.Services
                 // Si on a trouvé une paire
                 if (index >= 0)
                 {
-                    playerInfo2 = playerInfos[index];
-                    playerInfos.RemoveAt(index);
+                    playerInfo2 = PlayerInfos[index];
+                    PlayerInfos.RemoveAt(index);
                     PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
                     // TODO: Vérifier ce qui est fait avec le OtherConnectionId vs le userId qui est attendu dans StartMatch
                     pairOfPlayers.OtherConnectionId = playerInfo2.ConnectionId;
-                    pairs.Add(pairOfPlayers);
+                    Pairs.Add(pairOfPlayers);
 
 
-                    // Update db With PlayerInfo (REMOVE)
-                    dbContext.PlayerInfo.Remove(playerInfo);
-                    dbContext.PlayerInfo.Remove(playerInfo2);
-                    await dbContext.SaveChangesAsync();
 
                 }
 
@@ -225,7 +223,7 @@ namespace WebApi.Services
                 #endregion
 
             }
-            return pairs;
+            return Pairs;
 
 
             // Sinon, c'est pas grave, on a retiré l'élément de la liste et on va évaluer le prochain
@@ -244,14 +242,11 @@ namespace WebApi.Services
                     //INCRÉMENTER Propriété attente dans PLAYERIFNO
                     // --
                     //Update database
-                    foreach (PlayerInfo player in dbContext.PlayerInfo)
+                    foreach (PlayerInfo player in PlayerInfos)
                     {
                         player.attente++;
-                        dbContext.PlayerInfo.Update(player);
-                        dbContext.SaveChanges();
                     }
-                    List<PlayerInfo> playerInfos = dbContext.PlayerInfo.ToList();
-                    List<PairOfPlayers> listePlayers = await GeneratePairsAsync(playerInfos, dbContext);
+                    List<PairOfPlayers> listePlayers = await GeneratePairsAsync(dbContext);
                     if(listePlayers.Count > 0)
                     {
                         await AssemblageData(listePlayers[0], dbContext);
