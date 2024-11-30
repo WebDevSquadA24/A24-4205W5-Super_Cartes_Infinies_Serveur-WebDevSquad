@@ -10,10 +10,13 @@ using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 using Models.VM;
 using Models.Models;
+using Moq;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace WebApi.Services.Tests
+namespace Super_Cartes_Infinies.Services.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class EloBackGroundServiceTests
     {
         DbContextOptions<ApplicationDbContext> options;
@@ -88,60 +91,59 @@ namespace WebApi.Services.Tests
             };
 
 
-            PlayerInfo[] playerInfos = new PlayerInfo[]
-            {
-                _playerInfo_1000 = new PlayerInfo()
-                {
-                    Id=1,
-                    UserId = _player_1000.UserId,
-                    ELO = _player_1000.ELO,
-                    attente =0,
-                    ConnectionId = _player_1000.UserId,
-                },
-                _playerInfo_1004 = new PlayerInfo()
-                {
-                    Id=2,
-                    UserId = _player_1004.UserId,
-                    ELO = _player_1004.ELO,
-                    attente =0,
-                    ConnectionId = _player_1004.UserId,
-                },
-                _playerInfo_1500 = new PlayerInfo()
-                {
-                    Id=3,
-                    UserId = _player_1500.UserId,
-                    ELO = _player_1500.ELO,
-                    attente =0,
-                    ConnectionId = _player_1500.UserId,
-                },
-                _playerInfo_1200 = new PlayerInfo()
-                {
-                    Id=4,
-                    UserId = _player_1200.UserId,
-                    ELO = _player_1200.ELO,
-                    attente =0,
-                    ConnectionId = _player_1200.UserId,
-                },
-                _playerInfo_1504 = new PlayerInfo()
-                {
-                    Id=5,
-                    UserId = _player_1504.UserId,
-                    ELO = _player_1504.ELO,
-                    attente =0,
-                    ConnectionId = _player_1504.UserId,
-                },
-                _playerInfo_1204 = new PlayerInfo()
-                {
-                    Id=6,
-                    UserId = _player_1204.UserId,
-                    ELO = _player_1204.ELO,
-                    attente =0,
-                    ConnectionId = _player_1204.UserId,
-                },
+            //PlayerInfo[] playerInfos = new PlayerInfo[]
+            //{
+            //    _playerInfo_1000 = new PlayerInfo()
+            //    {
+            //        Id=1,
+            //        UserId = _player_1000.UserId,
+            //        ELO = _player_1000.ELO,
+            //        attente =0,
+            //        ConnectionId = _player_1000.UserId,
+            //    },
+            //    _playerInfo_1004 = new PlayerInfo()
+            //    {
+            //        Id=2,
+            //        UserId = _player_1004.UserId,
+            //        ELO = _player_1004.ELO,
+            //        attente =0,
+            //        ConnectionId = _player_1004.UserId,
+            //    },
+            //    _playerInfo_1500 = new PlayerInfo()
+            //    {
+            //        Id=3,
+            //        UserId = _player_1500.UserId,
+            //        ELO = _player_1500.ELO,
+            //        attente =0,
+            //        ConnectionId = _player_1500.UserId,
+            //    },
+            //    _playerInfo_1200 = new PlayerInfo()
+            //    {
+            //        Id=4,
+            //        UserId = _player_1200.UserId,
+            //        ELO = _player_1200.ELO,
+            //        attente =0,
+            //        ConnectionId = _player_1200.UserId,
+            //    },
+            //    _playerInfo_1504 = new PlayerInfo()
+            //    {
+            //        Id=5,
+            //        UserId = _player_1504.UserId,
+            //        ELO = _player_1504.ELO,
+            //        attente =0,
+            //        ConnectionId = _player_1504.UserId,
+            //    },
+            //    _playerInfo_1204 = new PlayerInfo()
+            //    {
+            //        Id=6,
+            //        UserId = _player_1204.UserId,
+            //        ELO = _player_1204.ELO,
+            //        attente =0,
+            //        ConnectionId = _player_1204.UserId,
+            //    },
 
-            };
+            //};
             db.AddRange(players);
-            db.AddRange(playerInfos);
 
             db.SaveChanges();
         }
@@ -155,10 +157,43 @@ namespace WebApi.Services.Tests
             db.SaveChanges();
         }
 
-        [TestMethod()]
-        public void GeneratePairsAsyncTest()
+        [TestMethod]
+        public void Generate2PairsAsync_SuccessTest()
         {
-            Assert.Fail();
+            using ApplicationDbContext db = new ApplicationDbContext(options);
+            Mock<IHubContext> mockHub = new Mock<IHubContext>();
+            Mock<IServiceScope> mockScope = new Mock<IServiceScope>();
+            List<PairOfPlayers> pairsResult = new List<PairOfPlayers>();
+
+            Mock<EloBackGroundService> backGroundService = new Mock<EloBackGroundService>(mockHub.Object, mockScope.Object) { CallBase=true};
+            _playerInfo_1000 = new PlayerInfo()
+            {
+                Id = 1,
+                UserId = _player_1000.UserId,
+                ELO = _player_1000.ELO,
+                attente = 5,
+                ConnectionId = _player_1000.UserId,
+            };
+            _playerInfo_1004 = new PlayerInfo()
+            {
+                Id = 2,
+                UserId = _player_1004.UserId,
+                ELO = _player_1004.ELO,
+                attente = 0,
+                ConnectionId = _player_1004.UserId,
+            };
+            db.Add(_playerInfo_1000);
+            db.Add(_playerInfo_1004);
+            db.SaveChanges();
+
+
+            pairsResult = backGroundService.Object.GeneratePairsAsync(db.PlayerInfo.ToList(), db);
+
+            Assert.AreEqual(pairsResult.Count,1);
+            Assert.AreEqual(pairsResult[0].PlayerInfo1, _playerInfo_1000);
+            Assert.AreEqual(pairsResult[0].PlayerInfo2, _playerInfo_1004);
+
+
         }
     }
 }
