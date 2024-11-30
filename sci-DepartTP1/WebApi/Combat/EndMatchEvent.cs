@@ -27,6 +27,10 @@ namespace Super_Cartes_Infinies.Combat
 
         public double LosingELO { get; set; }
 
+        public double WinningELOReward { get; set; }
+
+        public double LosingELOReward { get; set; }
+
 
         public EndMatchEvent(Match match, MatchPlayerData winningPlayerData, MatchPlayerData losingPlayerData)
         {
@@ -48,11 +52,16 @@ namespace Super_Cartes_Infinies.Combat
             int elo2 = losingPlayerData.Player.ELO;
 
             EloCalculator.CalculateELO( ref elo1, ref elo2 , EloCalculator.GameOutcome.Win);
+            WinningELOReward = elo1 - winningPlayerData.Player.ELO;
+            LosingELOReward = elo2 - losingPlayerData.Player.ELO;
+
             winningPlayerData.Player.ELO = elo1;
             losingPlayerData.Player.ELO = elo2;
 
             WinningELO = elo1;
             LosingELO = elo2;
+
+
 
 
 
