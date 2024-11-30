@@ -24,6 +24,7 @@ namespace WebApi.Services
 
         private IServiceScopeFactory _serviceScopeFactory;
 
+        public List<PairOfPlayers> _PairOfPlayers;
 
 
 
@@ -132,9 +133,8 @@ namespace WebApi.Services
         // Passer une COPIE de l'information sur les players (Car on va retirer les éléments de la liste, même si le player n'est pas mis dans une paire)
         public async Task<List<PairOfPlayers>> GeneratePairsAsync(List<PlayerInfo> playerInfos, ApplicationDbContext dbContext)
         {
-            
 
-                List<PairOfPlayers> pairs = new List<PairOfPlayers>();
+
                 int index = -1;
                 int smallestELODifference = int.MaxValue;
                 PlayerInfo playerInfo2 = null;
@@ -172,7 +172,8 @@ namespace WebApi.Services
                     PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
                     // TODO: Vérifier ce qui est fait avec le OtherConnectionId vs le userId qui est attendu dans StartMatch
                     pairOfPlayers.OtherConnectionId = playerInfo2.ConnectionId;
-                    pairs.Add(pairOfPlayers);
+                    _PairOfPlayers.Add(pairOfPlayers);
+                    await AssemblageData(pairOfPlayers, dbContext);
 
 
                     // Update db With PlayerInfo (REMOVE)
@@ -225,7 +226,7 @@ namespace WebApi.Services
                 #endregion
 
             }
-            return pairs;
+            return _PairOfPlayers;
 
 
             // Sinon, c'est pas grave, on a retiré l'élément de la liste et on va évaluer le prochain
@@ -252,10 +253,7 @@ namespace WebApi.Services
                     }
                     List<PlayerInfo> playerInfos = dbContext.PlayerInfo.ToList();
                     List<PairOfPlayers> listePlayers = await GeneratePairsAsync(playerInfos, dbContext);
-                    if(listePlayers.Count > 0)
-                    {
-                        await AssemblageData(listePlayers[0], dbContext);
-                    }
+                    
 
                 }
             }
