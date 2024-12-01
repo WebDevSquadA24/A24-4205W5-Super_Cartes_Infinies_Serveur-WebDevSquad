@@ -240,7 +240,7 @@ namespace WebApi.Services
                 ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    await Task.Delay(CONSTANTE, stoppingToken);
+                    await Task.Delay(CONSTANTE * 1000, stoppingToken);
                     //INCRÉMENTER Propriété attente dans PLAYERIFNO
                     // --
                     //Update database
