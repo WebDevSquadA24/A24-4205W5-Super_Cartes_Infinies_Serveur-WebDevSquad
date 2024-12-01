@@ -158,40 +158,147 @@ namespace Super_Cartes_Infinies.Services.Tests
         }
 
         [TestMethod]
-        public void Generate2PairsAsync_SuccessTest()
+        public async Task GeneratePairsAsync_SuccessTest()
         {
             using ApplicationDbContext db = new ApplicationDbContext(options);
-            Mock<IHubContext> mockHub = new Mock<IHubContext>();
-            Mock<IServiceScope> mockScope = new Mock<IServiceScope>();
-            List<PairOfPlayers> pairsResult = new List<PairOfPlayers>();
-
-            Mock<EloBackGroundService> backGroundService = new Mock<EloBackGroundService>(mockHub.Object, mockScope.Object) { CallBase=true};
-            _playerInfo_1000 = new PlayerInfo()
+            PlayerInfo[] playerInfos = new PlayerInfo[]
             {
-                Id = 1,
-                UserId = _player_1000.UserId,
-                ELO = _player_1000.ELO,
-                attente = 5,
-                ConnectionId = _player_1000.UserId,
+                _playerInfo_1000 = new PlayerInfo()
+                {
+                    Id=1,
+                    UserId = _player_1000.UserId,
+                    ELO = _player_1000.ELO,
+                    attente =5,
+                    ConnectionId = _player_1000.UserId,
+                },
+                _playerInfo_1004 = new PlayerInfo()
+                {
+                    Id=2,
+                    UserId = _player_1004.UserId,
+                    ELO = _player_1004.ELO,
+                    attente =5,
+                    ConnectionId = _player_1004.UserId,
+                },
             };
-            _playerInfo_1004 = new PlayerInfo()
-            {
-                Id = 2,
-                UserId = _player_1004.UserId,
-                ELO = _player_1004.ELO,
-                attente = 0,
-                ConnectionId = _player_1004.UserId,
-            };
-            db.Add(_playerInfo_1000);
-            db.Add(_playerInfo_1004);
+            db.AddRange(playerInfos);
             db.SaveChanges();
 
+            List<PairOfPlayers> pairs = await EloBackGroundService.GeneratePairsAsync(db.PlayerInfo.OrderBy(p=>p.ELO).ToList(), db);
+            
+            Assert.AreEqual(1, pairs.Count);
+            Assert.AreEqual(_playerInfo_1000, pairs[0].PlayerInfo1);
+            Assert.AreEqual(_playerInfo_1004, pairs[0].PlayerInfo2);
 
-            pairsResult = backGroundService.Object.GeneratePairsAsync(db.PlayerInfo.ToList(), db);
 
-            Assert.AreEqual(pairsResult.Count,1);
-            Assert.AreEqual(pairsResult[0].PlayerInfo1, _playerInfo_1000);
-            Assert.AreEqual(pairsResult[0].PlayerInfo2, _playerInfo_1004);
+
+        }
+
+        [TestMethod]
+        public async Task GeneratePairsAsync_HasToWaitLongerTest()
+        {
+            using ApplicationDbContext db = new ApplicationDbContext(options);
+            PlayerInfo[] playerInfos = new PlayerInfo[]
+            {
+                _playerInfo_1000 = new PlayerInfo()
+                {
+                    Id=1,
+                    UserId = _player_1000.UserId,
+                    ELO = _player_1000.ELO,
+                    attente =3,
+                    ConnectionId = _player_1000.UserId,
+                },
+                _playerInfo_1004 = new PlayerInfo()
+                {
+                    Id=2,
+                    UserId = _player_1004.UserId,
+                    ELO = _player_1004.ELO,
+                    attente =3,
+                    ConnectionId = _player_1004.UserId,
+                },
+            };
+            db.AddRange(playerInfos);
+            db.SaveChanges();
+
+            List<PairOfPlayers> pairs = await EloBackGroundService.GeneratePairsAsync(db.PlayerInfo.OrderBy(p => p.ELO).ToList(), db);
+
+            Assert.AreEqual(0, pairs.Count);
+
+
+
+        }
+
+        [TestMethod]
+        public async Task Generate3PairsAsync_SuccessTest()
+        {
+            using ApplicationDbContext db = new ApplicationDbContext(options);
+            PlayerInfo[] playerInfos = new PlayerInfo[]
+            {
+                _playerInfo_1000 = new PlayerInfo()
+                {
+                    Id=1,
+                    UserId = _player_1000.UserId,
+                    ELO = _player_1000.ELO,
+                    attente =5,
+                    ConnectionId = _player_1000.UserId,
+                },
+                _playerInfo_1004 = new PlayerInfo()
+                {
+                    Id=2,
+                    UserId = _player_1004.UserId,
+                    ELO = _player_1004.ELO,
+                    attente =5,
+                    ConnectionId = _player_1004.UserId,
+                },
+                _playerInfo_1500 = new PlayerInfo()
+                {
+                    Id=3,
+                    UserId = _player_1500.UserId,
+                    ELO = _player_1500.ELO,
+                    attente =5,
+                    ConnectionId = _player_1500.UserId,
+                },
+                _playerInfo_1200 = new PlayerInfo()
+                {
+                    Id=4,
+                    UserId = _player_1200.UserId,
+                    ELO = _player_1200.ELO,
+                    attente =5,
+                    ConnectionId = _player_1200.UserId,
+                },
+                _playerInfo_1504 = new PlayerInfo()
+                {
+                    Id=5,
+                    UserId = _player_1504.UserId,
+                    ELO = _player_1504.ELO,
+                    attente =5,
+                    ConnectionId = _player_1504.UserId,
+                },
+                _playerInfo_1204 = new PlayerInfo()
+                {
+                    Id=6,
+                    UserId = _player_1204.UserId,
+                    ELO = _player_1204.ELO,
+                    attente =5,
+                    ConnectionId = _player_1204.UserId,
+                },
+
+            };
+            db.AddRange(playerInfos);
+            db.SaveChanges();
+
+            List<PairOfPlayers> pairs = await EloBackGroundService.GeneratePairsAsync(db.PlayerInfo.OrderBy(p => p.ELO).ToList(), db);
+
+            Assert.AreEqual(3, pairs.Count);
+
+            Assert.AreEqual(_playerInfo_1000, pairs[0].PlayerInfo1);
+            Assert.AreEqual(_playerInfo_1004, pairs[0].PlayerInfo2);
+
+            Assert.AreEqual(_playerInfo_1200, pairs[1].PlayerInfo1);
+            Assert.AreEqual(_playerInfo_1204, pairs[1].PlayerInfo2);
+
+            Assert.AreEqual(_playerInfo_1500, pairs[2].PlayerInfo1);
+            Assert.AreEqual(_playerInfo_1504, pairs[2].PlayerInfo2);
+
 
 
         }

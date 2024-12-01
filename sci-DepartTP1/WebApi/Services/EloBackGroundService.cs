@@ -18,7 +18,7 @@ namespace WebApi.Services
 {
     public class EloBackGroundService : BackgroundService
     {
-        public const int CONSTANTE = 1 * 1000;
+        public const int CONSTANTE = 1;
 
         private IHubContext<MatchHub> _matchHub;
 
@@ -131,10 +131,10 @@ namespace WebApi.Services
         }
 
         // Passer une COPIE de l'information sur les players (Car on va retirer les éléments de la liste, même si le player n'est pas mis dans une paire)
-        public async Task<List<PairOfPlayers>> GeneratePairsAsync(List<PlayerInfo> playerInfos, ApplicationDbContext dbContext)
+        public static  async Task<List<PairOfPlayers>> GeneratePairsAsync(List<PlayerInfo> playerInfos, ApplicationDbContext dbContext)
         {
 
-
+                List<PairOfPlayers> pairs = new List<PairOfPlayers>();
                 int index = -1;
                 int smallestELODifference = int.MaxValue;
                 PlayerInfo playerInfo2 = null;
@@ -172,8 +172,7 @@ namespace WebApi.Services
                     PairOfPlayers pairOfPlayers = new PairOfPlayers(playerInfo, playerInfo2);
                     // TODO: Vérifier ce qui est fait avec le OtherConnectionId vs le userId qui est attendu dans StartMatch
                     pairOfPlayers.OtherConnectionId = playerInfo2.ConnectionId;
-                    _PairOfPlayers.Add(pairOfPlayers);
-                    await AssemblageData(pairOfPlayers, dbContext);
+                    pairs.Add(pairOfPlayers);
 
 
                     // Update db With PlayerInfo (REMOVE)
@@ -226,7 +225,7 @@ namespace WebApi.Services
                 #endregion
 
             }
-            return _PairOfPlayers;
+            return pairs;
 
 
             // Sinon, c'est pas grave, on a retiré l'élément de la liste et on va évaluer le prochain
@@ -252,8 +251,14 @@ namespace WebApi.Services
                         dbContext.SaveChanges();
                     }
                     List<PlayerInfo> playerInfos = dbContext.PlayerInfo.ToList();
+
                     List<PairOfPlayers> listePlayers = await GeneratePairsAsync(playerInfos, dbContext);
-                    
+                    foreach(PairOfPlayers p in listePlayers)
+                    {
+                        await AssemblageData(p, dbContext);
+
+                    }
+
 
                 }
             }
