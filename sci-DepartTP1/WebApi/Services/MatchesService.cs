@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
@@ -61,21 +62,42 @@ namespace Super_Cartes_Infinies.Services
             // Si on veut rejoindre un match en particulier, on ne se met pas en file
             else if (specificMatchId == null)
             {
-                UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
+                // On ajoute dans la liste de PlayerInfo un joueur
+                // Constante c'est le niv de patience. Cela représente le nb de elo de difference qu'on tolère chaque seconde.
+                // List<PairOfPlayers> est la liste des joueurs qui sont en jeu.
+                // La vérif va être exécuté chaque x secondes
+                // On n'utilisera plus WaitingUserService.
+                // Dans le BackGroundService, on va envoyer directement aux clients.
+                // Ici c'est juste pour ajouter dans la liste des PlayerInfo
 
-                if (pairOfUsers != null)
+                // ADD user to PlayerInfo
+                // --> EloBackGroundService
+                Player player = _playersService.GetPlayerFromUserId(userId);
+                PlayerInfo playerInfo = new PlayerInfo
                 {
-                    playerA = _playersService.GetPlayerFromUserId(pairOfUsers.UserAId);
-                    playerB = _playersService.GetPlayerFromUserId(pairOfUsers.UserBId);
+                    UserId = player.UserId,
+                    ELO = player.ELO,
+                    attente = 0,
+                    ConnectionId = connectionId,
+                };
+                _dbContext.PlayerInfo.Add(playerInfo);
+                _dbContext.SaveChanges();
 
-                    // Création d'un nouveau match
-                    IEnumerable<Card> cards = _cardsService.GetAllCards();
-                    match = new Match(playerA, playerB, cards);
-                    otherPlayerConnectionId = pairOfUsers.UserAConnectionId;
+                //UsersReadyForAMatch? pairOfUsers = await _waitingUserService.LookForWaitingUser(userId, connectionId);
 
-                    _dbContext.Update(match);
-                    _dbContext.SaveChanges();
-                }
+                //if (pairOfUsers != null)
+                //{
+                //    playerA = _playersService.GetPlayerFromUserId(pairOfUsers.UserAId);
+                //    playerB = _playersService.GetPlayerFromUserId(pairOfUsers.UserBId);
+
+                //    // Création d'un nouveau match
+                //    IEnumerable<Card> cards = _cardsService.GetAllCards();
+                //    match = new Match(playerA, playerB, cards);
+                //    otherPlayerConnectionId = pairOfUsers.UserAConnectionId;
+
+                //    _dbContext.Update(match);
+                //    _dbContext.SaveChanges();
+                //}
             }
 
             if (match != null) {

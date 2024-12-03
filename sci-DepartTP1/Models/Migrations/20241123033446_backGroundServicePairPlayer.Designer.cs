@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,13 +12,15 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241123033446_backGroundServicePairPlayer")]
+    partial class backGroundServicePairPlayer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -169,15 +172,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ac35d8dd-c8ef-44a5-9cd3-07dd59223570",
+                            ConcurrencyStamp = "05fc5dc3-40c5-4ecf-b888-fbb111966aba",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGzTx5eMwG8k/KOC5KTEdTk6FTYtcVTgoXkVis4yuGAZuJuYexMfIFsAaRv+XimCXA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELWyhCy35ELZhWYQUsLtxvdAryQnd0eWjxrTDthPlssZ8Dg4htV8jnYp0gdaAfqwVw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e61b00e2-45c6-435f-ab91-6fe4036d3c0d",
+                            SecurityStamp = "9f7504a6-5ec9-4e8a-8ea8-94ab6f6221a5",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -185,22 +188,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fe498875-a6e4-44dd-85b8-4aa09c4b11fa",
+                            ConcurrencyStamp = "ff7ed78f-1911-4f22-a670-b0ab91c41020",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ebcef5ab-ac25-49f1-b199-2678c5234012",
+                            SecurityStamp = "fe315e77-3c2a-4b26-9a84-dd491d9670d2",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "360457c8-f333-40d3-958d-da0b492a6509",
+                            ConcurrencyStamp = "20cdff51-0ebd-45d6-b2f8-9b77b404549a",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5bcc0c0a-0ec4-415f-bbb6-dc872067dc82",
+                            SecurityStamp = "e05864c6-90fb-4888-8218-aa43416441bb",
                             TwoFactorEnabled = false
                         });
                 });
@@ -505,41 +508,6 @@ namespace Models.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Models.Models.PairOfPlayers", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("OtherConnectionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlayerInfo1Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayerInfo2Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserAId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserBId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayerInfo1Id");
-
-                    b.HasIndex("PlayerInfo2Id");
-
-                    b.ToTable("PairOfPlayers");
-                });
-
             modelBuilder.Entity("Models.Models.PlayableCardStatus", b =>
                 {
                     b.Property<int>("Id")
@@ -564,33 +532,6 @@ namespace Models.Migrations
                     b.HasIndex("StatusId");
 
                     b.ToTable("PlayableCardStatus");
-                });
-
-            modelBuilder.Entity("Models.Models.PlayerInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ConnectionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ELO")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("attente")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PlayerInfo");
                 });
 
             modelBuilder.Entity("Models.Models.Power", b =>
@@ -1130,9 +1071,6 @@ namespace Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ELO")
-                        .HasColumnType("int");
-
                     b.Property<double>("Money")
                         .HasColumnType("float");
 
@@ -1154,7 +1092,6 @@ namespace Models.Migrations
                         new
                         {
                             Id = 1,
-                            ELO = 1000,
                             Money = 0.0,
                             Name = "Test player 1",
                             UserId = "User1Id"
@@ -1162,7 +1099,6 @@ namespace Models.Migrations
                         new
                         {
                             Id = 2,
-                            ELO = 1000,
                             Money = 0.0,
                             Name = "Test player 2",
                             UserId = "User2Id"
@@ -1263,25 +1199,6 @@ namespace Models.Migrations
                         .IsRequired();
 
                     b.Navigation("Player");
-                });
-
-            modelBuilder.Entity("Models.Models.PairOfPlayers", b =>
-                {
-                    b.HasOne("Models.Models.PlayerInfo", "PlayerInfo1")
-                        .WithMany()
-                        .HasForeignKey("PlayerInfo1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Models.PlayerInfo", "PlayerInfo2")
-                        .WithMany()
-                        .HasForeignKey("PlayerInfo2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PlayerInfo1");
-
-                    b.Navigation("PlayerInfo2");
                 });
 
             modelBuilder.Entity("Models.Models.PlayableCardStatus", b =>

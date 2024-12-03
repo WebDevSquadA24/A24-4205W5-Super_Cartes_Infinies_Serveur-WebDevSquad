@@ -86,13 +86,16 @@ public class MatchHub : Hub
 
 
             }
+            // ON NAURA PAS BESOIN D'UN ELSE
             else
             {
-                //UserA
-                await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
+                // ICI On ajoute que le user dans la liste de PlayerInfo
+                // Tout l'envoi des données se fait dans le background service.
 
-                // Il faut tout de même envoyer le joiningMatchData au 2 joueurs
-                await this.StartMatch(userId, joiningMatchData, groupName);
+                //UserA
+                //await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
+
+                //await this.StartMatch(userId, joiningMatchData, groupName);
                
 
             }
@@ -108,11 +111,11 @@ public class MatchHub : Hub
        
 
         //Envoyer à Player A et B
-        await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
-        StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
+        //await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+        //StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
 
 
-        await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+        //await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
 
 
     }
