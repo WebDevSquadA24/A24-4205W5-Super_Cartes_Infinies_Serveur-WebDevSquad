@@ -68,6 +68,34 @@ namespace Super_Cartes_Infinies.Models
 
 			return PlayableCardStatuses.First(pcs => pcs.StatusId == statusId).Value;
 		}
+
+		public void AddStatusValue(int statusId, int value)
+		{
+            if (HasStatus(statusId))
+            {
+                PlayableCardStatuses.Single(pcs => pcs.StatusId == statusId).Value += value;
+            }
+            else
+            {
+                PlayableCardStatuses.Add(new PlayableCardStatus()
+                {
+                    StatusId = statusId,
+                    Value = value,
+                });
+            }
+        }
+
+		public void SubtractStatusValue(int statusId, int value)
+		{
+            var playableCardStatus = PlayableCardStatuses.Single(pcs => pcs.StatusId == statusId);
+
+            playableCardStatus.Value -= value;
+
+            if (playableCardStatus.Value <= 0)
+            {
+                PlayableCardStatuses.Remove(playableCardStatus);
+            }
+        }
     }
 }
 

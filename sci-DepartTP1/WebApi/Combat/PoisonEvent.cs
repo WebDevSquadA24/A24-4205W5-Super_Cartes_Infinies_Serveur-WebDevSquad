@@ -11,18 +11,7 @@ namespace WebApi.Combat
 
         public PoisonEvent(PlayableCard currentCard, PlayableCard opponentCard)
         {
-            if (opponentCard.PlayableCardStatuses.Where(pcs => pcs.StatusId == (int)StatusEnum.Poisoned).IsNullOrEmpty())
-            {
-                opponentCard.PlayableCardStatuses.Add(new PlayableCardStatus()
-                {
-                    StatusId = (int)StatusEnum.Poisoned,
-                    Value = currentCard.GetPowerValue(Power.POISON_ID)
-                });
-            }
-            else
-            {
-                opponentCard.PlayableCardStatuses.Single(pcs => pcs.StatusId == (int)StatusEnum.Poisoned).Value += currentCard.GetPowerValue(Power.POISON_ID); ;
-            }
+            opponentCard.AddStatusValue((int)StatusEnum.Poisoned, currentCard.GetPowerValue(Power.POISON_ID));
         }
     }
 }

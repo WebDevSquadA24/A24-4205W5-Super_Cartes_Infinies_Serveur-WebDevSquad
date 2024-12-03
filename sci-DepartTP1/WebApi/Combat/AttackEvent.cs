@@ -41,6 +41,10 @@ namespace WebApi.Combat
                     {
                         this.Events.Add(new PoisonEvent(myCard, opponentCard));
                     }
+                    if (myCard.HasPower(Power.STUN_ID))
+                    {
+                        this.Events.Add(new StunEvent(myCard, opponentCard));
+                    }
                     if (myCard.Health > 0)
                     {
                         if (!(opponentCard.Health <= 0))
