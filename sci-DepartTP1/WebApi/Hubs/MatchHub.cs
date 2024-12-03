@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
@@ -86,13 +87,16 @@ public class MatchHub : Hub
 
 
             }
+            // ON NAURA PAS BESOIN D'UN ELSE
             else
             {
-                //UserA
-                await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
+                // ICI On ajoute que le user dans la liste de PlayerInfo
+                // Tout l'envoi des données se fait dans le background service.
 
-                // Il faut tout de même envoyer le joiningMatchData au 2 joueurs
-                await this.StartMatch(userId, joiningMatchData, groupName);
+                //UserA
+                //await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
+
+                //await this.StartMatch(userId, joiningMatchData, groupName);
                
 
             }
@@ -108,11 +112,11 @@ public class MatchHub : Hub
        
 
         //Envoyer à Player A et B
-        await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
-        StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
+        //await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+        //StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
 
 
-        await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+        //await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
 
 
     }
@@ -131,6 +135,23 @@ public class MatchHub : Hub
         await Clients.Group(groupName).SendAsync("EndTurn", endTurn);
 
     }
+
+    public async Task Annuler(JoiningMatchData joiningMatchData)
+    {
+        //current player
+        string userId = CurentUser.Id;
+
+        Player player = _playerService.GetPlayerFromUserId(userId);
+
+        PlayerInfo playerInfo = _context.PlayerInfo.Where(p => p.UserId == player.UserId).First();
+
+        _context.PlayerInfo.Remove(playerInfo);
+        _context.SaveChanges();
+
+
+
+    }
+
     public async Task Surrender( JoiningMatchData joiningMatchData)
     {
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
+using Models.Models;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
 
@@ -21,6 +22,14 @@ namespace Super_Cartes_Infinies.Combat
         public double WinningReward { get; set; }
 
         public double LosingReward { get; set; }
+
+        public double WinningELO { get; set; }
+
+        public double LosingELO { get; set; }
+
+        public double WinningELOReward { get; set; }
+
+        public double LosingELOReward { get; set; }
 
 
         public EndMatchEvent(Match match, MatchPlayerData winningPlayerData, MatchPlayerData losingPlayerData)
@@ -46,6 +55,19 @@ namespace Super_Cartes_Infinies.Combat
             //Nombre de victoires et de défaites sur Deck
             winningPlayerData.Player.Decks.Where(d => d.IsCurrent).FirstOrDefault().NbVictories++;
             losingPlayerData.Player.Decks.Where(d => d.IsCurrent).FirstOrDefault().NbDefeats++;
+
+            int elo1 = winningPlayerData.Player.ELO;
+            int elo2 = losingPlayerData.Player.ELO;
+
+            EloCalculator.CalculateELO( ref elo1, ref elo2 , EloCalculator.GameOutcome.Win);
+            WinningELOReward = elo1 - winningPlayerData.Player.ELO;
+            LosingELOReward = elo2 - losingPlayerData.Player.ELO;
+
+            winningPlayerData.Player.ELO = elo1;
+            losingPlayerData.Player.ELO = elo2;
+
+            WinningELO = elo1;
+            LosingELO = elo2;
 
             WinningMoney = winningPlayerData.Player.Money;
             LosingMoney = losingPlayerData.Player.Money;

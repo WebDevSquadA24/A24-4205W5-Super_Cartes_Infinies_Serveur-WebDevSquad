@@ -32,12 +32,15 @@ builder.Services.AddCors(options =>
 // Injection de dépendance
 builder.Services.AddScoped<PackService>();
 builder.Services.AddScoped<PlayersService>();
+builder.Services.AddScoped<IPlayersService, PlayersService>();
 builder.Services.AddScoped<CardsService>();
 builder.Services.AddSingleton<WaitingUserService>();
 builder.Services.AddScoped<MatchesService>();
 builder.Services.AddScoped<StartingCardsService>();
 builder.Services.AddScoped<MatchConfigurationService>();
 builder.Services.AddScoped<DecksService>();
+builder.Services.AddSingleton<EloBackGroundService>();
+builder.Services.AddHostedService<EloBackGroundService>(p => p.GetService<EloBackGroundService>());
 
 builder.Services.AddSignalR(o =>
 {
@@ -93,6 +96,8 @@ builder.Services.AddAuthentication(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 
