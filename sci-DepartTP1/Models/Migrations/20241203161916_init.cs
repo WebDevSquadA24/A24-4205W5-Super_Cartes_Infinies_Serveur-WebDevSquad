@@ -107,6 +107,22 @@ namespace Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PlayerInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ELO = table.Column<int>(type: "int", nullable: false),
+                    attente = table.Column<int>(type: "int", nullable: false),
+                    ConnectionId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayerInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Powers",
                 columns: table => new
                 {
@@ -119,6 +135,21 @@ namespace Models.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Powers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Status",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IconUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Status", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -235,7 +266,10 @@ namespace Models.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Money = table.Column<double>(type: "float", nullable: false)
+                    Money = table.Column<double>(type: "float", nullable: false),
+                    ELO = table.Column<int>(type: "int", nullable: false),
+                    NbVictories = table.Column<int>(type: "int", nullable: false),
+                    NbDefeats = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -268,7 +302,7 @@ namespace Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Probability",
+                name: "Probabilities",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -280,13 +314,42 @@ namespace Models.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Probability", x => x.Id);
+                    table.PrimaryKey("PK_Probabilities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Probability_Packs_PackId",
+                        name: "FK_Probabilities_Packs_PackId",
                         column: x => x.PackId,
                         principalTable: "Packs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PairOfPlayers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserAId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserBId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OtherConnectionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PlayerInfo1Id = table.Column<int>(type: "int", nullable: false),
+                    PlayerInfo2Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PairOfPlayers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PairOfPlayers_PlayerInfo_PlayerInfo1Id",
+                        column: x => x.PlayerInfo1Id,
+                        principalTable: "PlayerInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_PairOfPlayers_PlayerInfo_PlayerInfo2Id",
+                        column: x => x.PlayerInfo2Id,
+                        principalTable: "PlayerInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -324,7 +387,9 @@ namespace Models.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsCurrent = table.Column<bool>(type: "bit", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false)
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
+                    NbVictories = table.Column<int>(type: "int", nullable: false),
+                    NbDefeats = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -485,6 +550,33 @@ namespace Models.Migrations
                         onDelete: ReferentialAction.NoAction);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PlayableCardStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlayableCardId = table.Column<int>(type: "int", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayableCardStatus", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlayableCardStatus_PlayableCards_PlayableCardId",
+                        column: x => x.PlayableCardId,
+                        principalTable: "PlayableCards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlayableCardStatus_Status_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Status",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -495,9 +587,9 @@ namespace Models.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "11111111-1111-1111-1111-111111111111", 0, "7745de87-fbca-487d-a621-25f9b173e322", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEBc4UFgxAL9UbPrWAYMbXr8KXeYFGWaKJJhLRqxOfPwWfmFe97qCYbDfezAGkdjaFw==", null, false, "f3eae262-b224-41ce-8117-22fe50dff3f4", false, "admin@admin.com" },
-                    { "User1Id", 0, "02fad762-78c8-4dce-83eb-8ecf7e746374", null, false, false, null, null, null, null, null, false, "048a7040-6e52-4d2c-8a4d-ad4daf117d66", false, null },
-                    { "User2Id", 0, "fc476a7a-ff0b-4b04-bd3d-d73820ed9086", null, false, false, null, null, null, null, null, false, "21606440-3aa4-4710-bbe3-e95075758da5", false, null }
+                    { "11111111-1111-1111-1111-111111111111", 0, "2ec47538-1b79-4958-abea-dc2c9e08c86e", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEOxQ7hp+qkaOkJ0+GTPpZYDvI/Y9j4tXRz0Zs86dCmmxuXoGWmsYAlE7WyUc33yE4Q==", null, false, "0275e0bd-046f-4f18-a9ba-c40a2a43f94b", false, "admin@admin.com" },
+                    { "User1Id", 0, "fff323ad-8a47-487b-9c5e-a8fa2b669518", null, false, false, null, null, null, null, null, false, "4e2e9ca8-f71f-4d41-b1da-111d375f8885", false, null },
+                    { "User2Id", 0, "0776fcfe-af52-4fa1-813c-bf02b4207ce3", null, false, false, null, null, null, null, null, false, "23dbcd18-4f4a-4d30-a14e-9d8efa58255a", false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -565,11 +657,27 @@ namespace Models.Migrations
 
             migrationBuilder.InsertData(
                 table: "Players",
-                columns: new[] { "Id", "Money", "Name", "UserId" },
+                columns: new[] { "Id", "ELO", "Money", "Name", "NbDefeats", "NbVictories", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 0.0, "Test player 1", "User1Id" },
-                    { 2, 0.0, "Test player 2", "User2Id" }
+                    { 1, 1000, 0.0, "Test player 1", 0, 0, "User1Id" },
+                    { 2, 1000, 0.0, "Test player 2", 0, 0, "User2Id" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Probabilities",
+                columns: new[] { "Id", "BaseQty", "PackId", "Rarity", "Value" },
+                values: new object[,]
+                {
+                    { 1, 0, 1, 0, 0.69999999999999996 },
+                    { 2, 0, 1, 1, 0.29999999999999999 },
+                    { 3, 0, 2, 0, 0.59999999999999998 },
+                    { 4, 1, 2, 1, 0.29999999999999999 },
+                    { 5, 0, 2, 2, 0.10000000000000001 },
+                    { 6, 0, 2, 3, 0.20000000000000001 },
+                    { 7, 0, 3, 1, 0.65000000000000002 },
+                    { 8, 1, 3, 2, 0.25 },
+                    { 9, 0, 3, 3, 0.10000000000000001 }
                 });
 
             migrationBuilder.InsertData(
@@ -673,6 +781,16 @@ namespace Models.Migrations
                 column: "PlayerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PairOfPlayers_PlayerInfo1Id",
+                table: "PairOfPlayers",
+                column: "PlayerInfo1Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PairOfPlayers_PlayerInfo2Id",
+                table: "PairOfPlayers",
+                column: "PlayerInfo2Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlayableCards_CardId",
                 table: "PlayableCards",
                 column: "CardId");
@@ -698,13 +816,23 @@ namespace Models.Migrations
                 column: "MatchPlayerDataId3");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlayableCardStatus_PlayableCardId",
+                table: "PlayableCardStatus",
+                column: "PlayableCardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayableCardStatus_StatusId",
+                table: "PlayableCardStatus",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Players_UserId",
                 table: "Players",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Probability_PackId",
-                table: "Probability",
+                name: "IX_Probabilities_PackId",
+                table: "Probabilities",
                 column: "PackId");
 
             migrationBuilder.CreateIndex(
@@ -744,10 +872,13 @@ namespace Models.Migrations
                 name: "Matches");
 
             migrationBuilder.DropTable(
-                name: "PlayableCards");
+                name: "PairOfPlayers");
 
             migrationBuilder.DropTable(
-                name: "Probability");
+                name: "PlayableCardStatus");
+
+            migrationBuilder.DropTable(
+                name: "Probabilities");
 
             migrationBuilder.DropTable(
                 name: "StarterCards");
@@ -765,13 +896,22 @@ namespace Models.Migrations
                 name: "OwnedCards");
 
             migrationBuilder.DropTable(
-                name: "MatchPlayersData");
+                name: "PlayerInfo");
+
+            migrationBuilder.DropTable(
+                name: "PlayableCards");
+
+            migrationBuilder.DropTable(
+                name: "Status");
 
             migrationBuilder.DropTable(
                 name: "Packs");
 
             migrationBuilder.DropTable(
                 name: "Cards");
+
+            migrationBuilder.DropTable(
+                name: "MatchPlayersData");
 
             migrationBuilder.DropTable(
                 name: "Players");

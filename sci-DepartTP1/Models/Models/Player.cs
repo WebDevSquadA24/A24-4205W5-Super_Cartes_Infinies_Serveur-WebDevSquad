@@ -26,6 +26,9 @@ namespace Super_Cartes_Infinies.Models
 
 		[JsonIgnore]
 		public virtual List<Deck> Decks { get; set; }
+
+        public int NbVictories { get; set; }
+        public int NbDefeats { get; set; }
     }
 }
 

@@ -12,15 +12,15 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241124012235_ConnectionIdPairOfPlayers")]
-    partial class ConnectionIdPairOfPlayers
+    [Migration("20241203161916_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -172,15 +172,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9eaa054a-2435-4b29-b850-e3386e3c4afb",
+                            ConcurrencyStamp = "2ec47538-1b79-4958-abea-dc2c9e08c86e",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIB/DLLIiPndgInipO7zpeAlgWpLpxzUKqFNFPLZcx1f4CNfAP4cPrBczg5GQ80lSQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOxQ7hp+qkaOkJ0+GTPpZYDvI/Y9j4tXRz0Zs86dCmmxuXoGWmsYAlE7WyUc33yE4Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cb87092e-9ba0-43e0-a710-527b4f56e463",
+                            SecurityStamp = "0275e0bd-046f-4f18-a9ba-c40a2a43f94b",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -188,22 +188,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a1444214-74c4-4a53-b062-318047022268",
+                            ConcurrencyStamp = "fff323ad-8a47-487b-9c5e-a8fa2b669518",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "17e2ac27-de4c-45ca-b6df-8b074059e288",
+                            SecurityStamp = "4e2e9ca8-f71f-4d41-b1da-111d375f8885",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "db7705a7-b79c-4e9f-a89b-ebf8ce61ba02",
+                            ConcurrencyStamp = "0776fcfe-af52-4fa1-813c-bf02b4207ce3",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0012e779-0b5b-42f6-973b-a0c276338f8f",
+                            SecurityStamp = "23dbcd18-4f4a-4d30-a14e-9d8efa58255a",
                             TwoFactorEnabled = false
                         });
                 });
@@ -392,6 +392,12 @@ namespace Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("NbDefeats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NbVictories")
+                        .HasColumnType("int");
+
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
@@ -520,6 +526,12 @@ namespace Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PlayerInfo1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerInfo2Id")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserAId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -529,6 +541,10 @@ namespace Models.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerInfo1Id");
+
+                    b.HasIndex("PlayerInfo2Id");
 
                     b.ToTable("PairOfPlayers");
                 });
@@ -1123,12 +1139,21 @@ namespace Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ELO")
+                        .HasColumnType("int");
+
                     b.Property<double>("Money")
                         .HasColumnType("float");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NbDefeats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NbVictories")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1144,15 +1169,21 @@ namespace Models.Migrations
                         new
                         {
                             Id = 1,
+                            ELO = 1000,
                             Money = 0.0,
                             Name = "Test player 1",
+                            NbDefeats = 0,
+                            NbVictories = 0,
                             UserId = "User1Id"
                         },
                         new
                         {
                             Id = 2,
+                            ELO = 1000,
                             Money = 0.0,
                             Name = "Test player 2",
+                            NbDefeats = 0,
+                            NbVictories = 0,
                             UserId = "User2Id"
                         });
                 });
@@ -1251,6 +1282,25 @@ namespace Models.Migrations
                         .IsRequired();
 
                     b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("Models.Models.PairOfPlayers", b =>
+                {
+                    b.HasOne("Models.Models.PlayerInfo", "PlayerInfo1")
+                        .WithMany()
+                        .HasForeignKey("PlayerInfo1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Models.PlayerInfo", "PlayerInfo2")
+                        .WithMany()
+                        .HasForeignKey("PlayerInfo2Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayerInfo1");
+
+                    b.Navigation("PlayerInfo2");
                 });
 
             modelBuilder.Entity("Models.Models.PlayableCardStatus", b =>

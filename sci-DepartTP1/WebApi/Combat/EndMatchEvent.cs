@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Models.Models;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
@@ -48,6 +48,14 @@ namespace Super_Cartes_Infinies.Combat
             winningPlayerData.Player.Money += WinningReward;
             losingPlayerData.Player.Money += LosingReward;
 
+            //Nombre de victoires et de défaites sur Player 
+            winningPlayerData.Player.NbVictories++;
+            losingPlayerData.Player.NbDefeats++;
+
+            //Nombre de victoires et de défaites sur Deck
+            winningPlayerData.Player.Decks.Where(d => d.IsCurrent).FirstOrDefault().NbVictories++;
+            losingPlayerData.Player.Decks.Where(d => d.IsCurrent).FirstOrDefault().NbDefeats++;
+
             int elo1 = winningPlayerData.Player.ELO;
             int elo2 = losingPlayerData.Player.ELO;
 
@@ -60,11 +68,6 @@ namespace Super_Cartes_Infinies.Combat
 
             WinningELO = elo1;
             LosingELO = elo2;
-
-
-
-
-
 
             WinningMoney = winningPlayerData.Player.Money;
             LosingMoney = losingPlayerData.Player.Money;

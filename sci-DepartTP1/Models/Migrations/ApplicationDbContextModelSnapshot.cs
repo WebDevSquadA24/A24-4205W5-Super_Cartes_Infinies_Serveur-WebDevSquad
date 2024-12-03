@@ -169,15 +169,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ac35d8dd-c8ef-44a5-9cd3-07dd59223570",
+                            ConcurrencyStamp = "2ec47538-1b79-4958-abea-dc2c9e08c86e",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGzTx5eMwG8k/KOC5KTEdTk6FTYtcVTgoXkVis4yuGAZuJuYexMfIFsAaRv+XimCXA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOxQ7hp+qkaOkJ0+GTPpZYDvI/Y9j4tXRz0Zs86dCmmxuXoGWmsYAlE7WyUc33yE4Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e61b00e2-45c6-435f-ab91-6fe4036d3c0d",
+                            SecurityStamp = "0275e0bd-046f-4f18-a9ba-c40a2a43f94b",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -185,22 +185,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fe498875-a6e4-44dd-85b8-4aa09c4b11fa",
+                            ConcurrencyStamp = "fff323ad-8a47-487b-9c5e-a8fa2b669518",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ebcef5ab-ac25-49f1-b199-2678c5234012",
+                            SecurityStamp = "4e2e9ca8-f71f-4d41-b1da-111d375f8885",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "360457c8-f333-40d3-958d-da0b492a6509",
+                            ConcurrencyStamp = "0776fcfe-af52-4fa1-813c-bf02b4207ce3",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5bcc0c0a-0ec4-415f-bbb6-dc872067dc82",
+                            SecurityStamp = "23dbcd18-4f4a-4d30-a14e-9d8efa58255a",
                             TwoFactorEnabled = false
                         });
                 });
@@ -388,6 +388,12 @@ namespace Models.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NbDefeats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NbVictories")
+                        .HasColumnType("int");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
@@ -1140,6 +1146,12 @@ namespace Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("NbDefeats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NbVictories")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -1157,6 +1169,8 @@ namespace Models.Migrations
                             ELO = 1000,
                             Money = 0.0,
                             Name = "Test player 1",
+                            NbDefeats = 0,
+                            NbVictories = 0,
                             UserId = "User1Id"
                         },
                         new
@@ -1165,6 +1179,8 @@ namespace Models.Migrations
                             ELO = 1000,
                             Money = 0.0,
                             Name = "Test player 2",
+                            NbDefeats = 0,
+                            NbVictories = 0,
                             UserId = "User2Id"
                         });
                 });
