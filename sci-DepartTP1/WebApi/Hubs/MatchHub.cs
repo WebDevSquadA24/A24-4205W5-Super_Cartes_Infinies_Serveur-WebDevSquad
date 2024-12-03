@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Models;
@@ -134,6 +135,23 @@ public class MatchHub : Hub
         await Clients.Group(groupName).SendAsync("EndTurn", endTurn);
 
     }
+
+    public async Task Annuler(JoiningMatchData joiningMatchData)
+    {
+        //current player
+        string userId = CurentUser.Id;
+
+        Player player = _playerService.GetPlayerFromUserId(userId);
+
+        PlayerInfo playerInfo = _context.PlayerInfo.Where(p => p.UserId == player.UserId).First();
+
+        _context.PlayerInfo.Remove(playerInfo);
+        _context.SaveChanges();
+
+
+
+    }
+
     public async Task Surrender( JoiningMatchData joiningMatchData)
     {
 

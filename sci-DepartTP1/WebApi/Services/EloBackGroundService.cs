@@ -20,6 +20,8 @@ namespace WebApi.Services
     {
         public const int CONSTANTE = 1;
 
+        public const int ATTENTE = 1000;
+
         private IHubContext<MatchHub> _matchHub;
 
         private IServiceScopeFactory _serviceScopeFactory;
@@ -240,7 +242,7 @@ namespace WebApi.Services
                 ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    await Task.Delay(CONSTANTE * 1000, stoppingToken);
+                    await Task.Delay(ATTENTE, stoppingToken);
                     //INCRÉMENTER Propriété attente dans PLAYERIFNO
                     // --
                     //Update database
@@ -253,11 +255,15 @@ namespace WebApi.Services
                     List<PlayerInfo> playerInfos = dbContext.PlayerInfo.ToList();
 
                     List<PairOfPlayers> listePlayers = await GeneratePairsAsync(playerInfos, dbContext);
-                    foreach(PairOfPlayers p in listePlayers)
+                    if(listePlayers.Count > 0)
                     {
-                        await AssemblageData(p, dbContext);
+                        foreach (PairOfPlayers p in listePlayers)
+                        {
+                            await AssemblageData(p, dbContext);
 
+                        }
                     }
+                    
 
 
                 }
