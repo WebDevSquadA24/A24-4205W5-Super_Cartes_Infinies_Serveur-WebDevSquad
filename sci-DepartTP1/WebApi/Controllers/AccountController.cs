@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Super_Cartes_Infinies.Data;
 using Super_Cartes_Infinies.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,6 +19,7 @@ namespace WebApi.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private PlayersService _playersService;
+        private ApplicationDbContext _dbContext;
 
         public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, PlayersService playersService)
         {
@@ -99,6 +102,13 @@ namespace WebApi.Controllers
         public ActionResult Test()
         {
             return Ok(new { message = "Success" });
+        }
+
+        [HttpGet]
+        public IActionResult ApplyMigrations()
+        {
+            _dbContext.Database.Migrate();
+            return Ok("La BD est maintenant à jour!");
         }
     }
 }

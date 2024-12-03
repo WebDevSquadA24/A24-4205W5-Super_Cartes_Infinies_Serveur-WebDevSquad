@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Models.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class initAvecSqlite : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,10 +17,10 @@ namespace Models.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,21 +31,21 @@ namespace Models.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,14 +56,14 @@ namespace Models.Migrations
                 name: "Cards",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Attack = table.Column<int>(type: "int", nullable: false),
-                    Health = table.Column<int>(type: "int", nullable: false),
-                    Cost = table.Column<int>(type: "int", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rarity = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Attack = table.Column<int>(type: "INTEGER", nullable: false),
+                    Health = table.Column<int>(type: "INTEGER", nullable: false),
+                    Cost = table.Column<int>(type: "INTEGER", nullable: false),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: false),
+                    Rarity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,15 +74,15 @@ namespace Models.Migrations
                 name: "GameConfigs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NbCardsToDraw = table.Column<int>(type: "int", nullable: false),
-                    NbManaToReceive = table.Column<int>(type: "int", nullable: false),
-                    NbMaxDeck = table.Column<int>(type: "int", nullable: false),
-                    NbMaxCard = table.Column<int>(type: "int", nullable: false),
-                    BeginnerMoney = table.Column<double>(type: "float", nullable: false),
-                    WinnerMoney = table.Column<double>(type: "float", nullable: false),
-                    LoserMoney = table.Column<double>(type: "float", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NbCardsToDraw = table.Column<int>(type: "INTEGER", nullable: false),
+                    NbManaToReceive = table.Column<int>(type: "INTEGER", nullable: false),
+                    NbMaxDeck = table.Column<int>(type: "INTEGER", nullable: false),
+                    NbMaxCard = table.Column<int>(type: "INTEGER", nullable: false),
+                    BeginnerMoney = table.Column<double>(type: "REAL", nullable: false),
+                    WinnerMoney = table.Column<double>(type: "REAL", nullable: false),
+                    LoserMoney = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,13 +93,13 @@ namespace Models.Migrations
                 name: "Packs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NbCards = table.Column<int>(type: "int", nullable: false),
-                    DefaultRarity = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Price = table.Column<double>(type: "REAL", nullable: false),
+                    ImageURL = table.Column<string>(type: "TEXT", nullable: false),
+                    NbCards = table.Column<int>(type: "INTEGER", nullable: false),
+                    DefaultRarity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -110,12 +110,12 @@ namespace Models.Migrations
                 name: "PlayerInfo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ELO = table.Column<int>(type: "int", nullable: false),
-                    attente = table.Column<int>(type: "int", nullable: false),
-                    ConnectionId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    ELO = table.Column<int>(type: "INTEGER", nullable: false),
+                    attente = table.Column<int>(type: "INTEGER", nullable: false),
+                    ConnectionId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,11 +126,11 @@ namespace Models.Migrations
                 name: "Powers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IconURL = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    IconURL = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,11 +141,11 @@ namespace Models.Migrations
                 name: "Status",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IconUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    IconUrl = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -156,11 +156,11 @@ namespace Models.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RoleId = table.Column<string>(type: "TEXT", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -177,11 +177,11 @@ namespace Models.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -198,10 +198,10 @@ namespace Models.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,8 +218,8 @@ namespace Models.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    RoleId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -242,10 +242,10 @@ namespace Models.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -262,14 +262,14 @@ namespace Models.Migrations
                 name: "Players",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Money = table.Column<double>(type: "float", nullable: false),
-                    ELO = table.Column<int>(type: "int", nullable: false),
-                    NbVictories = table.Column<int>(type: "int", nullable: false),
-                    NbDefeats = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    Money = table.Column<double>(type: "REAL", nullable: false),
+                    ELO = table.Column<int>(type: "INTEGER", nullable: false),
+                    NbVictories = table.Column<int>(type: "INTEGER", nullable: false),
+                    NbDefeats = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -286,9 +286,9 @@ namespace Models.Migrations
                 name: "StarterCards",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CardId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CardId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -305,12 +305,12 @@ namespace Models.Migrations
                 name: "Probabilities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<double>(type: "float", nullable: false),
-                    Rarity = table.Column<int>(type: "int", nullable: false),
-                    BaseQty = table.Column<int>(type: "int", nullable: false),
-                    PackId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Value = table.Column<double>(type: "REAL", nullable: false),
+                    Rarity = table.Column<int>(type: "INTEGER", nullable: false),
+                    BaseQty = table.Column<int>(type: "INTEGER", nullable: false),
+                    PackId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -327,13 +327,13 @@ namespace Models.Migrations
                 name: "PairOfPlayers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserAId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserBId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OtherConnectionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PlayerInfo1Id = table.Column<int>(type: "int", nullable: false),
-                    PlayerInfo2Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserAId = table.Column<string>(type: "TEXT", nullable: false),
+                    UserBId = table.Column<string>(type: "TEXT", nullable: false),
+                    OtherConnectionId = table.Column<string>(type: "TEXT", nullable: false),
+                    PlayerInfo1Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    PlayerInfo2Id = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -343,24 +343,24 @@ namespace Models.Migrations
                         column: x => x.PlayerInfo1Id,
                         principalTable: "PlayerInfo",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PairOfPlayers_PlayerInfo_PlayerInfo2Id",
                         column: x => x.PlayerInfo2Id,
                         principalTable: "PlayerInfo",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CardPowers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CardId = table.Column<int>(type: "int", nullable: false),
-                    PowerId = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CardId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PowerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Value = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -383,13 +383,13 @@ namespace Models.Migrations
                 name: "Deck",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsCurrent = table.Column<bool>(type: "bit", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false),
-                    NbVictories = table.Column<int>(type: "int", nullable: false),
-                    NbDefeats = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    IsCurrent = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PlayerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    NbVictories = table.Column<int>(type: "INTEGER", nullable: false),
+                    NbDefeats = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -406,12 +406,12 @@ namespace Models.Migrations
                 name: "MatchPlayersData",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Health = table.Column<int>(type: "int", nullable: false),
-                    Mana = table.Column<int>(type: "int", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false),
-                    IndexBattleField = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Health = table.Column<int>(type: "INTEGER", nullable: false),
+                    Mana = table.Column<int>(type: "INTEGER", nullable: false),
+                    PlayerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IndexBattleField = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -428,10 +428,10 @@ namespace Models.Migrations
                 name: "OwnedCards",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PlayerId = table.Column<int>(type: "int", nullable: false),
-                    CardId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PlayerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CardId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -454,15 +454,15 @@ namespace Models.Migrations
                 name: "Matches",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsPlayerATurn = table.Column<bool>(type: "bit", nullable: false),
-                    IsMatchCompleted = table.Column<bool>(type: "bit", nullable: false),
-                    WinnerUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserAId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserBId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PlayerDataAId = table.Column<int>(type: "int", nullable: false),
-                    PlayerDataBId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IsPlayerATurn = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsMatchCompleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    WinnerUserId = table.Column<string>(type: "TEXT", nullable: true),
+                    UserAId = table.Column<string>(type: "TEXT", nullable: false),
+                    UserBId = table.Column<string>(type: "TEXT", nullable: false),
+                    PlayerDataAId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PlayerDataBId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -483,17 +483,17 @@ namespace Models.Migrations
                 name: "PlayableCards",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CardId = table.Column<int>(type: "int", nullable: false),
-                    Health = table.Column<int>(type: "int", nullable: false),
-                    MaxHealth = table.Column<int>(type: "int", nullable: false),
-                    Attack = table.Column<int>(type: "int", nullable: false),
-                    Index = table.Column<int>(type: "int", nullable: false),
-                    MatchPlayerDataId = table.Column<int>(type: "int", nullable: true),
-                    MatchPlayerDataId1 = table.Column<int>(type: "int", nullable: true),
-                    MatchPlayerDataId2 = table.Column<int>(type: "int", nullable: true),
-                    MatchPlayerDataId3 = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CardId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Health = table.Column<int>(type: "INTEGER", nullable: false),
+                    MaxHealth = table.Column<int>(type: "INTEGER", nullable: false),
+                    Attack = table.Column<int>(type: "INTEGER", nullable: false),
+                    Index = table.Column<int>(type: "INTEGER", nullable: false),
+                    MatchPlayerDataId = table.Column<int>(type: "INTEGER", nullable: true),
+                    MatchPlayerDataId1 = table.Column<int>(type: "INTEGER", nullable: true),
+                    MatchPlayerDataId2 = table.Column<int>(type: "INTEGER", nullable: true),
+                    MatchPlayerDataId3 = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -530,8 +530,8 @@ namespace Models.Migrations
                 name: "DeckOwnedCard",
                 columns: table => new
                 {
-                    DeckId = table.Column<int>(type: "int", nullable: false),
-                    OwnedCardId = table.Column<int>(type: "int", nullable: false)
+                    DeckId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OwnedCardId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -541,24 +541,24 @@ namespace Models.Migrations
                         column: x => x.OwnedCardId,
                         principalTable: "Deck",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DeckOwnedCard_OwnedCards_DeckId",
                         column: x => x.DeckId,
                         principalTable: "OwnedCards",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "PlayableCardStatus",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PlayableCardId = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PlayableCardId = table.Column<int>(type: "INTEGER", nullable: false),
+                    StatusId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Value = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -587,9 +587,9 @@ namespace Models.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "11111111-1111-1111-1111-111111111111", 0, "2ec47538-1b79-4958-abea-dc2c9e08c86e", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEOxQ7hp+qkaOkJ0+GTPpZYDvI/Y9j4tXRz0Zs86dCmmxuXoGWmsYAlE7WyUc33yE4Q==", null, false, "0275e0bd-046f-4f18-a9ba-c40a2a43f94b", false, "admin@admin.com" },
-                    { "User1Id", 0, "fff323ad-8a47-487b-9c5e-a8fa2b669518", null, false, false, null, null, null, null, null, false, "4e2e9ca8-f71f-4d41-b1da-111d375f8885", false, null },
-                    { "User2Id", 0, "0776fcfe-af52-4fa1-813c-bf02b4207ce3", null, false, false, null, null, null, null, null, false, "23dbcd18-4f4a-4d30-a14e-9d8efa58255a", false, null }
+                    { "11111111-1111-1111-1111-111111111111", 0, "93ceeb7c-bc7d-437d-a081-1319086a412a", "admin@admin.com", true, true, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEKQDxxlwZgSgN190azkCSi1eKjCbOtlrx1F83sNLoE0L/HqauYgTrgzQkY6SpaTvNw==", null, false, "8a877ec0-f45c-49d2-9618-b2184f9893fd", false, "admin@admin.com" },
+                    { "User1Id", 0, "c2e17b4d-d852-42bf-aa5b-15245f560fc6", null, false, false, null, null, null, null, null, false, "5f258c0e-163f-43e4-b764-8561a47e73a9", false, null },
+                    { "User2Id", 0, "f70a0ac8-4613-4e6d-a264-a28add760d02", null, false, false, null, null, null, null, null, false, "3ae46bdb-b9ff-46fc-ba47-e1b9a2c83fba", false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -705,8 +705,7 @@ namespace Models.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -732,8 +731,7 @@ namespace Models.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_CardPowers_CardId",
