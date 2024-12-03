@@ -1,4 +1,5 @@
-﻿using Models.Models;
+﻿using Microsoft.IdentityModel.Tokens;
+using Models.Models;
 using Super_Cartes_Infinies.Combat;
 using System;
 using System.Collections.Generic;
@@ -99,7 +100,7 @@ namespace Tests.Combat
         }
 
         [TestMethod]
-        public void StunnedTest()
+        public void StunTest()
         {
             var cp = new CardPower
             {
@@ -130,15 +131,16 @@ namespace Tests.Combat
             // TODO: Bonne idée de vérifier la valeur du Status Stunned entre les PlayeEndTurnEvent
             // NO ATTACK
             var endTurnEvent1 = new PlayerEndTurnEvent(_match, _opposingPlayerData, _currentPlayerData, NB_MANA_PER_TURN);
+            Assert.AreEqual(1, _playableCardB.GetStatusValue((int)StatusEnum.Stunned));
             var endTurnEvent2 = new PlayerEndTurnEvent(_match, _currentPlayerData, _opposingPlayerData, NB_MANA_PER_TURN);
 
             // NO ATTACK
             var endTurnEvent3 = new PlayerEndTurnEvent(_match, _opposingPlayerData, _currentPlayerData, NB_MANA_PER_TURN);
+            Assert.AreEqual(0, _playableCardB.GetStatusValue((int)StatusEnum.Stunned));
             var endTurnEvent4 = new PlayerEndTurnEvent(_match, _currentPlayerData, _opposingPlayerData, NB_MANA_PER_TURN);
 
             // YES ATTACK
             var endTurnEvent5 = new PlayerEndTurnEvent(_match, _opposingPlayerData, _currentPlayerData, NB_MANA_PER_TURN);
-
 
             Assert.AreEqual(healthA, _currentPlayerData.Health);
         }
@@ -155,7 +157,7 @@ namespace Tests.Combat
             };
 
             _playableCardA.Attack = 1;
-            _playableCardA.Health = 10;
+            _playableCardA.Health = 2;
 
             _playableCardB.Attack = 1;
             _playableCardB.Health = 10;
@@ -175,10 +177,12 @@ namespace Tests.Combat
 
             // TODO: Bonne idée de faire mourrir une carte pour vérifier que ça fonctionne bien
             Assert.AreEqual(healthA, _playableCardA.Health);
+            Assert.AreEqual(_playableCardA, _currentPlayerData.Graveyard[0]);
             Assert.AreEqual(healthB, _playableCardB.Health);
 
             // TODO: Vérifier que la carte Spell n'est plus sur le BattleField
-
+            Assert.IsTrue(_currentPlayerData.BattleField.IsNullOrEmpty());
+            Assert.AreEqual(_playableCardMagic, _currentPlayerData.Graveyard[1]);
         }
 
         [TestMethod]
@@ -255,7 +259,7 @@ namespace Tests.Combat
 
             Assert.AreEqual(healthB, _opposingPlayerData.BattleField[target].Health);
             // TODO: Vérifier que la carte Spell n'est plus sur le BattleField (Graveyard)
-
+            Assert.AreEqual(_playableCardMagic, _currentPlayerData.Graveyard[0]);
         }
 
     }

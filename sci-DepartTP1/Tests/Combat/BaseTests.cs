@@ -98,7 +98,8 @@ namespace Tests.Services
                 Attack = 0,
                 Health = 0,
                 Cost = 2,
-                CardPowers = cardP
+                CardPowers = cardP,
+                IsSpell = true,
             };
             // TODO: Ajouter un bool IsSpell et le mettre à true
             _playableCardTest = new PlayableCard(_cardTest)
