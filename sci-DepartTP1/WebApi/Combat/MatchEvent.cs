@@ -25,6 +25,8 @@ namespace Super_Cartes_Infinies.Combat
     [JsonDerivedType(typeof(ChaosEvent))]
     [JsonDerivedType(typeof(StunEvent))]
     [JsonDerivedType(typeof(StunnedEvent))]
+    [JsonDerivedType(typeof(EarthquakeEvent))]
+    [JsonDerivedType(typeof(RandomPainEvent))]
     public abstract class MatchEvent
     {
         public abstract string EventType { get; }

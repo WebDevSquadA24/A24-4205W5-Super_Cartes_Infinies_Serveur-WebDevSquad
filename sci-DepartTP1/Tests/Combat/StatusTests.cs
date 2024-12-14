@@ -223,42 +223,29 @@ namespace Tests.Combat
         [TestMethod]
         public void RandomPainTest()
         {
-            Random random = new Random();
-            int damage = random.Next(1, 6);
             var cp = new CardPower
             {
                 Power = _powerRandomPain,
                 Card = _cardMagic,
-                Value = damage
             };
-
-
-
-
 
             _playableCardB.Health = 10;
             _playableCardC.Health = 10;
 
-            _cardMagic.CardPowers.Add(cp);
-
-            
+            _cardMagic.CardPowers.Add(cp);       
 
             _currentPlayerData.AddCardToBattleField(_playableCardA);
             _opposingPlayerData.AddCardToBattleField(_playableCardB);
             _opposingPlayerData.AddCardToBattleField(_playableCardC);
-
-
-            int nbCard = _opposingPlayerData.GetOrderedBattleField().Count;
-            int target = random.Next(0, nbCard-1);
-
-            //Expected
-            int healthB = _opposingPlayerData.BattleField[target].Health - damage;
+            _currentPlayerData.Hand.Add(_playableCardMagic);
 
             var playEvent = new PlayCardEvent(_currentPlayerData, _opposingPlayerData, _playableCardMagic.Id, true);
 
+            var damage = (playEvent.Events!.Single(e => e.EventType == "RandomPain") as RandomPainEvent)!.randomDamage;
+            var index = (playEvent.Events!.Single(e => e.EventType == "RandomPain") as RandomPainEvent)!.targetIndex;
 
 
-            Assert.AreEqual(healthB, _opposingPlayerData.BattleField[target].Health);
+            Assert.AreEqual(10 - damage, _opposingPlayerData.BattleField[index].Health);
             // TODO: Vérifier que la carte Spell n'est plus sur le BattleField (Graveyard)
             Assert.AreEqual(_playableCardMagic, _currentPlayerData.Graveyard[0]);
         }

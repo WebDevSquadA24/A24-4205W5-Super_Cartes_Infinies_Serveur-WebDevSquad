@@ -54,7 +54,8 @@ namespace WebApi.Combat
                             }
                             if (playableCard.HasPower(Power.RANDOM_PAIN_ID))
                             {
-
+                                if (Events == null) Events = new List<MatchEvent>();
+                                Events.Add(new RandomPainEvent(opposingPlayerData));
                             }
 
                             currentPlayerData.Graveyard.Add(playableCard);
