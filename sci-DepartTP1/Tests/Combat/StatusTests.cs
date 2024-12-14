@@ -204,20 +204,13 @@ namespace Tests.Combat
 
             _cardB.CardPowers.Add(cp);
 
-            //Expected
-
-
             _currentPlayerData.AddCardToBattleField(_playableCardA);
             _opposingPlayerData.AddCardToBattleField(_playableCardB);
 
             var endTurnEvent5 = new PlayerEndTurnEvent(_match, _currentPlayerData, _opposingPlayerData, NB_MANA_PER_TURN);
 
-
-
             Assert.AreEqual(_playableCardA, _currentPlayerData.Graveyard[0]);
             Assert.AreEqual(_playableCardB, _opposingPlayerData.Graveyard[0]);
-
-
         }
 
         [TestMethod]
