@@ -1,4 +1,5 @@
-﻿using Super_Cartes_Infinies.Combat;
+﻿using Models.Models;
+using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Models;
 using System.Text.RegularExpressions;
 
@@ -40,8 +41,26 @@ namespace WebApi.Combat
                     //Est-ce que t'as assez de Mana
                     if (playableCard.Card.Cost <= currentPlayerData.Mana)
                     {
+                        if (playableCard.Card.IsSpell)
+                        {
+                            PlayableCardId = playableCardId;
+                            currentPlayerData.Mana -= playableCard.Card.Cost;
+                            currentPlayerData.Hand.Remove(playableCard);
+
+                            if (playableCard.HasPower(Power.EARTHQUAKE_ID))
+                            {
+                                if (Events == null) Events = new List<MatchEvent>();
+                                Events.Add(new EarthquakeEvent(currentPlayerData, opposingPlayerData, playableCard.GetPowerValue(Power.EARTHQUAKE_ID)));
+                            }
+                            if (playableCard.HasPower(Power.RANDOM_PAIN_ID))
+                            {
+
+                            }
+
+                            currentPlayerData.Graveyard.Add(playableCard);
+                        }
                         // Est-ce qu'il y a de l'espace sur le terrain
-                        if (currentPlayerData.BattleField.Count < maxCarte)
+                        else if (currentPlayerData.BattleField.Count < maxCarte)
                         {
                             PlayableCardId = playableCardId;
 

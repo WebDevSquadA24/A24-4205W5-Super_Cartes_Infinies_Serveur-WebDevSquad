@@ -171,6 +171,7 @@ namespace Tests.Combat
 
             _currentPlayerData.AddCardToBattleField(_playableCardA);
             _opposingPlayerData.AddCardToBattleField(_playableCardB);
+            _currentPlayerData.Hand.Add(_playableCardMagic);
 
             var playEvent = new PlayCardEvent(_currentPlayerData, _opposingPlayerData, _playableCardMagic.Id, true);
 

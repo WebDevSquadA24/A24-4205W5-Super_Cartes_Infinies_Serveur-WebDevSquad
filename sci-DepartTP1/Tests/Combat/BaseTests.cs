@@ -78,6 +78,7 @@ namespace Tests.Services
                 Id = 1,
                 Card = _cardTest,
                 PowerId = _powerHeal.Id,
+                Power = _powerHeal,
                 Value = 3
             };
 
