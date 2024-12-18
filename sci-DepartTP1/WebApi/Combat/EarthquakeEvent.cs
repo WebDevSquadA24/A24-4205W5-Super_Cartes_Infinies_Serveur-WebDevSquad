@@ -7,10 +7,14 @@ namespace WebApi.Combat
     public class EarthquakeEvent : MatchEvent
     {
         public override string EventType { get { return "Earthquake"; } }
+
+        public int Value { get; set; }
+
         public EarthquakeEvent(MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData, int value)
         {
+            Value = value;
             Earthquake(currentPlayerData, value);
-            Earthquake(opposingPlayerData,value);
+            Earthquake(opposingPlayerData, value);
         }
 
         private void Earthquake(MatchPlayerData playerData, int value)

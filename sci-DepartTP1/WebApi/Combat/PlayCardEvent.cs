@@ -18,6 +18,8 @@ namespace WebApi.Combat
 
         public bool YourTurn { get; set; }
 
+        public bool IsSpell { get; set; } = false;
+
         // TODO: Ajouter tout ce qui manque
         public PlayCardEvent(MatchPlayerData currentPlayerData, MatchPlayerData opposingPlayerData, int playableCardId, bool yourTurn)
         {
@@ -43,6 +45,7 @@ namespace WebApi.Combat
                     {
                         if (playableCard.Card.IsSpell)
                         {
+                            IsSpell = true;
                             PlayableCardId = playableCardId;
                             currentPlayerData.Mana -= playableCard.Card.Cost;
                             currentPlayerData.Hand.Remove(playableCard);
@@ -59,6 +62,7 @@ namespace WebApi.Combat
                             }
 
                             currentPlayerData.Graveyard.Add(playableCard);
+                            CanMoveCard = true;
                         }
                         // Est-ce qu'il y a de l'espace sur le terrain
                         else if (currentPlayerData.BattleField.Count < maxCarte)

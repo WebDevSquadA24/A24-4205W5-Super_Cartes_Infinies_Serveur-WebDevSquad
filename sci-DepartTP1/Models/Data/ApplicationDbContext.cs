@@ -38,6 +38,8 @@ public class ApplicationDbContext : IdentityDbContext
         builder.Entity<Power>().HasData(Seed.SeedPowers());
         builder.Entity<CardPower>().HasData(Seed.SeedCardPowers());
 
+        builder.Entity<Status>().HasData(Seed.SeedStatuses());
+
         // Lorsque le modèle de données se complexifient, il faut éventuellement utiliser Fluent API
         // https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/fluent/types-and-properties
         // pour préciser certaines relations.
@@ -74,6 +76,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<PlayableCard> PlayableCards { get; set; } = default!;
     public DbSet<Pack> Packs { get; set; } = default!;
     public DbSet<Probability> Probabilities{ get; set; } = default!;
-    public DbSet<Deck> Decks { get; set; }
+    public DbSet<Deck> Decks { get; set; } = default!;
+    public DbSet<Status> Statuses { get; set; } = default!;
 }
 

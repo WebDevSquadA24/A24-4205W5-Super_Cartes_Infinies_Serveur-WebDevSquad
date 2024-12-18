@@ -8,9 +8,13 @@ namespace WebApi.Combat
     {
         public override string EventType { get { return "Stunned"; } }
 
+        public int Index { get; set; }
+
         public StunnedEvent(PlayableCard card)
         {
             card.SubtractStatusValue((int)StatusEnum.Stunned, 1);
+
+            Index = card.Index;
         }
     }
 }

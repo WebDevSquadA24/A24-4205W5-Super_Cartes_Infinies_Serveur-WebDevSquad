@@ -9,9 +9,15 @@ namespace WebApi.Combat
     {
         public override string EventType { get { return "Poison"; } }
 
+        public int Index { get; set; }
+        public PlayableCardStatus PoisonedCardStatus { get; set; }
+
         public PoisonEvent(PlayableCard currentCard, PlayableCard opponentCard)
         {
             opponentCard.AddStatusValue((int)StatusEnum.Poisoned, currentCard.GetPowerValue(Power.POISON_ID));
+
+            Index = opponentCard.Index;
+            PoisonedCardStatus = opponentCard.PlayableCardStatuses.Single(x => x.StatusId == (int)StatusEnum.Poisoned);
         }
     }
 }

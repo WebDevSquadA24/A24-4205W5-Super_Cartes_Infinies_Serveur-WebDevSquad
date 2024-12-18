@@ -8,9 +8,13 @@ namespace WebApi.Combat
     {
         public override string EventType { get { return "Poisoned"; } }
 
+        public int Index { get; set; }
+
         public PoisonedEvent(PlayableCard card)
         {
             card.Health -= card.GetStatusValue((int)StatusEnum.Poisoned);
+
+            Index = card.Index;
         }
     }
 }

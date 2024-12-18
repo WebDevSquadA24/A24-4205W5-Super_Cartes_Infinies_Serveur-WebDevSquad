@@ -234,8 +234,8 @@ namespace Tests.Combat
 
             var playEvent = new PlayCardEvent(_currentPlayerData, _opposingPlayerData, _playableCardMagic.Id, true);
 
-            var damage = (playEvent.Events!.Single(e => e.EventType == "RandomPain") as RandomPainEvent)!.randomDamage;
-            var index = (playEvent.Events!.Single(e => e.EventType == "RandomPain") as RandomPainEvent)!.targetIndex;
+            var damage = (playEvent.Events!.Single(e => e.EventType == "RandomPain") as RandomPainEvent)!.Value;
+            var index = (playEvent.Events!.Single(e => e.EventType == "RandomPain") as RandomPainEvent)!.Index;
 
 
             Assert.AreEqual(10 - damage, _opposingPlayerData.BattleField[index].Health);

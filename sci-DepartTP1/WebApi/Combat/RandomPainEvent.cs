@@ -7,18 +7,19 @@ namespace WebApi.Combat
     {
         public override string EventType { get { return "RandomPain"; } }
 
-        public int randomDamage { get; set; }
-        public int targetIndex { get; set; }
+        public int Value { get; set; }
+        public int Index { get; set; }
+
         public RandomPainEvent(MatchPlayerData opposingPlayerData)
         {
             var nbCards = opposingPlayerData.GetOrderedBattleField().Count;
             if (nbCards > 0)
             {
                 Random r = new Random();
-                targetIndex = r.Next(0, nbCards);
-                var targetCard = opposingPlayerData.GetOrderedBattleField()[targetIndex];
-                randomDamage = r.Next(0, 7);
-                targetCard.Health -= randomDamage;
+                Index = r.Next(0, nbCards);
+                var targetCard = opposingPlayerData.GetOrderedBattleField()[Index];
+                Value = r.Next(0, 7);
+                targetCard.Health -= Value;
 
                 if (targetCard.Health <= 0)
                 {
