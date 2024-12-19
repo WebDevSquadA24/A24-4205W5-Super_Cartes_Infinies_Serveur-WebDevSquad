@@ -26,7 +26,7 @@ jobs:
         working-directory: sci-DepartTP1/WebApi
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.GITHUB_WORKSPACE}}\myapp" "WebApi\WebApi.csproj"
+        run: dotnet publish -c Release -o "${{env.GITHUB_WORKSPACE}}/myapp" "WebApi/WebApi.csproj"
         working-directory: sci-DepartTP1/WebApi
 
       - name: Upload artifact for deployment job
