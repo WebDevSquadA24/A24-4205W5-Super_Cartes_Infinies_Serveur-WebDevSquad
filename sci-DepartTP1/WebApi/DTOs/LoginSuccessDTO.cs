@@ -13,5 +13,10 @@ namespace WebAPI.DTOs
         
         [Required]
         public double PlayerMoney { get; set; }
+
+        [Required]
+        public int PlayerELO { get; set; }
+
+
     }
 }

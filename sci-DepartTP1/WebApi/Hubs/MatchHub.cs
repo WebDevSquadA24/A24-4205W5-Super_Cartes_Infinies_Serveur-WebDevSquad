@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using Newtonsoft.Json.Linq;
 using Super_Cartes_Infinies.Combat;
 using Super_Cartes_Infinies.Data;
@@ -72,16 +73,21 @@ public class MatchHub : Hub
             //UserHandler.ConnectedIds.Add(connectedIdPlayerB);
             if (joiningMatchData.IsStarted)
             {
-                //Celui qui appelle la métohde
+                //Celui qui appelle la mï¿½tohde
                 await Clients.Caller.SendAsync("JoiningMatchData", joiningMatchData);
             }
+            // ON NAURA PAS BESOIN D'UN ELSE
             else
             {
-                //UserA
-                await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
+                // ICI On ajoute que le user dans la liste de PlayerInfo
+                // Tout l'envoi des donnï¿½es se fait dans le background service.
 
-                // Il faut tout de même envoyer le joiningMatchData au 2 joueurs
-                await this.StartMatch(userId, joiningMatchData, groupName);
+                //UserA
+                //await Groups.AddToGroupAsync(joiningMatchData.OtherPlayerConnectionId, groupName);
+
+               
+
+                //await this.StartMatch(userId, joiningMatchData, groupName);
             }
         }
         else
@@ -93,10 +99,14 @@ public class MatchHub : Hub
 
     public async Task StartMatch(string userId, JoiningMatchData joiningMatchData, string groupName)
     {
-        //Envoyer à Player A et B
-        await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
-        StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
-        await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+        //Envoyer ï¿½ Player A et B
+        //await Clients.Group(groupName).SendAsync("JoiningMatchData", joiningMatchData);
+        //StartMatchEvent startMatchEvent = await _service.StartMatch(userId, joiningMatchData.Match);
+
+
+        //await Clients.Group(groupName).SendAsync("StartMatchEvent", startMatchEvent);
+
+
     }
 
     public async Task EndTurn(JoiningMatchData joiningMatchData)
@@ -108,6 +118,22 @@ public class MatchHub : Hub
         Player player = _playerService.GetPlayerFromUserId(userId);
         string groupName = "Match" + joiningMatchData.Match.Id;
         await Clients.Group(groupName).SendAsync("EndTurn", endTurn);
+    }
+
+    public async Task Annuler(JoiningMatchData joiningMatchData)
+    {
+        //current player
+        string userId = CurentUser.Id;
+
+        Player player = _playerService.GetPlayerFromUserId(userId);
+
+        PlayerInfo playerInfo = _context.PlayerInfo.Where(p => p.UserId == player.UserId).First();
+
+        _context.PlayerInfo.Remove(playerInfo);
+        _context.SaveChanges();
+
+
+
     }
 
     public async Task Surrender( JoiningMatchData joiningMatchData)
