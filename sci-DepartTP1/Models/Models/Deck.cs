@@ -26,5 +26,8 @@ namespace Models.Models
         [ValidateNever]
         [JsonIgnore]
         public virtual Player Player { get; set; }
+
+        public int NbVictories { get; set; }
+        public int NbDefeats { get; set; }
     }
 }

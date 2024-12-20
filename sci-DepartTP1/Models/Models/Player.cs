@@ -19,11 +19,16 @@ namespace Super_Cartes_Infinies.Models
 
 		public double Money { get; set; }
 
+		public int ELO { get; set; } = 1000;
+
         [JsonIgnore]
         public virtual List<OwnedCard> OwnedCards { get; set; }
 
 		[JsonIgnore]
 		public virtual List<Deck> Decks { get; set; }
+
+        public int NbVictories { get; set; }
+        public int NbDefeats { get; set; }
     }
 }
 

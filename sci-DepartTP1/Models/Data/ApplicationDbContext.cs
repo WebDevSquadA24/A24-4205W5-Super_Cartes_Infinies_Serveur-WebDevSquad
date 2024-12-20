@@ -78,5 +78,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Probability> Probabilities{ get; set; } = default!;
     public DbSet<Deck> Decks { get; set; } = default!;
     public DbSet<Status> Statuses { get; set; } = default!;
+    public DbSet<PlayerInfo> PlayerInfo { get; set; }
+    public DbSet<PairOfPlayers> PairOfPlayers { get; set; }
 }
 

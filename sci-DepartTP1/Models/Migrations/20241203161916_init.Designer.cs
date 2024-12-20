@@ -12,15 +12,15 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241115134224_ajustementSeedProbability")]
-    partial class ajustementSeedProbability
+    [Migration("20241203161916_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -172,15 +172,15 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8d35b136-94ab-4c2d-9fd0-dc738576f576",
+                            ConcurrencyStamp = "2ec47538-1b79-4958-abea-dc2c9e08c86e",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFplf3pRnm7sxuJnwfUU/6pOEmJtvyGAPxvKfE52qdjSKfkm3ffJJdH9xnpqRBcbRQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOxQ7hp+qkaOkJ0+GTPpZYDvI/Y9j4tXRz0Zs86dCmmxuXoGWmsYAlE7WyUc33yE4Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "27747964-787b-4f4b-9c61-088a39bdd423",
+                            SecurityStamp = "0275e0bd-046f-4f18-a9ba-c40a2a43f94b",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         },
@@ -188,22 +188,22 @@ namespace Models.Migrations
                         {
                             Id = "User1Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "78a7b9b0-01c1-46c5-b26e-61e38f21aeb7",
+                            ConcurrencyStamp = "fff323ad-8a47-487b-9c5e-a8fa2b669518",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5100384b-7b62-4fed-9710-1b6806dcdd82",
+                            SecurityStamp = "4e2e9ca8-f71f-4d41-b1da-111d375f8885",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "User2Id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0b2f7673-6d5f-4e32-99c1-81d2b384fae5",
+                            ConcurrencyStamp = "0776fcfe-af52-4fa1-813c-bf02b4207ce3",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f371f3e6-a5ea-464e-9f8e-54e0d46d9914",
+                            SecurityStamp = "23dbcd18-4f4a-4d30-a14e-9d8efa58255a",
                             TwoFactorEnabled = false
                         });
                 });
@@ -392,6 +392,12 @@ namespace Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("NbDefeats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NbVictories")
+                        .HasColumnType("int");
+
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
@@ -508,6 +514,94 @@ namespace Models.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Models.Models.PairOfPlayers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("OtherConnectionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlayerInfo1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerInfo2Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserAId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserBId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerInfo1Id");
+
+                    b.HasIndex("PlayerInfo2Id");
+
+                    b.ToTable("PairOfPlayers");
+                });
+
+            modelBuilder.Entity("Models.Models.PlayableCardStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PlayableCardId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayableCardId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("PlayableCardStatus");
+                });
+
+            modelBuilder.Entity("Models.Models.PlayerInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ConnectionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ELO")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("attente")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlayerInfo");
+                });
+
             modelBuilder.Entity("Models.Models.Power", b =>
                 {
                     b.Property<int>("Id")
@@ -586,7 +680,81 @@ namespace Models.Migrations
 
                     b.HasIndex("PackId");
 
-                    b.ToTable("Probability");
+                    b.ToTable("Probabilities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BaseQty = 0,
+                            PackId = 1,
+                            Rarity = 0,
+                            Value = 0.69999999999999996
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BaseQty = 0,
+                            PackId = 1,
+                            Rarity = 1,
+                            Value = 0.29999999999999999
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BaseQty = 0,
+                            PackId = 2,
+                            Rarity = 0,
+                            Value = 0.59999999999999998
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BaseQty = 1,
+                            PackId = 2,
+                            Rarity = 1,
+                            Value = 0.29999999999999999
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BaseQty = 0,
+                            PackId = 2,
+                            Rarity = 2,
+                            Value = 0.10000000000000001
+                        },
+                        new
+                        {
+                            Id = 6,
+                            BaseQty = 0,
+                            PackId = 2,
+                            Rarity = 3,
+                            Value = 0.20000000000000001
+                        },
+                        new
+                        {
+                            Id = 7,
+                            BaseQty = 0,
+                            PackId = 3,
+                            Rarity = 1,
+                            Value = 0.65000000000000002
+                        },
+                        new
+                        {
+                            Id = 8,
+                            BaseQty = 1,
+                            PackId = 3,
+                            Rarity = 2,
+                            Value = 0.25
+                        },
+                        new
+                        {
+                            Id = 9,
+                            BaseQty = 0,
+                            PackId = 3,
+                            Rarity = 3,
+                            Value = 0.10000000000000001
+                        });
                 });
 
             modelBuilder.Entity("Models.Models.StarterCard", b =>
@@ -652,6 +820,30 @@ namespace Models.Migrations
                             Id = 9,
                             CardId = 6
                         });
+                });
+
+            modelBuilder.Entity("Models.Models.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IconUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Status");
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.Card", b =>
@@ -947,12 +1139,21 @@ namespace Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ELO")
+                        .HasColumnType("int");
+
                     b.Property<double>("Money")
                         .HasColumnType("float");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NbDefeats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NbVictories")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -968,15 +1169,21 @@ namespace Models.Migrations
                         new
                         {
                             Id = 1,
+                            ELO = 1000,
                             Money = 0.0,
                             Name = "Test player 1",
+                            NbDefeats = 0,
+                            NbVictories = 0,
                             UserId = "User1Id"
                         },
                         new
                         {
                             Id = 2,
+                            ELO = 1000,
                             Money = 0.0,
                             Name = "Test player 2",
+                            NbDefeats = 0,
+                            NbVictories = 0,
                             UserId = "User2Id"
                         });
                 });
@@ -1075,6 +1282,44 @@ namespace Models.Migrations
                         .IsRequired();
 
                     b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("Models.Models.PairOfPlayers", b =>
+                {
+                    b.HasOne("Models.Models.PlayerInfo", "PlayerInfo1")
+                        .WithMany()
+                        .HasForeignKey("PlayerInfo1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Models.PlayerInfo", "PlayerInfo2")
+                        .WithMany()
+                        .HasForeignKey("PlayerInfo2Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayerInfo1");
+
+                    b.Navigation("PlayerInfo2");
+                });
+
+            modelBuilder.Entity("Models.Models.PlayableCardStatus", b =>
+                {
+                    b.HasOne("Super_Cartes_Infinies.Models.PlayableCard", "PlayableCard")
+                        .WithMany("PlayableCardStatuses")
+                        .HasForeignKey("PlayableCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Models.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayableCard");
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("Models.Models.Probability", b =>
@@ -1210,6 +1455,11 @@ namespace Models.Migrations
                     b.Navigation("Graveyard");
 
                     b.Navigation("Hand");
+                });
+
+            modelBuilder.Entity("Super_Cartes_Infinies.Models.PlayableCard", b =>
+                {
+                    b.Navigation("PlayableCardStatuses");
                 });
 
             modelBuilder.Entity("Super_Cartes_Infinies.Models.Player", b =>
