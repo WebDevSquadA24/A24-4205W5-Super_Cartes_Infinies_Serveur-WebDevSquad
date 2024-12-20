@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Super_Cartes_Infinies.Data;
 
@@ -11,9 +12,11 @@ using Super_Cartes_Infinies.Data;
 namespace Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241217191921_seedNewPowers")]
+    partial class seedNewPowers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,7 +172,7 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2ec47538-1b79-4958-abea-dc2c9e08c86e",
+                            ConcurrencyStamp = "e801e1b0-8f9f-4d5a-9cea-936ce0b47a23",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
@@ -431,12 +434,6 @@ namespace Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NbDefeats")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NbVictories")
-                        .HasColumnType("int");
-
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
@@ -553,41 +550,6 @@ namespace Models.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Models.Models.PairOfPlayers", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("OtherConnectionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlayerInfo1Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayerInfo2Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserAId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserBId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayerInfo1Id");
-
-                    b.HasIndex("PlayerInfo2Id");
-
-                    b.ToTable("PairOfPlayers");
-                });
-
             modelBuilder.Entity("Models.Models.PlayableCardStatus", b =>
                 {
                     b.Property<int>("Id")
@@ -612,33 +574,6 @@ namespace Models.Migrations
                     b.HasIndex("StatusId");
 
                     b.ToTable("PlayableCardStatus");
-                });
-
-            modelBuilder.Entity("Models.Models.PlayerInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ConnectionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ELO")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("attente")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PlayerInfo");
                 });
 
             modelBuilder.Entity("Models.Models.Power", b =>
@@ -1309,21 +1244,12 @@ namespace Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ELO")
-                        .HasColumnType("int");
-
                     b.Property<double>("Money")
                         .HasColumnType("float");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NbDefeats")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NbVictories")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1339,21 +1265,15 @@ namespace Models.Migrations
                         new
                         {
                             Id = 1,
-                            ELO = 1000,
                             Money = 0.0,
                             Name = "Test player 1",
-                            NbDefeats = 0,
-                            NbVictories = 0,
                             UserId = "User1Id"
                         },
                         new
                         {
                             Id = 2,
-                            ELO = 1000,
                             Money = 0.0,
                             Name = "Test player 2",
-                            NbDefeats = 0,
-                            NbVictories = 0,
                             UserId = "User2Id"
                         });
                 });
@@ -1452,25 +1372,6 @@ namespace Models.Migrations
                         .IsRequired();
 
                     b.Navigation("Player");
-                });
-
-            modelBuilder.Entity("Models.Models.PairOfPlayers", b =>
-                {
-                    b.HasOne("Models.Models.PlayerInfo", "PlayerInfo1")
-                        .WithMany()
-                        .HasForeignKey("PlayerInfo1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Models.PlayerInfo", "PlayerInfo2")
-                        .WithMany()
-                        .HasForeignKey("PlayerInfo2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PlayerInfo1");
-
-                    b.Navigation("PlayerInfo2");
                 });
 
             modelBuilder.Entity("Models.Models.PlayableCardStatus", b =>

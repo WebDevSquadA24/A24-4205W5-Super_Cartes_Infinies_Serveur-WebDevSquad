@@ -16,32 +16,41 @@ namespace WebApi.Combat
 
             myCard = currentPlayerData.BattleField[index];
 
-           
-            
-            // Heal
-            if (myCard.HasPower(Power.HEAL_ID))
+            // Stunned
+            if (myCard.HasStatus((int)StatusEnum.Stunned))
             {
-                int healValue = myCard.GetPowerValue(Power.HEAL_ID);
-                this.Events.Add(new HealEvent(currentPlayerData, healValue));
+                this.Events.Add(new StunnedEvent(myCard));
+            }
+            else // Skip turn if stunned
+            {
+                // Chaos
+                if (myCard.HasPower(Power.CHAOS_ID))
+                {
+                    this.Events.Add(new ChaosEvent(currentPlayerData, opposingPlayerData));
+                }
+
+                // Heal
+                if (myCard.HasPower(Power.HEAL_ID))
+                {
+                    int healValue = myCard.GetPowerValue(Power.HEAL_ID);
+                    this.Events.Add(new HealEvent(currentPlayerData, healValue));
+                }
+
+                // LoveOfJesusChrist
+                if (myCard.HasPower(Power.LOVE_OF_JESUS_CHRIST))
+                {
+                    this.Events.Add(new LoveOfJesusChristEvent(currentPlayerData));
+                }
+
+                // Attack
+                this.Events.Add(new AttackEvent(currentPlayerData, opposingPlayerData, match, index));
             }
 
-            // LoveOfJesusChrist
-            if (myCard.HasPower(Power.LOVE_OF_JESUS_CHRIST))
+            // Poisoned
+            if (myCard.HasStatus((int)StatusEnum.Poisoned))
             {
-                this.Events.Add(new LoveOfJesusChristEvent(currentPlayerData));
+                this.Events.Add(new PoisonedEvent(myCard));
             }
-
-            // Thorns
-            // Opponent has Thorns
-            
-
-
-
-
-
-            this.Events.Add(new AttackEvent(currentPlayerData, opposingPlayerData, match, index));
-
-            
 
         }
     }

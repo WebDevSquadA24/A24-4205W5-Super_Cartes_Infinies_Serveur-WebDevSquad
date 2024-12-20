@@ -17,5 +17,5 @@ namespace Models.Models
 
         public string? IconUrl { get; set; }
     }
-    public enum StatusEnum{ Poison = 1, Stunned }
+    public enum StatusEnum{ Poisoned = 1, Stunned }
 }

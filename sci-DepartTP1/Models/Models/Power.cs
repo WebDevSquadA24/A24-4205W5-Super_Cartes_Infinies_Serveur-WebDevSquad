@@ -21,7 +21,8 @@ namespace Models.Models
         public const int STUN_ID = 7;
         public const int EARTHQUAKE_ID = 8;
         public const int RANDOM_PAIN_ID = 9;
-        public const int QQCH_ID = 10; //TODO
+        // If Dies with Chaos, Everycard Dies too
+        public const int TALIBAN_ID = 10; 
 
         public int Id { get; set; }
         public string Name { get; set; }

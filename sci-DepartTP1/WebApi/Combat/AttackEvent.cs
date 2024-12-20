@@ -24,29 +24,44 @@ namespace WebApi.Combat
                 myCard = currentPlayerData.GetOrderedBattleField().Where(b => b.Index == index).First();
                 opponentCard = opposingPlayerData.GetOrderedBattleField().Where(b => b.Index == index).First();
 
-                if (opponentCard.HasPower(Power.THORNS_ID))
+                if (myCard.HasPower(Power.TALIBAN_ID) || opponentCard.HasPower(Power.TALIBAN_ID))
                 {
-                    int thornValue = opponentCard.GetPowerValue(Power.THORNS_ID);
-                    this.Events.Add(new ThornsEvent(currentPlayerData, opposingPlayerData, match, index, thornValue));
+                    Events.Add(new TalibanEvent(currentPlayerData, opposingPlayerData, index));
                 }
-
-                if (myCard.Health > 0)
+                else
                 {
-
-                    if (myCard.HasPower(Power.FIRST_STRIKE_ID))
+                    if (opponentCard.HasPower(Power.THORNS_ID))
                     {
-                        this.Events.Add(new FirstStrikeEvent(currentPlayerData, opposingPlayerData, match, index));
-
+                        int thornValue = opponentCard.GetPowerValue(Power.THORNS_ID);
+                        this.Events.Add(new ThornsEvent(currentPlayerData, opposingPlayerData, match, index, thornValue));
                     }
+
                     if (myCard.Health > 0)
                     {
-                        if (!(opponentCard.Health <= 0))
-                        {
-                            this.Events.Add(new CardDamageEvent(currentPlayerData, opposingPlayerData, match, index));
 
+                        if (myCard.HasPower(Power.FIRST_STRIKE_ID))
+                        {
+                            this.Events.Add(new FirstStrikeEvent(currentPlayerData, opposingPlayerData, match, index));
+                        }
+                        if (myCard.HasPower(Power.POISON_ID))
+                        {
+                            this.Events.Add(new PoisonEvent(myCard, opponentCard));
+                        }
+                        if (myCard.HasPower(Power.STUN_ID))
+                        {
+                            this.Events.Add(new StunEvent(myCard, opponentCard));
+                        }
+                        if (myCard.Health > 0)
+                        {
+                            if (!(opponentCard.Health <= 0))
+                            {
+                                this.Events.Add(new CardDamageEvent(currentPlayerData, opposingPlayerData, match, index));
+
+                            }
                         }
                     }
                 }
+                
             }
             else
             {

@@ -110,7 +110,45 @@ namespace Super_Cartes_Infinies.Data
                     Cost = 1,
                     ImageUrl = "https://cdn.openart.ai/uploads/image_FkweA3pP_1695446033995_512.webp",
                     Rarity = Rarity.Légendaire,
-                }
+                }, new Card
+                {
+                    Id = 12,
+                    Name = "Chat Taser",
+                    Attack = 2,
+                    Health = 2,
+                    Cost = 4,
+                    ImageUrl = "https://i.postimg.cc/T2bh72HY/22bea6bc-8d68-4e72-b430-4e88024a8598.webp",
+                    Rarity = Rarity.Rare,
+                }, new Card
+                {
+                    Id = 13,
+                    Name = "Earthquake",
+                    Attack = 0,
+                    Health = 0,
+                    IsSpell = true,
+                    Cost = 2,
+                    ImageUrl = "https://cff2.earth.com/uploads/2017/07/07123224/shutterstock_26373901.jpg",
+                    Rarity = Rarity.Commune,
+                }, new Card
+                {
+                    Id = 14,
+                    Name = "Random Pain",
+                    Attack = 0,
+                    Health = 0,
+                    IsSpell = true,
+                    Cost = 2,
+                    ImageUrl = "https://bigamartusax.s3-accelerate.amazonaws.com/2020/07/610KiaitzbL._AC_SL1024_.jpg",
+                    Rarity = Rarity.Rare,
+                }, new Card
+                {
+                    Id = 15,
+                    Name = "Chat Taliban",
+                    Attack = 0,
+                    Health = 1,
+                    Cost = 3,
+                    ImageUrl = "https://ideogram.ai/assets/image/lossless/response/uHbM6hlWRti8ou3OBwwnMw",
+                    Rarity = Rarity.Légendaire,
+                },
             };
         }
         public static Power[] SeedPowers()
@@ -143,8 +181,49 @@ namespace Super_Cartes_Infinies.Data
                     Name = "Love of Jesus Christ",
                     Description = "tant que la carte est sur le terrain son joueur gagne de la vie",
                     IconURL = "fas fa-cross"
-                }
-
+                },
+                new Power
+                {
+                    Id = Power.CHAOS_ID,
+                    Name = "Chaos",
+                    Description = "inverse l'attaque et la défense de toutes les cartes en jeu",
+                    IconURL = "fas fa-random",
+                },
+                new Power
+                {
+                    Id = Power.POISON_ID,
+                    Name = "Poison",
+                    Description = "ajoute une valeur de poison à la carte attaquée",
+                    IconURL = "fas fa-skull-crossbones",
+                },
+                new Power
+                {
+                    Id = Power.STUN_ID,
+                    Name = "Stun",
+                    Description = "empêche une carte d’agir pendant son activation durant X tours",
+                    IconURL = "fas fa-ban",
+                },
+                new Power
+                {
+                    Id = Power.EARTHQUAKE_ID,
+                    Name = "Eartquake",
+                    Description = "fait X dégâts à TOUTES les cartes en jeu",
+                    IconURL = "fas fa-mountain",
+                },
+                new Power
+                {
+                    Id = Power.RANDOM_PAIN_ID,
+                    Name = "Random Pain",
+                    Description = "fait 1 à 6 de dégâts à une carte adverse",
+                    IconURL = "fas fa-dice",
+                },
+                new Power
+                {
+                    Id = Power.TALIBAN_ID,
+                    Name = "Taliban",
+                    Description = "dès que cette carte attaque, elle meurt et tue la carte attaqué",
+                    IconURL = "fas fa-bomb",
+                },
             };
         }
         public static CardPower[] SeedCardPowers()
@@ -204,6 +283,68 @@ namespace Super_Cartes_Infinies.Data
                     PowerId = Power.HEAL_ID,
                     Value = 1
 
+                },
+                new CardPower
+                {
+                    Id = 8,
+                    CardId = 4,
+                    PowerId = Power.CHAOS_ID,
+                    Value = 0,
+                },
+                new CardPower
+                {
+                    Id = 9,
+                    CardId = 6,
+                    PowerId = Power.POISON_ID,
+                    Value = 1,
+                },
+                new CardPower
+                {
+                    Id = 10,
+                    CardId = 12,
+                    PowerId = Power.STUN_ID,
+                    Value = 2,
+                },
+                new CardPower
+                {
+                    Id = 11,
+                    CardId = 13,
+                    PowerId = Power.EARTHQUAKE_ID,
+                    Value = 3,
+                },
+                new CardPower
+                {
+                    Id = 12,
+                    CardId = 14,
+                    PowerId = Power.RANDOM_PAIN_ID,
+                    Value = 0,
+                },
+                new CardPower
+                {
+                    Id = 13,
+                    CardId = 15,
+                    PowerId = Power.TALIBAN_ID,
+                    Value = 0,
+                },
+            };
+        }
+        public static Status[] SeedStatuses()
+        {
+            return new Status[]
+            {
+                new Status()
+                {
+                    Id = (int)StatusEnum.Poisoned,
+                    Name = "Poisonned",
+                    Description = "La carte prend X dégats à chaque tours",
+                    IconUrl = "fas fa-skull-crossbones",
+                },
+                new Status()
+                {
+                    Id = (int)StatusEnum.Stunned,
+                    Name = "Stunned",
+                    Description = "La carte ne peut pas jouer pour X tours",
+                    IconUrl = "fas fa-ban",
                 },
             };
         }
@@ -308,8 +449,8 @@ namespace Super_Cartes_Infinies.Data
                 },
                 new StarterCard
                 {
-                    Id= 5,
-                    CardId= 4,
+                    Id = 5,
+                    CardId= 5,
                 },
                 new StarterCard
                 {
@@ -319,18 +460,33 @@ namespace Super_Cartes_Infinies.Data
                 new StarterCard
                 {
                     Id = 7,
-                    CardId= 5,
+                    CardId= 6,
                 },
                 new StarterCard
                 {
                     Id = 8,
-                    CardId= 6,
+                    CardId= 7,
                 },
                 new StarterCard
                 {
                     Id = 9,
-                    CardId= 6,
-                }
+                    CardId= 12,
+                },
+                new StarterCard
+                {
+                    Id = 10,
+                    CardId= 13,
+                },
+                new StarterCard
+                {
+                    Id = 11,
+                    CardId= 14,
+                },
+                new StarterCard
+                {
+                    Id = 12,
+                    CardId= 15,
+                },
             };
         }
 
@@ -346,7 +502,7 @@ namespace Super_Cartes_Infinies.Data
                     NbCardsToDraw = 4,
                     NbManaToReceive = 3,
                     NbMaxDeck = 5,
-                    NbMaxCard = 8,
+                    NbMaxCard = 12,
                     BeginnerMoney = 1000,
                     WinnerMoney = 100,
                     LoserMoney = 50,

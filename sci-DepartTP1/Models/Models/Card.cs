@@ -26,6 +26,7 @@ namespace Super_Cartes_Infinies.Models
         [Display(Name = "Image")]
         public string ImageUrl { get; set; } = "";
         [Display(Name = "Rareté de la carte")]
+        public bool IsSpell { get; set; } = false;
         public Rarity Rarity { get; set; }
 
         [ValidateNever]

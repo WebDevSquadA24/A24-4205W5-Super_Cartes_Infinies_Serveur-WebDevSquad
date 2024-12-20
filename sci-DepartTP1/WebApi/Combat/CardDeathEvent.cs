@@ -11,12 +11,12 @@ namespace WebApi.Combat
         public int PlayerId { get; set; }
 
         public PlayableCard deadCard {  get; set; }
-         public CardDeathEvent(MatchPlayerData deadCardPlayerData, int battleFieldId)
+         public CardDeathEvent(MatchPlayerData deadCardPlayerData, int battleFieldIndex)
         {
             this.Events = new List<MatchEvent>();
             if (deadCardPlayerData.BattleField.Count >0) 
             {
-                deadCard = deadCardPlayerData.GetOrderedBattleField().Where(b => b.Index == battleFieldId).First();
+                deadCard = deadCardPlayerData.GetOrderedBattleField().Where(b => b.Index == battleFieldIndex).First();
                 PlayableCardId = deadCard.Id;
                 PlayerId = deadCardPlayerData.PlayerId;
 
