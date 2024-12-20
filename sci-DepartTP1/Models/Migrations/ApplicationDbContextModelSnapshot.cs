@@ -169,7 +169,6 @@ namespace Models.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e801e1b0-8f9f-4d5a-9cea-936ce0b47a23",
                             ConcurrencyStamp = "2ec47538-1b79-4958-abea-dc2c9e08c86e",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
